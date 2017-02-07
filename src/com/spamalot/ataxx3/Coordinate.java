@@ -27,13 +27,13 @@ final class Coordinate {
    * @return the x ordinate.
    */
   public int getX() {
-    return x;
+    return this.x;
   }
 
   /**
    * @return the y ordinate.
    */
   public int getY() {
-    return y;
+    return this.y;
   }
 }

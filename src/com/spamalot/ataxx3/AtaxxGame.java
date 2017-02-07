@@ -32,17 +32,17 @@ class AtaxxGame {
    */
   AtaxxGame(final int size) throws AtaxxException {
     this.board = new AtaxxBoard(size);
-    System.out.println(board);
+    System.out.println(this.board);
     initBoard();
-    System.out.println(board);
+    System.out.println(this.board);
 
     AtaxxMove m = new AtaxxMove(AtaxxMove.Type.EXPAND, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(1, 1));
     AtaxxMove m2 = new AtaxxMove(AtaxxMove.Type.JUMP, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(2, 2));
 
-    board.makeMove(m);
-    System.out.println(board);
-    board.makeMove(m2);
-    System.out.println(board);
+    this.board.makeMove(m);
+    System.out.println(this.board);
+    this.board.makeMove(m2);
+    System.out.println(this.board);
   }
 
   /**
@@ -52,13 +52,13 @@ class AtaxxGame {
    *           when there is some Ataax related problem.
    */
   private void initBoard() throws AtaxxException {
-    board.setPiece(AtaxxColor.WHITE, 0, 0);
-    board.setPiece(AtaxxColor.WHITE, board.getHeight() - 1, board.getWidth() - 1);
+    this.board.setPiece(AtaxxColor.WHITE, 0, 0);
+    this.board.setPiece(AtaxxColor.WHITE, this.board.getHeight() - 1, this.board.getWidth() - 1);
 
-    board.setPiece(AtaxxColor.BLACK, 0, board.getWidth() - 1);
-    board.setPiece(AtaxxColor.BLACK, board.getHeight() - 1, 0);
+    this.board.setPiece(AtaxxColor.BLACK, 0, this.board.getWidth() - 1);
+    this.board.setPiece(AtaxxColor.BLACK, this.board.getHeight() - 1, 0);
 
-    System.out.println(board);
+    System.out.println(this.board);
 
   }
 

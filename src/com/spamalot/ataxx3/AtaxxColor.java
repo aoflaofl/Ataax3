@@ -30,14 +30,14 @@ public enum AtaxxColor {
    * @return the opposite color.
    */
   AtaxxColor getOpposite() {
-    return opposite;
+    return this.opposite;
   }
 
   /**
    * @return the representation
    */
   String getRepresentation() {
-    return representation;
+    return this.representation;
   }
 
 }

@@ -26,40 +26,40 @@ public class AtaxxBoardTest {
 
   @Before
   public final void setUp() throws Exception {
-    squareBoard = new AtaxxBoard(1);
-    rectangleBoard = new AtaxxBoard(4, 5);
+    this.squareBoard = new AtaxxBoard(1);
+    this.rectangleBoard = new AtaxxBoard(4, 5);
   }
 
   @Test
   public final void testAtaxxBoardInt() {
-    assertEquals(1, squareBoard.getHeight());
-    assertEquals(1, squareBoard.getWidth());
-    assertNotNull(squareBoard);
+    assertEquals(1, this.squareBoard.getHeight());
+    assertEquals(1, this.squareBoard.getWidth());
+    assertNotNull(this.squareBoard);
   }
 
   @Test
   public final void testAtaxxBoardIntInt() {
-    assertEquals(4, rectangleBoard.getWidth());
-    assertEquals(5, rectangleBoard.getHeight());
-    assertNotNull(rectangleBoard);
+    assertEquals(4, this.rectangleBoard.getWidth());
+    assertEquals(5, this.rectangleBoard.getHeight());
+    assertNotNull(this.rectangleBoard);
   }
 
   @Test
   public final void testGetWidth() {
-    assertEquals(1, squareBoard.getWidth());
-    assertEquals(4, rectangleBoard.getWidth());
+    assertEquals(1, this.squareBoard.getWidth());
+    assertEquals(4, this.rectangleBoard.getWidth());
   }
 
   @Test
   public final void testGetHeight() {
-    assertEquals(1, squareBoard.getHeight());
-    assertEquals(5, rectangleBoard.getHeight());
+    assertEquals(1, this.squareBoard.getHeight());
+    assertEquals(5, this.rectangleBoard.getHeight());
   }
 
   @Test(expected = com.spamalot.ataxx3.AtaxxException.class)
   public final void testSetPiece() throws AtaxxException {
-    squareBoard.setPiece(AtaxxColor.WHITE, 0, 0);
-    squareBoard.setPiece(AtaxxColor.BLACK, 0, 0);
+    this.squareBoard.setPiece(AtaxxColor.WHITE, 0, 0);
+    this.squareBoard.setPiece(AtaxxColor.BLACK, 0, 0);
   }
 
   @Test

@@ -27,7 +27,7 @@ public class AtaxxPiece {
    * @return the color.
    */
   public final AtaxxColor getColor() {
-    return color;
+    return this.color;
   }
 
   /**
@@ -42,11 +42,11 @@ public class AtaxxPiece {
 
   /** Flip the color of this piece. */
   public final void flip() {
-    setColor(color.getOpposite());
+    setColor(this.color.getOpposite());
   }
 
   @Override
   public final String toString() {
-    return color.getRepresentation();
+    return this.color.getRepresentation();
   }
 }

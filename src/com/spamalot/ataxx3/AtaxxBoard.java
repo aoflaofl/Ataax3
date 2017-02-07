@@ -40,7 +40,7 @@ public class AtaxxBoard {
   public AtaxxBoard(final int w, final int h) {
     this.setWidth(w);
     this.setHeight(h);
-    board = new AtaxxPiece[w][h];
+    this.board = new AtaxxPiece[w][h];
   }
 
   /**
@@ -49,7 +49,7 @@ public class AtaxxBoard {
    * @return the width.
    */
   public final int getWidth() {
-    return width;
+    return this.width;
   }
 
   /**
@@ -68,7 +68,7 @@ public class AtaxxBoard {
    * @return the height.
    */
   public final int getHeight() {
-    return height;
+    return this.height;
   }
 
   /**
@@ -96,11 +96,11 @@ public class AtaxxBoard {
     }
     switch (move.getType()) {
       case EXPAND:
-        board[move.getTo().getX()][move.getTo().getY()] = new AtaxxPiece(move.getColor());
+        this.board[move.getTo().getX()][move.getTo().getY()] = new AtaxxPiece(move.getColor());
         break;
       case JUMP:
-        board[move.getTo().getX()][move.getTo().getY()] = board[move.getFrom().getX()][move.getFrom().getY()];
-        board[move.getFrom().getX()][move.getFrom().getY()] = null;
+        this.board[move.getTo().getX()][move.getTo().getY()] = this.board[move.getFrom().getX()][move.getFrom().getY()];
+        this.board[move.getFrom().getX()][move.getFrom().getY()] = null;
         break;
       default:
         break;
@@ -118,16 +118,16 @@ public class AtaxxBoard {
     Coordinate s = move.getTo();
     List<Coordinate> ret = new ArrayList<>();
     int minX = Math.max(s.getX() - 1, 0);
-    int maxX = Math.min(s.getX() + 1, width);
+    int maxX = Math.min(s.getX() + 1, this.width);
     int minY = Math.max(s.getY() - 1, 0);
-    int maxY = Math.min(s.getY() + 1, height);
+    int maxY = Math.min(s.getY() + 1, this.height);
 
     for (int x = minX; x <= maxX; x++) {
       for (int y = minY; y <= maxY; y++) {
 
-        if (board[x][y] != null && board[x][y].getColor() == c) {
+        if (this.board[x][y] != null && this.board[x][y].getColor() == c) {
           System.out.println(x + ", " + y);
-          board[x][y].flip();
+          this.board[x][y].flip();
           Coordinate co = new Coordinate(x, y);
           ret.add(co);
         }
@@ -155,7 +155,7 @@ public class AtaxxBoard {
    * @return true if the from piece has the correct color for the move.
    */
   private boolean pieceInFromSquareMatchesColor(final AtaxxMove move) {
-    return board[move.getFrom().getX()][move.getFrom().getY()].getColor() == move.getColor();
+    return this.board[move.getFrom().getX()][move.getFrom().getY()].getColor() == move.getColor();
   }
 
   /**
@@ -175,7 +175,7 @@ public class AtaxxBoard {
    * @return true if square is empty.
    */
   private boolean squareIsEmpty(final int x, final int y) {
-    return board[x][y] == null;
+    return this.board[x][y] == null;
   }
 
   /**
@@ -197,7 +197,7 @@ public class AtaxxBoard {
    * @return true if the square is on the board
    */
   private boolean isOnBoard(final int x, final int y) {
-    return (x >= 0 && x < width && y >= 0 && y < height);
+    return (x >= 0 && x < this.width && y >= 0 && y < this.height);
   }
 
   /**
@@ -228,15 +228,15 @@ public class AtaxxBoard {
     if (!squareIsEmpty(x, y)) {
       throw new AtaxxException("Can't do that.");
     }
-    board[x][y] = new AtaxxPiece(color);
+    this.board[x][y] = new AtaxxPiece(color);
   }
 
   @Override
   public final String toString() {
     StringBuilder s = new StringBuilder();
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        AtaxxPiece p = board[i][j];
+    for (int i = 0; i < this.height; i++) {
+      for (int j = 0; j < this.width; j++) {
+        AtaxxPiece p = this.board[i][j];
         if (p == null) {
           s.append(".");
         } else {

@@ -32,14 +32,14 @@ class AtaxxMove {
    * @return the from
    */
   public Coordinate getFrom() {
-    return from;
+    return this.from;
   }
 
   /**
    * @return the to
    */
   public Coordinate getTo() {
-    return to;
+    return this.to;
   }
 
   /** What Type of Ataxx move is this? */
@@ -67,7 +67,7 @@ class AtaxxMove {
    * @return the color
    */
   public final AtaxxColor getColor() {
-    return color;
+    return this.color;
   }
 
   /**
@@ -76,7 +76,7 @@ class AtaxxMove {
    * @return the Type.
    */
   public final Type getType() {
-    return type;
+    return this.type;
   }
 
   /**
