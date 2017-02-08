@@ -8,6 +8,9 @@ package com.spamalot.ataxx3;
  */
 public class AtaxxException extends Exception {
 
+  /** System generated serial ID. */
+  private static final long serialVersionUID = -311227822482481911L;
+
   /**
    * The Constructor.
    * 
@@ -21,12 +24,12 @@ public class AtaxxException extends Exception {
   /**
    * The Constructor.
    * 
-   * @param m
+   * @param move
    *          the bad move.
    * @param msg
    *          a message.
    */
-  AtaxxException(final AtaxxMove m, final String msg) {
+  AtaxxException(final AtaxxMove move, final String msg) {
     // TODO Auto-generated constructor stub
   }
 

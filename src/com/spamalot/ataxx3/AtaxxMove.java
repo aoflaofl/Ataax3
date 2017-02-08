@@ -8,7 +8,7 @@ package com.spamalot.ataxx3;
  */
 class AtaxxMove {
   /**
-   * The two types of an Ataxx move?
+   * The two types of an Ataxx move.
    * 
    * @author gej
    *
@@ -29,6 +29,8 @@ class AtaxxMove {
   private Coordinate to;
 
   /**
+   * The From Coordinate.
+   * 
    * @return the from
    */
   public Coordinate getFrom() {
@@ -36,16 +38,20 @@ class AtaxxMove {
   }
 
   /**
+   * The To Coordinate.
+   * 
    * @return the to
    */
   public Coordinate getTo() {
     return this.to;
   }
 
-  /** What Type of Ataxx move is this? */
+  /** What Type of Ataxx move this is. */
   private Type type;
 
   /**
+   * Construct an Ataax Move.
+   * 
    * @param type
    *          the type of move
    * @param color
@@ -64,6 +70,8 @@ class AtaxxMove {
   }
 
   /**
+   * The Color.
+   * 
    * @return the color
    */
   public final AtaxxColor getColor() {
@@ -80,6 +88,8 @@ class AtaxxMove {
   }
 
   /**
+   * Set the color.
+   * 
    * @param c
    *          the color to set
    */

@@ -13,6 +13,8 @@ final class Coordinate {
   private final int y;
 
   /**
+   * Construct a Coordinate.
+   * 
    * @param x
    *          the X ordinate
    * @param y

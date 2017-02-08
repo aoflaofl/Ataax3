@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.spamalot.ataxx3.test;
 
 import static org.junit.Assert.assertEquals;
@@ -14,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * JUnit Test for AtaaxBoard.
+ * 
  * @author gej
  *
  */

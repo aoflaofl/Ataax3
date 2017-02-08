@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.spamalot.ataxx3.test;
 
 import static org.junit.Assert.assertEquals;
@@ -12,6 +9,8 @@ import com.spamalot.ataxx3.AtaxxPiece;
 import org.junit.Test;
 
 /**
+ * JUnit Test an Ataax Piece.
+ * 
  * @author gej
  *
  */

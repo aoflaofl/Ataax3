@@ -110,7 +110,10 @@ public class AtaxxBoard {
   }
 
   /**
+   * Flip the pieces around the to square.
+   * 
    * @param move
+   *          the move that results in the flipping.
    * @return a List of Coordinates of squares that had flipped pieces.
    */
   private List<Coordinate> flipPiecesAroundToSquare(final AtaxxMove move) {

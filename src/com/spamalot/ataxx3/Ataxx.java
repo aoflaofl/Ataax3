@@ -46,7 +46,8 @@ public final class Ataxx {
    *           when there is some Ataax related problem.
    */
   public static void main(final String[] args) throws AtaxxException {
-    AtaxxGame b = new AtaxxGame();
+    AtaxxGame ataaxGame = new AtaxxGame();
+    System.out.println(ataaxGame.toString());
 
   }
 

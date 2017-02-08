@@ -36,12 +36,12 @@ class AtaxxGame {
     initBoard();
     System.out.println(this.board);
 
-    AtaxxMove m = new AtaxxMove(AtaxxMove.Type.EXPAND, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(1, 1));
-    AtaxxMove m2 = new AtaxxMove(AtaxxMove.Type.JUMP, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(2, 2));
+    AtaxxMove move1 = new AtaxxMove(AtaxxMove.Type.EXPAND, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(1, 1));
+    AtaxxMove move2 = new AtaxxMove(AtaxxMove.Type.JUMP, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(2, 2));
 
-    this.board.makeMove(m);
+    this.board.makeMove(move1);
     System.out.println(this.board);
-    this.board.makeMove(m2);
+    this.board.makeMove(move2);
     System.out.println(this.board);
   }
 

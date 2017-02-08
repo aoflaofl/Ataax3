@@ -34,6 +34,8 @@ public enum AtaxxColor {
   }
 
   /**
+   * How the piece should be displayed in the toString.
+   * 
    * @return the representation
    */
   String getRepresentation() {
