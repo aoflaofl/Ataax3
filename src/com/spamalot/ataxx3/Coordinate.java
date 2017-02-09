@@ -15,14 +15,14 @@ final class Coordinate {
   /**
    * Construct a Coordinate.
    * 
-   * @param x
+   * @param xOrd
    *          the X ordinate
-   * @param y
+   * @param yOrd
    *          the Y ordinate
    */
-  Coordinate(final int x, final int y) {
-    this.x = x;
-    this.y = y;
+  Coordinate(final int xOrd, final int yOrd) {
+    this.x = xOrd;
+    this.y = yOrd;
   }
 
   /**

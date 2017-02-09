@@ -16,7 +16,7 @@ class AtaxxGame {
    * Construct the Ataxx game.
    * 
    * @throws AtaxxException
-   *           when there is some Ataax related problem.
+   *           when there is some Ataxx related problem.
    */
   AtaxxGame() throws AtaxxException {
     this(DEFAULT_BOARD_SIZE);
@@ -28,7 +28,7 @@ class AtaxxGame {
    * @param size
    *          Size of a side
    * @throws AtaxxException
-   *           when there is some Ataax related problem.
+   *           when there is some Ataxx related problem.
    */
   AtaxxGame(final int size) throws AtaxxException {
     this.board = new AtaxxBoard(size);
@@ -49,7 +49,7 @@ class AtaxxGame {
    * Put the initial pieces for a standard game of Ataxx.
    * 
    * @throws AtaxxException
-   *           when there is some Ataax related problem.
+   *           when there is some Ataxx related problem.
    */
   private void initBoard() throws AtaxxException {
     this.board.setPiece(AtaxxColor.WHITE, 0, 0);
@@ -60,6 +60,18 @@ class AtaxxGame {
 
     System.out.println(this.board);
 
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("AtaxxGame [board=\n").append(this.board).append("]");
+    return builder.toString();
   }
 
 }

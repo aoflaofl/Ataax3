@@ -9,7 +9,7 @@ import com.spamalot.ataxx3.AtaxxPiece;
 import org.junit.Test;
 
 /**
- * JUnit Test an Ataax Piece.
+ * JUnit Test an Ataxx Piece.
  * 
  * @author gej
  *

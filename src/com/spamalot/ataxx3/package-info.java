@@ -1,5 +1,7 @@
 /**
- * Ataxx3, because Ataxxs 1 and 2 turned out to not work too well.
+ * Play the game of Ataxx.
+ * <p>
+ * Called this Ataxx3 because Ataxxs 1 and 2 turned out to not work too well.
  * <p>
  * In Ataxx1 I made the mistake of trying to optimize too early and wound up
  * with a mess of spaghetti code.

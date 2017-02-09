@@ -25,7 +25,7 @@ package com.spamalot.ataxx3;
  * but that's out of scope for this little program.
  * </ul>
  * 
- * @see <a href="https://en.wikipedia.org/wiki/Ataxx">Wikipedia</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Ataxx">Ataxx at Wikipedia</a>
  * @author gej
  *
  */
@@ -43,11 +43,11 @@ public final class Ataxx {
    * @param args
    *          arguments to the program.
    * @throws AtaxxException
-   *           when there is some Ataax related problem.
+   *           when there is some Ataxx related problem.
    */
   public static void main(final String[] args) throws AtaxxException {
-    AtaxxGame ataaxGame = new AtaxxGame();
-    System.out.println(ataaxGame.toString());
+    AtaxxGame ataxxGame = new AtaxxGame();
+    System.out.println(ataxxGame.toString());
 
   }
 

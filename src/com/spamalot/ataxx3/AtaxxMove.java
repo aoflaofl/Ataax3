@@ -50,22 +50,22 @@ class AtaxxMove {
   private Type type;
 
   /**
-   * Construct an Ataax Move.
+   * Construct an Ataxx Move.
    * 
-   * @param type
+   * @param moveType
    *          the type of move
-   * @param color
+   * @param pieceColor
    *          the color of the piece
-   * @param from
+   * @param fromCoord
    *          the from square
-   * @param to
+   * @param toCoord
    *          the to square
    */
-  AtaxxMove(final Type type, final AtaxxColor color, final Coordinate from, final Coordinate to) {
-    this.type = type;
-    this.color = color;
-    this.from = from;
-    this.to = to;
+  AtaxxMove(final Type moveType, final AtaxxColor pieceColor, final Coordinate fromCoord, final Coordinate toCoord) {
+    this.type = moveType;
+    this.color = pieceColor;
+    this.from = fromCoord;
+    this.to = toCoord;
 
   }
 

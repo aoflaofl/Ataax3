@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test for AtaaxBoard.
+ * JUnit Test for AtaxxBoard.
  * 
  * @author gej
  *
