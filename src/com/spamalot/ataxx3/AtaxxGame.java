@@ -1,5 +1,7 @@
 package com.spamalot.ataxx3;
 
+import java.util.List;
+
 /**
  * Handle a game of Ataxx.
  * 
@@ -9,8 +11,12 @@ package com.spamalot.ataxx3;
 class AtaxxGame {
   /** Default Board Size Constant. */
   private static final int DEFAULT_BOARD_SIZE = 7;
+
   /** The board for this game. */
   private AtaxxBoard board;
+
+  /** Which color is moving. White moves first. */
+  private AtaxxColor toMove = AtaxxColor.WHITE;
 
   /**
    * Construct the Ataxx game.
@@ -30,7 +36,7 @@ class AtaxxGame {
    * @throws AtaxxException
    *           when there is some Ataxx related problem.
    */
-  AtaxxGame(final int size) throws AtaxxException {
+  private AtaxxGame(final int size) throws AtaxxException {
     this.board = new AtaxxBoard(size);
     System.out.println(this.board);
     initBoard();
@@ -62,6 +68,10 @@ class AtaxxGame {
 
   }
 
+  public List<AtaxxMove> getAvailableMoves() {
+    return this.board.getAvailableMoves(this.toMove);
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -70,7 +80,7 @@ class AtaxxGame {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    builder.append("AtaxxGame [board=\n").append(this.board).append("]");
+    builder.append("AtaxxGame [board=\n").append(this.board).append("toMove=").append(this.toMove).append("\ngetAvailableMoves()=").append(getAvailableMoves()).append("]");
     return builder.toString();
   }
 

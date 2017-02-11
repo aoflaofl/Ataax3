@@ -106,4 +106,24 @@ class AtaxxMove {
   public final void setType(final Type t) {
     this.type = t;
   }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("[type=");
+    builder.append(this.type);
+    builder.append(", color=");
+    builder.append(this.color);
+    builder.append(", from=");
+    builder.append(this.from);
+    builder.append(", to=");
+    builder.append(this.to);
+    builder.append("]\n");
+    return builder.toString();
+  }
 }

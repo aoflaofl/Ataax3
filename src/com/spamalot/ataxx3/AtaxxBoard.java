@@ -1,7 +1,9 @@
 package com.spamalot.ataxx3;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represent a board for an Ataxx game.
@@ -119,11 +121,13 @@ public class AtaxxBoard {
   private List<Coordinate> flipPiecesAroundToSquare(final AtaxxMove move) {
     AtaxxColor c = move.getColor().getOpposite();
     Coordinate s = move.getTo();
-    List<Coordinate> ret = new ArrayList<>();
+
     int minX = Math.max(s.getX() - 1, 0);
     int maxX = Math.min(s.getX() + 1, this.width);
     int minY = Math.max(s.getY() - 1, 0);
     int maxY = Math.min(s.getY() + 1, this.height);
+
+    List<Coordinate> ret = new ArrayList<>();
 
     for (int x = minX; x <= maxX; x++) {
       for (int y = minY; y <= maxY; y++) {
@@ -250,5 +254,48 @@ public class AtaxxBoard {
     }
 
     return s.toString();
+  }
+
+  public final List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
+    List<AtaxxMove> result = new ArrayList<>();
+    this.seen = new HashSet<>();
+    for (int i = 0; i < this.height; i++) {
+      for (int j = 0; j < this.width; j++) {
+        if (this.board[i][j] != null && this.board[i][j].getColor().equals(toMove)) {
+
+          result.addAll(expandMoves(this.board[i][j], i, j));
+
+        }
+      }
+    }
+    return result;
+  }
+
+  private Set<Coordinate> seen = new HashSet<>();
+
+  private List<AtaxxMove> expandMoves(final AtaxxPiece ataxxPiece, final int i, final int j) {
+
+    Coordinate fromCoord = new Coordinate(i, j);
+
+    int minX = Math.max(fromCoord.getX() - 1, 0);
+    int maxX = Math.min(fromCoord.getX() + 1, this.width - 1);
+    int minY = Math.max(fromCoord.getY() - 1, 0);
+    int maxY = Math.min(fromCoord.getY() + 1, this.height - 1);
+
+    List<AtaxxMove> result = new ArrayList<>();
+
+    for (int x = minX; x <= maxX; x++) {
+      for (int y = minY; y <= maxY; y++) {
+        if (this.board[x][y] == null) {
+          Coordinate toCoord = new Coordinate(x, y);
+          if (!this.seen.contains(toCoord)) {
+            result.add(new AtaxxMove(AtaxxMove.Type.EXPAND, ataxxPiece.getColor(), fromCoord, toCoord));
+            this.seen.add(toCoord);
+          }
+        }
+      }
+    }
+
+    return result;
   }
 }
