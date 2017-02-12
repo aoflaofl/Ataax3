@@ -256,46 +256,65 @@ public class AtaxxBoard {
     return s.toString();
   }
 
-  public final List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
-    List<AtaxxMove> result = new ArrayList<>();
-    this.seen = new HashSet<>();
-    for (int i = 0; i < this.height; i++) {
-      for (int j = 0; j < this.width; j++) {
-        if (this.board[i][j] != null && this.board[i][j].getColor().equals(toMove)) {
+  public class AtaxxMoveGenerator {
 
-          result.addAll(expandMoves(this.board[i][j], i, j));
+    private AtaxxBoard boardObj;
 
-        }
-      }
+    /**
+     * 
+     */
+    public AtaxxMoveGenerator(final AtaxxBoard board) {
+      this.boardObj = board;
     }
-    return result;
-  }
 
-  private Set<Coordinate> seen = new HashSet<>();
+    public final List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
+      List<AtaxxMove> result = new ArrayList<>();
+      this.seen = new HashSet<>();
+      for (int i = 0; i < this.boardObj.getHeight(); i++) {
+        for (int j = 0; j < this.boardObj.getWidth(); j++) {
+          if (this.boardObj.board[i][j] != null && this.boardObj.board[i][j].getColor().equals(toMove)) {
 
-  private List<AtaxxMove> expandMoves(final AtaxxPiece ataxxPiece, final int i, final int j) {
+            result.addAll(expandMoves(this.boardObj.board[i][j], i, j));
 
-    Coordinate fromCoord = new Coordinate(i, j);
-
-    int minX = Math.max(fromCoord.getX() - 1, 0);
-    int maxX = Math.min(fromCoord.getX() + 1, this.width - 1);
-    int minY = Math.max(fromCoord.getY() - 1, 0);
-    int maxY = Math.min(fromCoord.getY() + 1, this.height - 1);
-
-    List<AtaxxMove> result = new ArrayList<>();
-
-    for (int x = minX; x <= maxX; x++) {
-      for (int y = minY; y <= maxY; y++) {
-        if (this.board[x][y] == null) {
-          Coordinate toCoord = new Coordinate(x, y);
-          if (!this.seen.contains(toCoord)) {
-            result.add(new AtaxxMove(AtaxxMove.Type.EXPAND, ataxxPiece.getColor(), fromCoord, toCoord));
-            this.seen.add(toCoord);
           }
         }
       }
+      return result;
     }
 
-    return result;
+    private Set<Coordinate> seen = new HashSet<>();
+
+    private List<AtaxxMove> expandMoves(final AtaxxPiece ataxxPiece, final int i, final int j) {
+
+      Coordinate fromCoord = new Coordinate(i, j);
+
+      int minX = Math.max(fromCoord.getX() - 1, 0);
+      int maxX = Math.min(fromCoord.getX() + 1, this.boardObj.getWidth() - 1);
+      int minY = Math.max(fromCoord.getY() - 1, 0);
+      int maxY = Math.min(fromCoord.getY() + 1, this.boardObj.getHeight() - 1);
+
+      List<AtaxxMove> result = new ArrayList<>();
+
+      for (int x = minX; x <= maxX; x++) {
+        for (int y = minY; y <= maxY; y++) {
+          if (this.boardObj.board[x][y] == null) {
+            Coordinate toCoord = new Coordinate(x, y);
+            if (!this.seen.contains(toCoord)) {
+              result.add(new AtaxxMove(AtaxxMove.Type.EXPAND, ataxxPiece.getColor(), fromCoord, toCoord));
+              this.seen.add(toCoord);
+            }
+          }
+        }
+      }
+
+      return result;
+    }
+
   }
+
+  public List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
+    AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this);
+    return gen.getAvailableMoves(toMove);
+  }
+
 }
