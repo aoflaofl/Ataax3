@@ -54,20 +54,27 @@ class AtaxxGame {
   /**
    * Put the initial pieces for a standard game of Ataxx.
    * 
+   * TODO: Possibly add barrier squares.
+   * 
    * @throws AtaxxException
    *           when there is some Ataxx related problem.
    */
   private void initBoard() throws AtaxxException {
-    this.board.setPiece(AtaxxColor.WHITE, 0, 0);
-    this.board.setPiece(AtaxxColor.WHITE, this.board.getHeight() - 1, this.board.getWidth() - 1);
+    this.board.setPiece(AtaxxColor.WHITE, new Coordinate(0, 0));
+    this.board.setPiece(AtaxxColor.WHITE, new Coordinate(this.board.getHeight() - 1, this.board.getWidth() - 1));
 
-    this.board.setPiece(AtaxxColor.BLACK, 0, this.board.getWidth() - 1);
-    this.board.setPiece(AtaxxColor.BLACK, this.board.getHeight() - 1, 0);
+    this.board.setPiece(AtaxxColor.BLACK, new Coordinate(0, this.board.getWidth() - 1));
+    this.board.setPiece(AtaxxColor.BLACK, new Coordinate(this.board.getHeight() - 1, 0));
 
     System.out.println(this.board);
 
   }
 
+  /**
+   * Get a list of moves.
+   * 
+   * @return a list of available moves.
+   */
   public List<AtaxxMove> getAvailableMoves() {
     return this.board.getAvailableMoves(this.toMove);
   }

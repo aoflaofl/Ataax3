@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-final class Coordinate {
+public final class Coordinate {
   /** The X ordinate. */
   private final int x;
   /** The Y ordinate. */
@@ -20,7 +20,7 @@ final class Coordinate {
    * @param yOrd
    *          the Y ordinate
    */
-  Coordinate(final int xOrd, final int yOrd) {
+  public Coordinate(final int xOrd, final int yOrd) {
     this.x = xOrd;
     this.y = yOrd;
   }

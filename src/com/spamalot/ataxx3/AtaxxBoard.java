@@ -119,7 +119,7 @@ public class AtaxxBoard {
    * @return a List of Coordinates of squares that had flipped pieces.
    */
   private List<Coordinate> flipPiecesAroundToSquare(final AtaxxMove move) {
-    AtaxxColor c = move.getColor().getOpposite();
+    AtaxxColor oppositeColor = move.getColor().getOpposite();
     Coordinate s = move.getTo();
 
     int minX = Math.max(s.getX() - 1, 0);
@@ -132,7 +132,7 @@ public class AtaxxBoard {
     for (int x = minX; x <= maxX; x++) {
       for (int y = minY; y <= maxY; y++) {
 
-        if (this.board[x][y] != null && this.board[x][y].getColor() == c) {
+        if (this.board[x][y] != null && this.board[x][y].getColor() == oppositeColor) {
           System.out.println(x + ", " + y);
           this.board[x][y].flip();
           Coordinate co = new Coordinate(x, y);
@@ -171,18 +171,18 @@ public class AtaxxBoard {
    * @return true if the square is empty.
    */
   private boolean toSquareIsEmpty(final AtaxxMove move) {
-    return squareIsEmpty(move.getTo().getX(), move.getTo().getY());
+    return squareIsEmpty(move.getTo());
   }
 
   /**
-   * @param x
-   *          X coordinate
-   * @param y
-   *          Y coordinate
+   * Check if square is empty.
+   * 
+   * @param sq
+   *          the Square
    * @return true if square is empty.
    */
-  private boolean squareIsEmpty(final int x, final int y) {
-    return this.board[x][y] == null;
+  private boolean squareIsEmpty(final Coordinate sq) {
+    return this.board[sq.getX()][sq.getY()] == null;
   }
 
   /**
@@ -191,19 +191,19 @@ public class AtaxxBoard {
    * @return true if the squares involved are on the board.
    */
   private boolean isOnBoard(final AtaxxMove move) {
-    return (isOnBoard(move.getFrom().getX(), move.getFrom().getY()) && isOnBoard(move.getTo().getX(), move.getTo().getY()));
+    return (isOnBoard(move.getFrom()) && isOnBoard(move.getTo()));
   }
 
   /**
    * Check if a square is on the board.
    * 
-   * @param x
-   *          X coordinate to check
-   * @param y
-   *          Y coordinate to check
+   * @param sq
+   *          The square
    * @return true if the square is on the board
    */
-  private boolean isOnBoard(final int x, final int y) {
+  private boolean isOnBoard(final Coordinate sq) {
+    int x = sq.getX();
+    int y = sq.getY();
     return (x >= 0 && x < this.width && y >= 0 && y < this.height);
   }
 
@@ -224,18 +224,16 @@ public class AtaxxBoard {
    * 
    * @param color
    *          Color of piece
-   * @param x
-   *          X coordinate
-   * @param y
-   *          Y coordinate
+   * @param sq
+   *          The square
    * @throws AtaxxException
-   *           An exception
+   *           An Exception
    */
-  public final void setPiece(final AtaxxColor color, final int x, final int y) throws AtaxxException {
-    if (!squareIsEmpty(x, y)) {
+  public final void setPiece(final AtaxxColor color, final Coordinate sq) throws AtaxxException {
+    if (!squareIsEmpty(sq)) {
       throw new AtaxxException("Can't do that.");
     }
-    this.board[x][y] = new AtaxxPiece(color);
+    this.board[sq.getX()][sq.getY()] = new AtaxxPiece(color);
   }
 
   @Override
@@ -256,18 +254,35 @@ public class AtaxxBoard {
     return s.toString();
   }
 
-  public class AtaxxMoveGenerator {
+  /**
+   * Generate moves.
+   * 
+   * @author gej
+   *
+   */
+  private final class AtaxxMoveGenerator {
 
+    /** Board for moves. */
     private AtaxxBoard boardObj;
 
     /**
+     * Construct the move generator.
      * 
+     * @param inBoard
+     *          Board to construct generator for.
      */
-    public AtaxxMoveGenerator(final AtaxxBoard board) {
-      this.boardObj = board;
+    private AtaxxMoveGenerator(final AtaxxBoard inBoard) {
+      this.boardObj = inBoard;
     }
 
-    public final List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
+    /**
+     * Generate a list of moves.
+     * 
+     * @param toMove
+     *          Color to move.
+     * @return list of moves.
+     */
+    public List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
       List<AtaxxMove> result = new ArrayList<>();
       this.seen = new HashSet<>();
       for (int i = 0; i < this.boardObj.getHeight(); i++) {
@@ -282,8 +297,20 @@ public class AtaxxBoard {
       return result;
     }
 
+    /** Avoid coordinates that have already been seen. */
     private Set<Coordinate> seen = new HashSet<>();
 
+    /**
+     * Build list of expansion moves.
+     * 
+     * @param ataxxPiece
+     *          the piece.
+     * @param i
+     *          the i
+     * @param j
+     *          the j
+     * @return a list of expand moves.
+     */
     private List<AtaxxMove> expandMoves(final AtaxxPiece ataxxPiece, final int i, final int j) {
 
       Coordinate fromCoord = new Coordinate(i, j);
@@ -312,6 +339,13 @@ public class AtaxxBoard {
 
   }
 
+  /**
+   * Generate moves.
+   * 
+   * @param toMove
+   *          Color to move.
+   * @return a list of moves.
+   */
   public List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
     AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this);
     return gen.getAvailableMoves(toMove);
