@@ -1,6 +1,7 @@
 package com.spamalot.ataxx3;
 
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Handle a game of Ataxx.
@@ -17,6 +18,9 @@ class AtaxxGame {
 
   /** Which color is moving. White moves first. */
   private AtaxxColor toMove = AtaxxColor.WHITE;
+
+  /** Stack for move list. */
+  private Stack<AtaxxUndoMove> moveStack = new Stack<>();
 
   /**
    * Construct the Ataxx game.
@@ -45,10 +49,37 @@ class AtaxxGame {
     AtaxxMove move1 = new AtaxxMove(AtaxxMove.Type.EXPAND, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(1, 1));
     AtaxxMove move2 = new AtaxxMove(AtaxxMove.Type.JUMP, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(2, 2));
 
-    this.board.makeMove(move1);
+    makeMove(move1);
     System.out.println(this.board);
-    this.board.makeMove(move2);
+
+    makeMove(move2);
     System.out.println(this.board);
+
+    undoLastMove();
+    System.out.println(this.board);
+  }
+
+  /**
+   * Make a move in Ataxx game.
+   * 
+   * @param move
+   *          The move to make
+   * @throws AtaxxException
+   *           When something goes wrong
+   */
+  private void makeMove(final AtaxxMove move) throws AtaxxException {
+    this.board.makeMove(move);
+    List<Coordinate> flipped = this.board.flipPiecesAroundToSquare(move);
+    this.moveStack.push(new AtaxxUndoMove(move, flipped));
+  }
+
+  /**
+   * Undo the effects of the last move made.
+   */
+  private void undoLastMove() {
+    AtaxxUndoMove move = this.moveStack.pop();
+    this.board.undoMove(move.getMove());
+    this.board.unflip(move.getFlipped());
   }
 
   /**
@@ -87,7 +118,14 @@ class AtaxxGame {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    builder.append("AtaxxGame [board=\n").append(this.board).append("toMove=").append(this.toMove).append("\ngetAvailableMoves()=").append(getAvailableMoves()).append("]");
+    builder.append("AtaxxGame [board=\n");
+    builder.append(this.board);
+    builder.append("toMove=");
+    builder.append(this.toMove);
+    builder.append("\ngetAvailableMoves()=");
+    builder.append(getAvailableMoves());
+    builder.append("\nUndo move list=" + this.moveStack);
+    builder.append("\n]");
     return builder.toString();
   }
 

@@ -107,8 +107,6 @@ public class AtaxxBoard {
       default:
         break;
     }
-    flipPiecesAroundToSquare(move);
-
   }
 
   /**
@@ -118,7 +116,7 @@ public class AtaxxBoard {
    *          the move that results in the flipping.
    * @return a List of Coordinates of squares that had flipped pieces.
    */
-  private List<Coordinate> flipPiecesAroundToSquare(final AtaxxMove move) {
+  final List<Coordinate> flipPiecesAroundToSquare(final AtaxxMove move) {
     AtaxxColor oppositeColor = move.getColor().getOpposite();
     Coordinate s = move.getTo();
 
@@ -351,4 +349,35 @@ public class AtaxxBoard {
     return gen.getAvailableMoves(toMove);
   }
 
+  /**
+   * Undo the effects a move.
+   * 
+   * @param move
+   *          the move
+   */
+  final void undoMove(final AtaxxMove move) {
+    switch (move.getType()) {
+      case EXPAND:
+        this.board[move.getTo().getX()][move.getTo().getY()] = null;
+        break;
+      case JUMP:
+        this.board[move.getTo().getX()][move.getTo().getY()] = null;
+        this.board[move.getFrom().getX()][move.getFrom().getY()] = new AtaxxPiece(move.getColor());
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Unflip the pieces in the list.
+   * 
+   * @param flipped
+   *          Coordinates of pieces to flip
+   */
+  final void unflip(final List<Coordinate> flipped) {
+    for (Coordinate c : flipped) {
+      this.board[c.getX()][c.getY()].flip();
+    }
+  }
 }
