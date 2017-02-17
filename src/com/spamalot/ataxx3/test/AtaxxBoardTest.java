@@ -4,9 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import com.spamalot.ataxx3.AtaxxBoard;
-import com.spamalot.ataxx3.AtaxxColor;
-import com.spamalot.ataxx3.AtaxxException;
-import com.spamalot.ataxx3.Coordinate;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -56,11 +53,11 @@ public class AtaxxBoardTest {
     assertEquals(5, this.rectangleBoard.getHeight());
   }
 
-  @Test(expected = com.spamalot.ataxx3.AtaxxException.class)
-  public final void testSetPiece() throws AtaxxException {
-    this.squareBoard.setPiece(AtaxxColor.WHITE, new Coordinate(0, 0));
-    this.squareBoard.setPiece(AtaxxColor.BLACK, new Coordinate(0, 0));
-  }
+  // @Test(expected = com.spamalot.ataxx3.AtaxxException.class)
+  // public final void testSetPiece() throws AtaxxException {
+  // this.squareBoard.(AtaxxColor.WHITE, new Coordinate(0, 0));
+  // this.squareBoard.setPiece(AtaxxColor.BLACK, new Coordinate(0, 0));
+  // }
 
   @Test
   public final void testMakeMove() {
