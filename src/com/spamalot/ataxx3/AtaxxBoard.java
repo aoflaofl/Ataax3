@@ -21,7 +21,7 @@ public class AtaxxBoard {
   private int width;
 
   /**
-   * Construct a square Ataxx board of given size.
+   * Construct a square board of given size.
    * 
    * @param size
    *          size of a side of the square
@@ -31,7 +31,7 @@ public class AtaxxBoard {
   }
 
   /**
-   * Construct an Ataxx board of given width and height.
+   * Construct a board of given width and height.
    * 
    * @param w
    *          width of the board
@@ -41,46 +41,47 @@ public class AtaxxBoard {
   public AtaxxBoard(final int w, final int h) {
     this.setWidth(w);
     this.setHeight(h);
-    this.setBoard(new AtaxxPiece[w][h]);
+    setBoard(new AtaxxPiece[w][h]);
   }
 
   /**
    * Flip the pieces at the coordinates in the list.
    * 
-   * @param flipped
+   * @param flipCoords
    *          List of Coordinates of pieces to flip
    */
-  final void flipPieces(final List<Coordinate> flipped) {
-    for (Coordinate c : flipped) {
-      this.getBoard()[c.getX()][c.getY()].flip();
+  final void flipPiecesAtCoordinates(final List<Coordinate> flipCoords) {
+    for (Coordinate c : flipCoords) {
+      getPieceAtCoord(c).flip();
     }
   }
 
   /**
    * Flip the pieces around the square that don't match passed in color.
    * 
-   * @param c
+   * @param coordinate
    *          Coordinate of square around which to flip
-   * @param col
+   * @param color
    *          Color to flip to
    * @return a List of Coordinates of squares that had flipped pieces.
    */
-  final List<Coordinate> flipPiecesAroundSquare(final Coordinate c, final AtaxxColor col) {
-    AtaxxColor oppositeColor = col.getOpposite();
+  final List<Coordinate> flipPiecesAroundSquare(final Coordinate coordinate, final AtaxxColor color) {
+    AtaxxColor oppositeColor = color.getOpposite();
 
-    int minX = Math.max(c.getX() - 1, 0);
-    int maxX = Math.min(c.getX() + 1, this.width);
-    int minY = Math.max(c.getY() - 1, 0);
-    int maxY = Math.min(c.getY() + 1, this.height);
+    int minX = Math.max(coordinate.getX() - 1, 0);
+    int maxX = Math.min(coordinate.getX() + 1, this.width);
+    int minY = Math.max(coordinate.getY() - 1, 0);
+    int maxY = Math.min(coordinate.getY() + 1, this.height);
 
     List<Coordinate> ret = new ArrayList<>();
 
     for (int x = minX; x <= maxX; x++) {
       for (int y = minY; y <= maxY; y++) {
 
-        if (this.getBoard()[x][y] != null && this.getBoard()[x][y].getColor() == oppositeColor) {
-          System.out.println(x + ", " + y);
-          this.getBoard()[x][y].flip();
+        AtaxxPiece p = getPieceAt(x, y);
+
+        if (p != null && p.getColor() == oppositeColor) {
+          p.flip();
           Coordinate co = new Coordinate(x, y);
           ret.add(co);
         }
@@ -92,7 +93,7 @@ public class AtaxxBoard {
   /**
    * @return the board
    */
-  public AtaxxPiece[][] getBoard() {
+  private AtaxxPiece[][] getBoard() {
     return this.board;
   }
 
@@ -106,14 +107,28 @@ public class AtaxxBoard {
   }
 
   /**
-   * Get a Piece.
+   * Get a Piece at a Coordinate.
    * 
    * @param c
    *          Coordinate of piece to return.
    * @return Ataxx Piece.
    */
   final AtaxxPiece getPieceAtCoord(final Coordinate c) {
-    return this.getBoard()[c.getX()][c.getY()];
+    return getPieceAt(c.getX(), c.getY());
+  }
+
+  /**
+   * Get a Piece at a location.
+   * 
+   * @param x
+   *          The X ordinate
+   * @param y
+   *          The Y ordinate
+   * 
+   * @return Ataxx Piece.
+   */
+  final AtaxxPiece getPieceAt(final int x, final int y) {
+    return this.getBoard()[x][y];
   }
 
   /**
@@ -154,7 +169,7 @@ public class AtaxxBoard {
    * @param b
    *          the board to set
    */
-  public void setBoard(final AtaxxPiece[][] b) {
+  private void setBoard(final AtaxxPiece[][] b) {
     this.board = b;
   }
 
@@ -185,8 +200,8 @@ public class AtaxxBoard {
    *          the Square
    * @return true if square is empty.
    */
-  final boolean squareIsEmpty(final Coordinate sq) {
-    return this.getBoard()[sq.getX()][sq.getY()] == null;
+  public final boolean squareIsEmpty(final Coordinate sq) {
+    return getPieceAtCoord(sq) == null;
   }
 
   @Override
@@ -194,7 +209,7 @@ public class AtaxxBoard {
     StringBuilder s = new StringBuilder();
     for (int i = 0; i < this.height; i++) {
       for (int j = 0; j < this.width; j++) {
-        AtaxxPiece p = this.getBoard()[i][j];
+        AtaxxPiece p = getPieceAt(i, j);
         if (p == null) {
           s.append(".");
         } else {
@@ -206,6 +221,5 @@ public class AtaxxBoard {
 
     return s.toString();
   }
-
 
 }

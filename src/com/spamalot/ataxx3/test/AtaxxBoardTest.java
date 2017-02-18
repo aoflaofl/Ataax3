@@ -2,8 +2,10 @@ package com.spamalot.ataxx3.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import com.spamalot.ataxx3.AtaxxBoard;
+import com.spamalot.ataxx3.Coordinate;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,9 +31,9 @@ public class AtaxxBoardTest {
 
   @Test
   public final void testAtaxxBoardInt() {
+    assertNotNull(this.squareBoard);
     assertEquals(1, this.squareBoard.getHeight());
     assertEquals(1, this.squareBoard.getWidth());
-    assertNotNull(this.squareBoard);
   }
 
   @Test
@@ -60,8 +62,8 @@ public class AtaxxBoardTest {
   // }
 
   @Test
-  public final void testMakeMove() {
-
+  public final void testSquareIsEmpty() {
+    assertTrue(squareBoard.squareIsEmpty(new Coordinate(0, 0)));
   }
 
 }

@@ -53,7 +53,7 @@ class AtaxxMoveGenerator {
 
     for (int x = minX; x <= maxX; x++) {
       for (int y = minY; y <= maxY; y++) {
-        if (this.boardObj.getBoard()[x][y] == null) {
+        if (this.boardObj.getPieceAt(x, y) == null) {
           Coordinate toCoord = new Coordinate(x, y);
           if (!this.seen.contains(toCoord)) {
             result.add(new AtaxxMove(AtaxxMove.Type.EXPAND, ataxxPiece.getColor(), fromCoord, toCoord));
@@ -78,9 +78,9 @@ class AtaxxMoveGenerator {
     this.seen = new HashSet<>();
     for (int i = 0; i < this.boardObj.getHeight(); i++) {
       for (int j = 0; j < this.boardObj.getWidth(); j++) {
-        if (this.boardObj.getBoard()[i][j] != null && this.boardObj.getBoard()[i][j].getColor().equals(toMove)) {
+        if (this.boardObj.getPieceAt(i, j) != null && this.boardObj.getPieceAt(i, j).getColor().equals(toMove)) {
 
-          result.addAll(expandMoves(this.boardObj.getBoard()[i][j], i, j));
+          result.addAll(expandMoves(this.boardObj.getPieceAt(i, j), i, j));
 
         }
       }

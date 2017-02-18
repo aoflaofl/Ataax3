@@ -116,7 +116,7 @@ class AtaxxGame {
   private void undoLastMove() {
     AtaxxUndoMove move = this.moveStack.pop();
     this.undoMove(move.getMove());
-    this.board.flipPieces(move.getFlipped());
+    this.board.flipPiecesAtCoordinates(move.getFlipped());
   }
 
   /**
@@ -128,11 +128,11 @@ class AtaxxGame {
   private void undoMove(final AtaxxMove move) {
     switch (move.getType()) {
       case EXPAND:
-        this.board.getBoard()[move.getTo().getX()][move.getTo().getY()] = null;
+        this.board.putPieceAtCoord(null, move.getTo());
         break;
       case JUMP:
-        this.board.getBoard()[move.getTo().getX()][move.getTo().getY()] = null;
-        this.board.getBoard()[move.getFrom().getX()][move.getFrom().getY()] = new AtaxxPiece(move.getColor());
+        this.board.putPieceAtCoord(null, move.getTo());
+        this.board.putPieceAtCoord(new AtaxxPiece(move.getColor()), move.getFrom());
         break;
       default:
         break;
