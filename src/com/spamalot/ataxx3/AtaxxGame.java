@@ -17,7 +17,7 @@ class AtaxxGame {
   private AtaxxBoard board;
 
   /** Which color is moving. White moves first. */
-  private AtaxxColor toMove = AtaxxColor.WHITE;
+  private AtaxxColor colorToMove = AtaxxColor.WHITE;
 
   /** Stack for move list. */
   private Stack<AtaxxUndoMove> moveStack = new Stack<>();
@@ -77,6 +77,22 @@ class AtaxxGame {
   }
 
   /**
+   * Put the initial pieces for a standard game of Ataxx.
+   * 
+   * TODO: Possibly add barrier squares.
+   * 
+   * @throws AtaxxException
+   *           when there is some Ataxx related problem.
+   */
+  private void initBoard() throws AtaxxException {
+    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), new Coordinate(0, 0));
+    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), new Coordinate(this.board.getHeight() - 1, this.board.getWidth() - 1));
+
+    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(0, this.board.getWidth() - 1));
+    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(this.board.getHeight() - 1, 0));
+  }
+
+  /**
    * Make a move in Ataxx game.
    * 
    * @param move
@@ -85,28 +101,25 @@ class AtaxxGame {
    *           When something goes wrong
    */
   private void makeMove(final AtaxxMove move) throws AtaxxException {
-    // TODO: Check for legality
     if (!isLegal(move)) {
       System.out.println("Problem with move.");
     }
+
+    AtaxxPiece piece = null;
     switch (move.getType()) {
       case EXPAND:
-        dropPiece(new AtaxxPiece(move.getColor()), move.getTo());
-        // this.board[move.getTo().getX()][move.getTo().getY()] = new
-        // AtaxxPiece(move.getColor());
+        piece = new AtaxxPiece(move.getColor());
         break;
       case JUMP:
-        AtaxxPiece p = pickupPiece(move.getFrom());
-        dropPiece(p, move.getTo());
-
-        // this.board[move.getTo().getX()][move.getTo().getY()] =
-        // this.board[move.getFrom().getX()][move.getFrom().getY()];
-        // this.board[move.getFrom().getX()][move.getFrom().getY()] = null;
+        piece = pickupPiece(move.getFrom());
         break;
       default:
         break;
     }
+    dropPiece(piece, move.getTo());
+
     List<Coordinate> flipped = this.board.flipPiecesAroundSquare(move.getTo(), move.getColor());
+
     this.moveStack.push(new AtaxxUndoMove(move, flipped));
   }
 
@@ -126,33 +139,10 @@ class AtaxxGame {
    *          the move
    */
   private void undoMove(final AtaxxMove move) {
-    switch (move.getType()) {
-      case EXPAND:
-        this.board.putPieceAtCoord(null, move.getTo());
-        break;
-      case JUMP:
-        this.board.putPieceAtCoord(null, move.getTo());
-        this.board.putPieceAtCoord(new AtaxxPiece(move.getColor()), move.getFrom());
-        break;
-      default:
-        break;
+    this.board.putPieceAtCoord(null, move.getTo());
+    if (move.getType() == AtaxxMove.Type.JUMP) {
+      this.board.putPieceAtCoord(new AtaxxPiece(move.getColor()), move.getFrom());
     }
-  }
-
-  /**
-   * Put the initial pieces for a standard game of Ataxx.
-   * 
-   * TODO: Possibly add barrier squares.
-   * 
-   * @throws AtaxxException
-   *           when there is some Ataxx related problem.
-   */
-  private void initBoard() throws AtaxxException {
-    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), new Coordinate(0, 0));
-    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), new Coordinate(this.board.getHeight() - 1, this.board.getWidth() - 1));
-
-    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(0, this.board.getWidth() - 1));
-    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(this.board.getHeight() - 1, 0));
   }
 
   /**
@@ -161,7 +151,7 @@ class AtaxxGame {
    * @return a list of available moves.
    */
   public List<AtaxxMove> getAvailableMoves() {
-    return this.getAvailableMoves(this.toMove);
+    return this.getAvailableMoves(this.colorToMove);
   }
 
   /**
@@ -174,25 +164,6 @@ class AtaxxGame {
   private List<AtaxxMove> getAvailableMoves(final AtaxxColor toMv) {
     AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this.board);
     return gen.getAvailableMoves(toMv);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("AtaxxGame [board=\n");
-    builder.append(this.board);
-    builder.append("toMove=");
-    builder.append(this.toMove);
-    builder.append("\ngetAvailableMoves()=");
-    builder.append(getAvailableMoves());
-    builder.append("\nUndo move list=" + this.moveStack);
-    builder.append("\n]");
-    return builder.toString();
   }
 
   /**
@@ -243,7 +214,9 @@ class AtaxxGame {
    * @return true if the move is legal to make on this board.
    */
   private boolean isLegal(final AtaxxMove move) {
-    return isLegalColor(move) && isOnBoard(move) && toSquareIsEmpty(move) && pieceInFromSquareMatchesColor(move);
+    boolean ret = isLegalColor(move) && isOnBoard(move) && toSquareIsEmpty(move) && pieceInFromSquareMatchesColor(move) && checkExpandDistance(move);
+
+    return ret;
   }
 
   /**
@@ -284,6 +257,50 @@ class AtaxxGame {
    */
   private boolean toSquareIsEmpty(final AtaxxMove move) {
     return this.board.squareIsEmpty(move.getTo());
+  }
+
+  /**
+   * Check square distance that this is a legal expand move.
+   * 
+   * @param move
+   *          the move to check
+   * @return true if the to square can be expanded to from the from square.
+   */
+  private static boolean checkExpandDistance(final AtaxxMove move) {
+    if (move.getType() == AtaxxMove.Type.EXPAND) {
+      if (Math.abs(move.getTo().getX() - move.getFrom().getX()) > 1) {
+        return false;
+      }
+
+      if (Math.abs(move.getTo().getY() - move.getFrom().getY()) > 1) {
+        return false;
+      }
+
+      if (move.getTo().equals(move.getFrom())) {
+        return false;
+      }
+    }
+    return true;
+
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("AtaxxGame [board=\n");
+    builder.append(this.board);
+    builder.append("toMove=");
+    builder.append(this.colorToMove);
+    builder.append("\ngetAvailableMoves()=");
+    builder.append(getAvailableMoves());
+    builder.append("\nUndo move list=" + this.moveStack);
+    builder.append("\n]");
+    return builder.toString();
   }
 
 }

@@ -47,6 +47,6 @@ public class AtaxxPiece {
 
   @Override
   public final String toString() {
-    return this.color.getRepresentation();
+    return this.color.toString();
   }
 }

@@ -38,7 +38,8 @@ public enum AtaxxColor {
    * 
    * @return the representation
    */
-  String getRepresentation() {
+  @Override
+  public String toString() {
     return this.representation;
   }
 
