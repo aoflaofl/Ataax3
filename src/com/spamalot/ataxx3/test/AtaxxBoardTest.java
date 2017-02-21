@@ -38,9 +38,9 @@ public class AtaxxBoardTest {
 
   @Test
   public final void testAtaxxBoardIntInt() {
+    assertNotNull(this.rectangleBoard);
     assertEquals(4, this.rectangleBoard.getWidth());
     assertEquals(5, this.rectangleBoard.getHeight());
-    assertNotNull(this.rectangleBoard);
   }
 
   @Test
@@ -63,7 +63,7 @@ public class AtaxxBoardTest {
 
   @Test
   public final void testSquareIsEmpty() {
-    assertTrue(squareBoard.squareIsEmpty(new Coordinate(0, 0)));
+    assertTrue(this.squareBoard.squareIsEmpty(new Coordinate(0, 0)));
   }
 
 }

@@ -9,7 +9,7 @@ import java.util.Stack;
  * @author gej
  *
  */
-class AtaxxGame {
+public class AtaxxGame {
   /** Default Board Size Constant. */
   private static final int DEFAULT_BOARD_SIZE = 7;
 
@@ -114,7 +114,7 @@ class AtaxxGame {
         piece = pickupPiece(move.getFrom());
         break;
       default:
-        break;
+        throw new AtaxxException(move, "Wrong Move Type.");
     }
     dropPiece(piece, move.getTo());
 
@@ -169,8 +169,6 @@ class AtaxxGame {
   /**
    * Pick up a piece from the board.
    * 
-   * TODO: Exception if square empty.
-   * 
    * @param c
    *          Coordinate to pick up piece at
    * @return the Piece.
@@ -188,8 +186,6 @@ class AtaxxGame {
 
   /**
    * Drop a piece on the board.
-   * 
-   * TODO: Exception if square already occupied.
    * 
    * @param p
    *          the Piece
@@ -260,28 +256,36 @@ class AtaxxGame {
   }
 
   /**
-   * Check square distance that this is a legal expand move.
+   * Check distance between from square and to square that this is a legal
+   * expand move.
    * 
    * @param move
    *          the move to check
    * @return true if the to square can be expanded to from the from square.
    */
   private static boolean checkExpandDistance(final AtaxxMove move) {
+    int xDiff = Math.abs(move.getTo().getX() - move.getFrom().getX());
+    int yDiff = Math.abs(move.getTo().getY() - move.getFrom().getY());
+
+    // If it's the same square, obviously not right
+    if (xDiff == 0 && yDiff == 0) {
+      return false;
+    }
+
     if (move.getType() == AtaxxMove.Type.EXPAND) {
-      if (Math.abs(move.getTo().getX() - move.getFrom().getX()) > 1) {
+      if (xDiff > 1 || yDiff > 1) {
         return false;
       }
-
-      if (Math.abs(move.getTo().getY() - move.getFrom().getY()) > 1) {
+    } else if (move.getType() == AtaxxMove.Type.JUMP) {
+      if (xDiff == 2 && yDiff > 2) {
         return false;
       }
-
-      if (move.getTo().equals(move.getFrom())) {
+      if (yDiff == 2 && xDiff > 2) {
         return false;
       }
     }
-    return true;
 
+    return true;
   }
 
   /*
