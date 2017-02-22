@@ -1,9 +1,11 @@
-/**
- * 
- */
 package com.spamalot.ataxx3.test;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import com.spamalot.ataxx3.AtaxxGame;
+import com.spamalot.ataxx3.AtaxxMove;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,17 +13,24 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.List;
+
 /**
  * @author gej
  *
  */
 public class AtaxxGameTest {
+  /**
+   * Test variable.
+   */
+  private AtaxxGame ataxxGame;
 
   /**
    * @throws java.lang.Exception
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
+
   }
 
   /**
@@ -36,6 +45,8 @@ public class AtaxxGameTest {
    */
   @Before
   public void setUp() throws Exception {
+
+    this.ataxxGame = new AtaxxGame();
   }
 
   /**
@@ -50,7 +61,7 @@ public class AtaxxGameTest {
    */
   @Test
   public final void testAtaxxGame() {
-    fail("Not yet implemented"); // TODO
+    assertNotNull(this.ataxxGame);
   }
 
   /**
@@ -58,15 +69,9 @@ public class AtaxxGameTest {
    */
   @Test
   public final void testGetAvailableMoves() {
-    fail("Not yet implemented"); // TODO
-  }
-
-  /**
-   * Test method for {@link com.spamalot.ataxx3.AtaxxGame#toString()}.
-   */
-  @Test
-  public final void testToString() {
-    fail("Not yet implemented"); // TODO
+    List<AtaxxMove> a = this.ataxxGame.getAvailableMoves();
+    assertNotNull(a);
+    assertTrue(a.size() > 0);
   }
 
 }

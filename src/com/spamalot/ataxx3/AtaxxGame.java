@@ -28,7 +28,7 @@ public class AtaxxGame {
    * @throws AtaxxException
    *           when there is some Ataxx related problem.
    */
-  AtaxxGame() throws AtaxxException {
+  public AtaxxGame() throws AtaxxException {
     this(DEFAULT_BOARD_SIZE);
   }
 
@@ -307,4 +307,17 @@ public class AtaxxGame {
     return builder.toString();
   }
 
+  /**
+   * Allow compare of color. For testing purposes.
+   * 
+   * @param coord
+   *          Coordinate of piece to check
+   * @param clr
+   *          Color to compare to
+   * @return true if they match.
+   */
+  public final boolean compareColorOfPieceAt(final Coordinate coord, final AtaxxColor clr) {
+    AtaxxPiece p = this.board.getPieceAtCoord(coord);
+    return p.getColor() == clr;
+  }
 }

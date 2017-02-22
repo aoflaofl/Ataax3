@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class AtaxxMove {
+public class AtaxxMove {
   /**
    * The two types of an Ataxx move.
    * 
