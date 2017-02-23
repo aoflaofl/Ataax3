@@ -13,7 +13,7 @@ public class AtaxxMove {
    * @author gej
    *
    */
-  enum Type {
+  public enum Type {
     /** Grow to an adjacent (orthogonal and diagonal). */
     EXPAND,
     /** Jump to a square two squares away (Knight moves count). */
@@ -61,7 +61,7 @@ public class AtaxxMove {
    * @param toCoord
    *          the to square
    */
-  AtaxxMove(final Type moveType, final AtaxxColor pieceColor, final Coordinate fromCoord, final Coordinate toCoord) {
+  public AtaxxMove(final Type moveType, final AtaxxColor pieceColor, final Coordinate fromCoord, final Coordinate toCoord) {
     this.type = moveType;
     this.color = pieceColor;
     this.from = fromCoord;

@@ -42,38 +42,9 @@ public class AtaxxGame {
    */
   private AtaxxGame(final int size) throws AtaxxException {
     this.board = new AtaxxBoard(size);
-    System.out.println("a" + this.board);
     initBoard();
-    System.out.println("b" + this.board);
 
-    AtaxxPiece x = pickupPiece(new Coordinate(0, 0));
-    System.out.println("c" + this.board);
-    dropPiece(x, new Coordinate(0, 0));
     System.out.println(this.board);
-
-    AtaxxMove move1 = new AtaxxMove(AtaxxMove.Type.EXPAND, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(1, 1));
-    AtaxxMove move2 = new AtaxxMove(AtaxxMove.Type.JUMP, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(2, 2));
-
-    makeMove(move1);
-    System.out.println(this.board);
-
-    makeMove(move2);
-    System.out.println(this.board);
-
-    undoLastMove();
-    System.out.println(this.board);
-
-    makeMove(move2);
-    System.out.println(this.board);
-
-    AtaxxMove move3 = new AtaxxMove(AtaxxMove.Type.EXPAND, AtaxxColor.BLACK, new Coordinate(0, 6), new Coordinate(1, 5));
-    makeMove(move3);
-    System.out.println(this.board);
-
-    AtaxxMove move4 = new AtaxxMove(AtaxxMove.Type.JUMP, AtaxxColor.BLACK, new Coordinate(1, 5), new Coordinate(1, 3));
-    makeMove(move4);
-    System.out.println(this.board);
-    undoLastMove();
   }
 
   /**
@@ -100,7 +71,7 @@ public class AtaxxGame {
    * @throws AtaxxException
    *           When something goes wrong
    */
-  private void makeMove(final AtaxxMove move) throws AtaxxException {
+  public void makeMove(final AtaxxMove move) throws AtaxxException {
     if (!isLegal(move)) {
       System.out.println("Problem with move.");
     }
@@ -126,7 +97,7 @@ public class AtaxxGame {
   /**
    * Undo the effects of the last move made.
    */
-  private void undoLastMove() {
+  public void undoLastMove() {
     AtaxxUndoMove move = this.moveStack.pop();
     this.undoMove(move.getMove());
     this.board.flipPiecesAtCoordinates(move.getFlipped());
@@ -175,7 +146,7 @@ public class AtaxxGame {
    * @throws AtaxxException
    *           if no piece in square
    */
-  private AtaxxPiece pickupPiece(final Coordinate c) throws AtaxxException {
+  public AtaxxPiece pickupPiece(final Coordinate c) throws AtaxxException {
     AtaxxPiece p = this.board.getPieceAtCoord(c);
     if (p == null) {
       throw new AtaxxException("No piece in square.");
@@ -194,7 +165,7 @@ public class AtaxxGame {
    * @throws AtaxxException
    *           if square is not empty
    */
-  private void dropPiece(final AtaxxPiece p, final Coordinate c) throws AtaxxException {
+  public void dropPiece(final AtaxxPiece p, final Coordinate c) throws AtaxxException {
     if (this.board.getPieceAtCoord(c) == null) {
       this.board.putPieceAtCoord(p, c);
     } else {
@@ -308,16 +279,13 @@ public class AtaxxGame {
   }
 
   /**
-   * Allow compare of color. For testing purposes.
+   * Allow compare of color.
    * 
    * @param coord
    *          Coordinate of piece to check
-   * @param clr
-   *          Color to compare to
    * @return true if they match.
    */
-  public final boolean compareColorOfPieceAt(final Coordinate coord, final AtaxxColor clr) {
-    AtaxxPiece p = this.board.getPieceAtCoord(coord);
-    return p.getColor() == clr;
+  public final AtaxxColor getColorOfPieceAt(final Coordinate coord) {
+    return this.board.getPieceAtCoord(coord).getColor();
   }
 }

@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class AtaxxException extends Exception {
+public class AtaxxException extends Exception {
 
   /** System generated serial ID. */
   private static final long serialVersionUID = -311227822482481911L;
