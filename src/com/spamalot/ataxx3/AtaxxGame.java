@@ -22,6 +22,14 @@ public class AtaxxGame {
   /** Stack for move list. */
   private Stack<AtaxxUndoMove> moveStack = new Stack<>();
 
+  public final Coordinate upperLeft;
+  public final Coordinate upperRight;
+  public final Coordinate lowerLeft;
+  public final Coordinate lowerRight;
+
+  public final int width;
+  public final int height;
+
   /**
    * Construct the Ataxx game.
    * 
@@ -43,6 +51,14 @@ public class AtaxxGame {
   private AtaxxGame(final int size) throws AtaxxException {
     this.board = new AtaxxBoard(size);
     initBoard();
+
+    this.upperLeft = new Coordinate(0, 0);
+    this.upperRight = new Coordinate(0, size - 1);
+    this.lowerLeft = new Coordinate(size - 1, 0);
+    this.lowerRight = new Coordinate(size - 1, size - 1);
+
+    this.height = size;
+    this.width = size;
 
     System.out.println(this.board);
   }
@@ -133,7 +149,7 @@ public class AtaxxGame {
    * @return a list of moves.
    */
   private List<AtaxxMove> getAvailableMoves(final AtaxxColor toMv) {
-    AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this.board);
+    AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this);
     return gen.getAvailableMoves(toMv);
   }
 
@@ -286,6 +302,24 @@ public class AtaxxGame {
    * @return true if they match.
    */
   public final AtaxxColor getColorOfPieceAt(final Coordinate coord) {
-    return this.board.getPieceAtCoord(coord).getColor();
+    AtaxxPiece p = this.board.getPieceAtCoord(coord);
+    if (p == null) {
+      return null;
+    }
+    return p.getColor();
+  }
+
+  /**
+   * @return the width
+   */
+  public int getWidth() {
+    return this.width;
+  }
+
+  /**
+   * @return the height
+   */
+  public int getHeight() {
+    return this.height;
   }
 }

@@ -2,7 +2,9 @@ package com.spamalot.ataxx3.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import com.spamalot.ataxx3.AtaxxColor;
 import com.spamalot.ataxx3.AtaxxException;
@@ -105,28 +107,37 @@ public class AtaxxGameTest {
 
   @Test
   public final void testMoving() {
-    AtaxxMove move1 = new AtaxxMove(AtaxxMove.Type.EXPAND, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(1, 1));
-    AtaxxMove move2 = new AtaxxMove(AtaxxMove.Type.JUMP, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(2, 2));
-
     try {
-      this.ataxxGame.makeMove(move1);
+      AtaxxMove move1 = new AtaxxMove(AtaxxMove.Type.EXPAND, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(1, 1));
+      AtaxxMove move2 = new AtaxxMove(AtaxxMove.Type.JUMP, AtaxxColor.WHITE, new Coordinate(0, 0), new Coordinate(2, 2));
 
+      this.ataxxGame.makeMove(move1);
       this.ataxxGame.makeMove(move2);
 
+      assertNull(this.ataxxGame.getColorOfPieceAt(new Coordinate(0, 0)));
+      assertEquals(this.ataxxGame.getColorOfPieceAt(new Coordinate(1, 1)), AtaxxColor.WHITE);
+      assertEquals(this.ataxxGame.getColorOfPieceAt(new Coordinate(2, 2)), AtaxxColor.WHITE);
+
       this.ataxxGame.undoLastMove();
+
+      assertEquals(this.ataxxGame.getColorOfPieceAt(new Coordinate(0, 0)), AtaxxColor.WHITE);
 
       this.ataxxGame.makeMove(move2);
 
       AtaxxMove move3 = new AtaxxMove(AtaxxMove.Type.EXPAND, AtaxxColor.BLACK, new Coordinate(0, 6), new Coordinate(1, 5));
-      this.ataxxGame.makeMove(move3);
-
       AtaxxMove move4 = new AtaxxMove(AtaxxMove.Type.JUMP, AtaxxColor.BLACK, new Coordinate(1, 5), new Coordinate(1, 3));
+
+      this.ataxxGame.makeMove(move3);
       this.ataxxGame.makeMove(move4);
 
+      assertEquals(this.ataxxGame.getColorOfPieceAt(new Coordinate(2, 2)), AtaxxColor.BLACK);
+
       this.ataxxGame.undoLastMove();
+
+      assertEquals(this.ataxxGame.getColorOfPieceAt(new Coordinate(2, 2)), AtaxxColor.WHITE);
+
     } catch (AtaxxException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      fail("Shouldn't be an exception.");
     }
   }
 }
