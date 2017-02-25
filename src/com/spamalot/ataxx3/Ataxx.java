@@ -1,5 +1,7 @@
 package com.spamalot.ataxx3;
 
+import java.util.Scanner;
+
 /**
  * Play the game of Ataxx.
  * <p>
@@ -46,9 +48,19 @@ public final class Ataxx {
    *           when there is some Ataxx related problem.
    */
   public static void main(final String[] args) throws AtaxxException {
+    System.out.println("Ataxx Game\nGene Johannsen");
+
     AtaxxGame ataxxGame = new AtaxxGame();
     System.out.println(ataxxGame.toString());
 
+    Scanner scan = new Scanner(System.in);
+    String text;
+    do {
+
+      text = scan.nextLine();
+
+    } while (!text.equals("end"));
+    scan.close();
   }
 
 }

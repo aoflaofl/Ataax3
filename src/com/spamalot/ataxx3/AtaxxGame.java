@@ -60,7 +60,7 @@ public class AtaxxGame {
     this.height = size;
     this.width = size;
 
-    System.out.println(this.board);
+    System.out.println(this);
   }
 
   /**
@@ -218,7 +218,7 @@ public class AtaxxGame {
    *          the move to check
    * @return true if the squares involved are on the board.
    */
-  private boolean isOnBoard(final AtaxxMove move) {
+  final boolean isOnBoard(final AtaxxMove move) {
     return (this.board.isOnBoard(move.getFrom()) && this.board.isOnBoard(move.getTo()));
   }
 
@@ -227,10 +227,15 @@ public class AtaxxGame {
    * 
    * @param move
    *          the move
-   * @return true if the from piece has the correct color for the move.
+   * @return true if the from piece exists and has the correct color for the
+   *         move.
    */
   private boolean pieceInFromSquareMatchesColor(final AtaxxMove move) {
-    return this.board.getPieceAtCoord(move.getFrom()).getColor() == move.getColor();
+    AtaxxPiece p = this.board.getPieceAtCoord(move.getFrom());
+    if (p == null) {
+      return false;
+    }
+    return p.getColor() == move.getColor();
   }
 
   /**

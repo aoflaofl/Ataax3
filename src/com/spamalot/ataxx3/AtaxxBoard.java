@@ -69,9 +69,9 @@ public class AtaxxBoard {
     AtaxxColor oppositeColor = color.getOpposite();
 
     int minX = Math.max(coordinate.getX() - 1, 0);
-    int maxX = Math.min(coordinate.getX() + 1, this.width);
+    int maxX = Math.min(coordinate.getX() + 1, this.width - 1);
     int minY = Math.max(coordinate.getY() - 1, 0);
-    int maxY = Math.min(coordinate.getY() + 1, this.height);
+    int maxY = Math.min(coordinate.getY() + 1, this.height - 1);
 
     List<Coordinate> ret = new ArrayList<>();
 

@@ -82,6 +82,16 @@ public class AtaxxGameTest {
     List<AtaxxMove> a = this.ataxxGame.getAvailableMoves();
     assertNotNull(a);
     assertTrue(a.size() > 0);
+
+    for (AtaxxMove m : a) {
+      System.out.println(m);
+      try {
+        this.ataxxGame.makeMove(m);
+        this.ataxxGame.undoLastMove();
+      } catch (AtaxxException e) {
+        fail("Shouldn't get here\n" + e);
+      }
+    }
   }
 
   @Test
