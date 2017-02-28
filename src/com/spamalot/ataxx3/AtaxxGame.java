@@ -27,8 +27,8 @@ public class AtaxxGame {
   public final Coordinate lowerLeft;
   public final Coordinate lowerRight;
 
-  public final int width;
-  public final int height;
+  private final int width;
+  private final int height;
 
   /**
    * Construct the Ataxx game.
@@ -326,5 +326,9 @@ public class AtaxxGame {
    */
   public int getHeight() {
     return this.height;
+  }
+
+  public final AtaxxScore getScore() {
+    return this.board.getScore();
   }
 }

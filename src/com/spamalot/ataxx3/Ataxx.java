@@ -1,5 +1,6 @@
 package com.spamalot.ataxx3;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -53,14 +54,29 @@ public final class Ataxx {
     AtaxxGame ataxxGame = new AtaxxGame();
     System.out.println(ataxxGame.toString());
 
-    Scanner scan = new Scanner(System.in);
-    String text;
-    do {
+    try (Scanner scan = new Scanner(System.in)) {
+      String text;
+      do {
 
-      text = scan.nextLine();
+        text = scan.nextLine();
 
-    } while (!text.equals("end"));
-    scan.close();
+        switch (text) {
+          case "moves":
+            List<AtaxxMove> moves = ataxxGame.getAvailableMoves();
+            for (AtaxxMove move : moves) {
+              System.out.println(move);
+            }
+            break;
+          case "board":
+            System.out.println(ataxxGame.getScore());
+            break;
+          default:
+            break;
+        }
+
+      } while (!text.equals("end"));
+    }
+
   }
 
 }

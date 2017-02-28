@@ -123,7 +123,7 @@ public class AtaxxMove {
     builder.append(this.from);
     builder.append(", to=");
     builder.append(this.to);
-    builder.append("]\n");
+    builder.append("]");
     return builder.toString();
   }
 }

@@ -204,6 +204,30 @@ public class AtaxxBoard {
     return getPieceAtCoord(sq) == null;
   }
 
+  /**
+   * Get the current score of the game.
+   * 
+   * @return the score object.
+   */
+  public final AtaxxScore getScore() {
+    int black = 0;
+    int white = 0;
+
+    for (int i = 0; i < getHeight(); i++) {
+      for (int j = 0; j < getWidth(); j++) {
+        AtaxxPiece p = getBoard()[i][j];
+        if (p != null) {
+          if (p.getColor() == AtaxxColor.BLACK) {
+            black++;
+          } else {
+            white++;
+          }
+        }
+      }
+    }
+    return new AtaxxScore(black, white);
+  }
+
   @Override
   public final String toString() {
     StringBuilder s = new StringBuilder();
