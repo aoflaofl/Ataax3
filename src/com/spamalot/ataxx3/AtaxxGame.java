@@ -22,11 +22,6 @@ public class AtaxxGame {
   /** Stack for move list. */
   private Stack<AtaxxUndoMove> moveStack = new Stack<>();
 
-  public final Coordinate upperLeft;
-  public final Coordinate upperRight;
-  public final Coordinate lowerLeft;
-  public final Coordinate lowerRight;
-
   private final int width;
   private final int height;
 
@@ -51,11 +46,6 @@ public class AtaxxGame {
   private AtaxxGame(final int size) throws AtaxxException {
     this.board = new AtaxxBoard(size);
     initBoard();
-
-    this.upperLeft = new Coordinate(0, 0);
-    this.upperRight = new Coordinate(0, size - 1);
-    this.lowerLeft = new Coordinate(size - 1, 0);
-    this.lowerRight = new Coordinate(size - 1, size - 1);
 
     this.height = size;
     this.width = size;
@@ -331,4 +321,49 @@ public class AtaxxGame {
   public final AtaxxScore getScore() {
     return this.board.getScore();
   }
+
+  final String boardToString() {
+    return this.board.toString();
+  }
+
+  final AtaxxMove parseMove(final String text) throws AtaxxException {
+    if (text.length() != 4) {
+      throw new AtaxxException("Not an Ataxx move.");
+    }
+
+    Coordinate from = textPositionToCoordinate(text.substring(0, 2));
+    Coordinate to = textPositionToCoordinate(text.substring(2, 4));
+
+    int diff = Coordinate.maxDiff(from, to);
+
+    if (diff > 2) {
+      throw new AtaxxException("Illegal Move, too far away");
+    }
+
+    AtaxxMove.Type moveType = null;
+    if (diff == 2) {
+      moveType = AtaxxMove.Type.JUMP;
+    } else {
+      moveType = AtaxxMove.Type.EXPAND;
+    }
+
+    return new AtaxxMove(moveType, this.colorToMove, from, to);
+  }
+
+  /**
+   * Turn text position into a Coordinate.
+   * 
+   * @param text
+   *          Text to turn into coordinate
+   * @return the Coordinate.
+   */
+  private static Coordinate textPositionToCoordinate(final String text) {
+    char file = text.charAt(0);
+    char rank = text.charAt(1);
+    int x = file - 'a';
+    int y = rank - '0' - 1;
+    Coordinate coord = new Coordinate(x, y);
+    return coord;
+  }
+
 }

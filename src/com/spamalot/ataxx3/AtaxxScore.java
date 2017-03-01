@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-public class AtaxxScore {
+class AtaxxScore {
   /** Black score. */
   private int black;
 
@@ -36,7 +36,7 @@ public class AtaxxScore {
    * @param w
    *          Count of white pieces
    */
-  public AtaxxScore(final int b, final int w) {
+  AtaxxScore(final int b, final int w) {
     this.black = b;
     this.white = w;
   }

@@ -127,7 +127,7 @@ public class AtaxxBoard {
    * 
    * @return Ataxx Piece.
    */
-  final AtaxxPiece getPieceAt(final int x, final int y) {
+  private AtaxxPiece getPieceAt(final int x, final int y) {
     return this.getBoard()[x][y];
   }
 
@@ -231,7 +231,15 @@ public class AtaxxBoard {
   @Override
   public final String toString() {
     StringBuilder s = new StringBuilder();
+    s.append("   ");
+    for (byte j = 0; j < this.width; j++) {
+      s.append((char) ('a' + j));
+    }
+    s.append("\n\n");
+
     for (int i = 0; i < this.height; i++) {
+      s.append(i + 1);
+      s.append("  ");
       for (int j = 0; j < this.width; j++) {
         AtaxxPiece p = getPieceAt(i, j);
         if (p == null) {

@@ -68,9 +68,20 @@ public final class Ataxx {
             }
             break;
           case "board":
+            System.out.println(ataxxGame.boardToString());
             System.out.println(ataxxGame.getScore());
             break;
+          case "undo":
+            ataxxGame.undoLastMove();
+            break;
+          case "help":
+            System.out.println("moves board undo help");
+            break;
           default:
+            // If it is not a recognized command then it might be a move.
+            AtaxxMove m = ataxxGame.parseMove(text);
+            System.out.println(m);
+            ataxxGame.makeMove(m);
             break;
         }
 

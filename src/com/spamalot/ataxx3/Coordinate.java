@@ -39,6 +39,25 @@ public final class Coordinate {
     return this.y;
   }
 
+  /**
+   * Return the max difference.
+   * 
+   * @param a
+   *          One Coordinate
+   * @param b
+   *          Another Coordainte
+   * @return The max difference.
+   */
+  static int maxDiff(final Coordinate a, final Coordinate b) {
+    int diffX = Math.abs(a.getX() - b.getX());
+    int diffY = Math.abs(a.getY() - b.getY());
+
+    if (diffX > diffY) {
+      return diffX;
+    }
+    return diffY;
+  }
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
