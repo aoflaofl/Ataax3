@@ -1,11 +1,8 @@
-package com.spamalot.ataxx3.test;
+package com.spamalot.ataxx3;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
-import com.spamalot.ataxx3.AtaxxBoard;
-import com.spamalot.ataxx3.Coordinate;
 
 import org.junit.Before;
 import org.junit.Test;

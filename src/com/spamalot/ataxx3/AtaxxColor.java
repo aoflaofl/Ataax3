@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-public enum AtaxxColor {
+enum AtaxxColor {
 
   /** White. */
   WHITE,

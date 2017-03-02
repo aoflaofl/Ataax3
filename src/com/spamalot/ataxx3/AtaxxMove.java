@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-public class AtaxxMove {
+class AtaxxMove {
   /**
    * The two types of an Ataxx move.
    * 
@@ -61,7 +61,7 @@ public class AtaxxMove {
    * @param toCoord
    *          the to square
    */
-  public AtaxxMove(final Type moveType, final AtaxxColor pieceColor, final Coordinate fromCoord, final Coordinate toCoord) {
+  AtaxxMove(final Type moveType, final AtaxxColor pieceColor, final Coordinate fromCoord, final Coordinate toCoord) {
     this.type = moveType;
     this.color = pieceColor;
     this.from = fromCoord;

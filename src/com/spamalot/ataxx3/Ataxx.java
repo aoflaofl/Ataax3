@@ -54,40 +54,8 @@ public final class Ataxx {
     AtaxxGame ataxxGame = new AtaxxGame();
     System.out.println(ataxxGame.toString());
 
-    try (Scanner scan = new Scanner(System.in)) {
-      String text;
-      do {
-
-        text = scan.nextLine();
-
-        switch (text) {
-          case "moves":
-            List<AtaxxMove> moves = ataxxGame.getAvailableMoves();
-            for (AtaxxMove move : moves) {
-              System.out.println(move);
-            }
-            break;
-          case "board":
-            System.out.println(ataxxGame.boardToString());
-            System.out.println(ataxxGame.getScore());
-            break;
-          case "undo":
-            ataxxGame.undoLastMove();
-            break;
-          case "help":
-            System.out.println("moves board undo help");
-            break;
-          default:
-            // If it is not a recognized command then it might be a move.
-            AtaxxMove m = ataxxGame.parseMove(text);
-            System.out.println(m);
-            ataxxGame.makeMove(m);
-            break;
-        }
-
-      } while (!text.equals("end"));
-    }
-
+    AtaxxInterface game = new AtaxxInterface(ataxxGame);
+    game.play();
   }
 
 }

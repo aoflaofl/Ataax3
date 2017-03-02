@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-public class AtaxxPiece {
+class AtaxxPiece {
 
   /** Color of this piece. */
   private AtaxxColor color;
@@ -17,7 +17,7 @@ public class AtaxxPiece {
    * @param c
    *          the color.
    */
-  public AtaxxPiece(final AtaxxColor c) {
+  AtaxxPiece(final AtaxxColor c) {
     this.setColor(c);
   }
 

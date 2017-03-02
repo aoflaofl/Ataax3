@@ -1,17 +1,10 @@
-package com.spamalot.ataxx3.test;
+package com.spamalot.ataxx3;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import com.spamalot.ataxx3.AtaxxColor;
-import com.spamalot.ataxx3.AtaxxException;
-import com.spamalot.ataxx3.AtaxxGame;
-import com.spamalot.ataxx3.AtaxxMove;
-import com.spamalot.ataxx3.AtaxxPiece;
-import com.spamalot.ataxx3.Coordinate;
 
 import org.junit.After;
 import org.junit.AfterClass;

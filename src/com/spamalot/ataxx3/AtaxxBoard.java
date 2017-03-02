@@ -9,7 +9,7 @@ import java.util.List;
  * @author gej
  *
  */
-public class AtaxxBoard {
+class AtaxxBoard {
 
   /** Holds the pieces of the game. */
   private AtaxxPiece[][] board;
@@ -26,7 +26,7 @@ public class AtaxxBoard {
    * @param size
    *          size of a side of the square
    */
-  public AtaxxBoard(final int size) {
+  AtaxxBoard(final int size) {
     this(size, size);
   }
 
@@ -38,7 +38,7 @@ public class AtaxxBoard {
    * @param h
    *          height of the board
    */
-  public AtaxxBoard(final int w, final int h) {
+  AtaxxBoard(final int w, final int h) {
     this.setWidth(w);
     this.setHeight(h);
     setBoard(new AtaxxPiece[w][h]);
@@ -200,7 +200,7 @@ public class AtaxxBoard {
    *          the Square
    * @return true if square is empty.
    */
-  public final boolean squareIsEmpty(final Coordinate sq) {
+  final boolean squareIsEmpty(final Coordinate sq) {
     return getPieceAtCoord(sq) == null;
   }
 
@@ -241,7 +241,7 @@ public class AtaxxBoard {
       s.append(i + 1);
       s.append("  ");
       for (int j = 0; j < this.width; j++) {
-        AtaxxPiece p = getPieceAt(i, j);
+        AtaxxPiece p = getPieceAt(j, i);
         if (p == null) {
           s.append(".");
         } else {
