@@ -16,17 +16,14 @@ class AtaxxGame {
   /** The board for this game. */
   private AtaxxBoard board;
 
-  /** Which color is moving. White moves first. */
+  /** Which color is currently to move. White moves first. */
   private AtaxxColor colorToMove = AtaxxColor.WHITE;
 
-  /** Stack for move list. */
-  private Stack<AtaxxUndoMove> moveStack = new Stack<>();
-
-  private final int width;
-  private final int height;
+  /** Stack for undo move list. */
+  private Stack<AtaxxUndoMove> undoMoveStack = new Stack<>();
 
   /**
-   * Construct the Ataxx game.
+   * Construct the Ataxx game with default size of side.
    * 
    * @throws AtaxxException
    *           when there is some Ataxx related problem.
@@ -46,11 +43,6 @@ class AtaxxGame {
   private AtaxxGame(final int size) throws AtaxxException {
     this.board = new AtaxxBoard(size);
     initBoard();
-
-    this.height = size;
-    this.width = size;
-
-    System.out.println(this);
   }
 
   /**
@@ -79,8 +71,7 @@ class AtaxxGame {
    */
   void makeMove(final AtaxxMove move) throws AtaxxException {
     if (!isLegal(move)) {
-      System.out.println("Problem with move.");
-      return;
+      throw new AtaxxException(move, "Problem with move.");
     }
 
     AtaxxPiece piece = null;
@@ -98,7 +89,7 @@ class AtaxxGame {
 
     List<Coordinate> flipped = this.board.flipPiecesAroundSquare(move.getTo(), move.getColor());
 
-    this.moveStack.push(new AtaxxUndoMove(move, flipped));
+    this.undoMoveStack.push(new AtaxxUndoMove(move, flipped));
 
     this.colorToMove = this.colorToMove.getOpposite();
   }
@@ -107,19 +98,19 @@ class AtaxxGame {
    * Undo the effects of the last move made.
    */
   void undoLastMove() {
-    AtaxxUndoMove move = this.moveStack.pop();
-    this.undoMove(move.getMove());
+    AtaxxUndoMove move = this.undoMoveStack.pop();
+    this.undoPieceMove(move.getMove());
     this.board.flipPiecesAtCoordinates(move.getFlipped());
     this.colorToMove = this.colorToMove.getOpposite();
   }
 
   /**
-   * Undo the effects a move.
+   * Undo the piece move effects of a move.
    * 
    * @param move
    *          the move
    */
-  private void undoMove(final AtaxxMove move) {
+  private void undoPieceMove(final AtaxxMove move) {
     this.board.putPieceAtCoord(null, move.getTo());
     if (move.getType() == AtaxxMove.Type.JUMP) {
       this.board.putPieceAtCoord(new AtaxxPiece(move.getColor()), move.getFrom());
@@ -138,46 +129,46 @@ class AtaxxGame {
   /**
    * Generate moves.
    * 
-   * @param toMv
+   * @param toMove
    *          Color to move.
    * @return a list of moves.
    */
-  private List<AtaxxMove> getAvailableMoves(final AtaxxColor toMv) {
+  private List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
     AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this);
-    return gen.getAvailableMoves(toMv);
+    return gen.getAvailableMoves(toMove);
   }
 
   /**
-   * Pick up a piece from the board.
+   * Pick up a piece from the board. This removes the piece from the board.
    * 
-   * @param c
-   *          Coordinate to pick up piece at
+   * @param coord
+   *          Coordinate to pick up piece
    * @return the Piece.
    * @throws AtaxxException
    *           if no piece in square
    */
-  AtaxxPiece pickupPiece(final Coordinate c) throws AtaxxException {
-    AtaxxPiece p = this.board.getPieceAtCoord(c);
-    if (p == null) {
+  AtaxxPiece pickupPiece(final Coordinate coord) throws AtaxxException {
+    AtaxxPiece piece = this.board.getPieceAtCoord(coord);
+    if (piece == null) {
       throw new AtaxxException("No piece in square.");
     }
-    this.board.putPieceAtCoord(null, c);
-    return p;
+    this.board.putPieceAtCoord(null, coord);
+    return piece;
   }
 
   /**
    * Drop a piece on the board.
    * 
-   * @param p
+   * @param piece
    *          the Piece
-   * @param c
+   * @param coord
    *          the Coordinate
    * @throws AtaxxException
    *           if square is not empty
    */
-  void dropPiece(final AtaxxPiece p, final Coordinate c) throws AtaxxException {
-    if (this.board.getPieceAtCoord(c) == null) {
-      this.board.putPieceAtCoord(p, c);
+  void dropPiece(final AtaxxPiece piece, final Coordinate coord) throws AtaxxException {
+    if (this.board.getPieceAtCoord(coord) == null) {
+      this.board.putPieceAtCoord(piece, coord);
     } else {
       throw new AtaxxException("Square is not empty.");
     }
@@ -186,12 +177,15 @@ class AtaxxGame {
   /**
    * Check if a move is legal.
    * 
+   * TODO: Avoid premature optimization, but this will probably have to be
+   * removed to make the AI more efficient.
+   * 
    * @param move
    *          the move to check
    * @return true if the move is legal to make on this board.
    */
   private boolean isLegal(final AtaxxMove move) {
-    boolean ret = isLegalColor(move) && isOnBoard(move) && toSquareIsEmpty(move) && pieceInFromSquareMatchesColor(move) && checkExpandDistance(move);
+    boolean ret = isLegalColor(move) && isOnBoard(move) && toSquareIsEmpty(move) && pieceInFromSquareMatchesColor(move) && checkDistance(move);
 
     return ret;
   }
@@ -225,11 +219,11 @@ class AtaxxGame {
    *         move.
    */
   private boolean pieceInFromSquareMatchesColor(final AtaxxMove move) {
-    AtaxxPiece p = this.board.getPieceAtCoord(move.getFrom());
-    if (p == null) {
+    AtaxxPiece piece = this.board.getPieceAtCoord(move.getFrom());
+    if (piece == null) {
       return false;
     }
-    return p.getColor() == move.getColor();
+    return piece.getColor() == move.getColor();
   }
 
   /**
@@ -242,14 +236,14 @@ class AtaxxGame {
   }
 
   /**
-   * Check distance between from square and to square that this is a legal
-   * expand move.
+   * Check distance between from square and to square that this is a legal move
+   * for the move type.
    * 
    * @param move
    *          the move to check
-   * @return true if the to square can be expanded to from the from square.
+   * @return true if the to square can be moved to from the from square.
    */
-  private static boolean checkExpandDistance(final AtaxxMove move) {
+  private static boolean checkDistance(final AtaxxMove move) {
     int xDiff = Math.abs(move.getTo().getX() - move.getFrom().getX());
     int yDiff = Math.abs(move.getTo().getY() - move.getFrom().getY());
 
@@ -288,17 +282,17 @@ class AtaxxGame {
     builder.append(this.colorToMove);
     builder.append("\ngetAvailableMoves()=");
     builder.append(getAvailableMoves());
-    builder.append("\nUndo move list=" + this.moveStack);
+    builder.append("\nUndo move list=" + this.undoMoveStack);
     builder.append("\n]");
     return builder.toString();
   }
 
   /**
-   * Allow compare of color.
+   * Get color of piece at coordinate.
    * 
    * @param coord
-   *          Coordinate of piece to check
-   * @return true if they match.
+   *          Coordinate of piece
+   * @return color of piece.
    */
   final AtaxxColor getColorOfPieceAt(final Coordinate coord) {
     AtaxxPiece p = this.board.getPieceAtCoord(coord);
@@ -312,40 +306,60 @@ class AtaxxGame {
    * @return the width
    */
   public int getWidth() {
-    return this.width;
+    return this.board.getWidth();
   }
 
   /**
    * @return the height
    */
   public int getHeight() {
-    return this.height;
+    return this.board.getHeight();
   }
 
+  /**
+   * Get the score object for the game.
+   * 
+   * @return the score object.
+   */
   public final AtaxxScore getScore() {
     return this.board.getScore();
   }
 
+  /**
+   * Get the board as a String.
+   * 
+   * @return the board as a String.
+   */
   final String boardToString() {
     return this.board.toString();
   }
 
+  /**
+   * Parses a String and returns an AtaxxMove object if it can be converted.
+   * 
+   * @param text
+   *          The String of the move
+   * @return An AtaxxMove object
+   * @throws AtaxxException
+   *           when move cannot be parsed.
+   */
   final AtaxxMove parseMove(final String text) throws AtaxxException {
     if (text.length() != 4) {
       throw new AtaxxException("Not an Ataxx move.");
     }
 
-    Coordinate from = textPositionToCoordinate(text.substring(0, 2));
-    Coordinate to = textPositionToCoordinate(text.substring(2, 4));
+    String moveText = text.replaceAll("\\s", "");
+    Coordinate from = textPositionToCoordinate(moveText.substring(0, 2));
+    Coordinate to = textPositionToCoordinate(moveText.substring(2, 4));
 
-    int diff = Coordinate.maxDiff(from, to);
+    int maxDiff = Coordinate.maxDiff(from, to);
 
-    if (diff > 2) {
+    if (maxDiff > 2) {
       throw new AtaxxException("Illegal Move, too far away");
     }
 
     AtaxxMove.Type moveType = null;
-    if (diff == 2) {
+    if (maxDiff == 2) {
       moveType = AtaxxMove.Type.JUMP;
     } else {
       moveType = AtaxxMove.Type.EXPAND;
@@ -370,8 +384,12 @@ class AtaxxGame {
     return coord;
   }
 
+  /**
+   * Get the color whose move it is.
+   * 
+   * @return the color to move.
+   */
   public AtaxxColor getToMove() {
-    // TODO Auto-generated method stub
     return this.colorToMove;
   }
 

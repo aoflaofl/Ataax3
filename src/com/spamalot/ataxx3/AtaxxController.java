@@ -3,18 +3,31 @@ package com.spamalot.ataxx3;
 import java.util.List;
 import java.util.Scanner;
 
-public class AtaxxInterface {
+/**
+ * Control an Ataxx Game.
+ * 
+ * @author gej
+ *
+ */
+class AtaxxController {
+  /** The Ataxx Game to control. */
   private AtaxxGame ataxxGame;
 
   /**
-   * @param ataxxGame
+   * Construct an Ataxx Game Controller.
+   * 
+   * @param game
+   *          The game to control
    */
-  public AtaxxInterface(final AtaxxGame ataxxGame) {
-    this.ataxxGame = ataxxGame;
+  AtaxxController(final AtaxxGame game) {
+    this.ataxxGame = game;
   }
 
-  public final void play() {
-    try (Scanner scan = new Scanner(System.in)) {
+  /**
+   * Start control of the Ataxx Game.
+   */
+  final void control() {
+    try (Scanner scan = new Scanner(System.in, "UTF-8")) {
       String text;
       do {
 

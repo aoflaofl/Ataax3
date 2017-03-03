@@ -1,8 +1,5 @@
 package com.spamalot.ataxx3;
 
-import java.util.List;
-import java.util.Scanner;
-
 /**
  * Play the game of Ataxx.
  * <p>
@@ -54,8 +51,8 @@ public final class Ataxx {
     AtaxxGame ataxxGame = new AtaxxGame();
     System.out.println(ataxxGame.toString());
 
-    AtaxxInterface game = new AtaxxInterface(ataxxGame);
-    game.play();
+    AtaxxController game = new AtaxxController(ataxxGame);
+    game.control();
   }
 
 }
