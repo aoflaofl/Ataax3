@@ -27,11 +27,13 @@ class AtaxxController {
    * Start control of the Ataxx Game.
    */
   final void control() {
+    int depth = 1;
     try (Scanner scan = new Scanner(System.in, "UTF-8")) {
       String text;
       do {
 
         text = scan.nextLine();
+        System.out.println(text);
 
         switch (text) {
           case "moves":
@@ -47,6 +49,10 @@ class AtaxxController {
             break;
           case "undo":
             this.ataxxGame.undoLastMove();
+            break;
+          case "think":
+            AtaxxAI ai = new AtaxxAI(this.ataxxGame);
+            ai.think(depth);
             break;
           case "help":
             System.out.println("moves board undo help");

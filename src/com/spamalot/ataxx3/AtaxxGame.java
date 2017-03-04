@@ -393,4 +393,27 @@ class AtaxxGame {
     return this.colorToMove;
   }
 
+  /**
+   * Check if the game is over.
+   * 
+   * @return true if the game is over.
+   */
+  public boolean isOver() {
+    AtaxxScore s = getScore();
+
+    int boardSize = getWidth() * getHeight();
+
+    return (s.getBlack() + s.getWhite()) == boardSize;
+  }
+
+  /**
+   * An evaluation of the position from white's perspective.
+   * 
+   * @return evaluation value.
+   */
+  public int evaluate() {
+    AtaxxScore s = getScore();
+    return s.getWhite() - s.getBlack();
+  }
+
 }
