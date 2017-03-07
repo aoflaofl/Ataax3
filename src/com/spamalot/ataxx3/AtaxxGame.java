@@ -280,9 +280,9 @@ class AtaxxGame {
     builder.append(this.board);
     builder.append("toMove=");
     builder.append(this.colorToMove);
-    builder.append("\ngetAvailableMoves()=");
-    builder.append(getAvailableMoves());
-    builder.append("\nUndo move list=" + this.undoMoveStack);
+    // builder.append("\ngetAvailableMoves()=");
+    // builder.append(getAvailableMoves());
+    // builder.append("\nUndo move list=" + this.undoMoveStack);
     builder.append("\n]");
     return builder.toString();
   }

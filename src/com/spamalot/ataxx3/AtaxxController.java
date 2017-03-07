@@ -27,7 +27,7 @@ class AtaxxController {
    * Start control of the Ataxx Game.
    */
   final void control() {
-    int depth = 1;
+    int depth = 3;
     try (Scanner scan = new Scanner(System.in, "UTF-8")) {
       String text;
       do {

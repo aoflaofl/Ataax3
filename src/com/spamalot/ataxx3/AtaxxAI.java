@@ -32,8 +32,12 @@ class AtaxxAI {
    * @return the best move.
    */
   final AtaxxMove think(final int depth) {
+    if (depth < 1) {
+      return null;
+    }
 
     List<AtaxxMove> a = this.ataxxGame.getAvailableMoves();
+    System.out.println("Current Board:\n" + this.ataxxGame);
     for (AtaxxMove move : a) {
       try {
         this.ataxxGame.makeMove(move);
@@ -41,10 +45,15 @@ class AtaxxAI {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
+      int colorToMove = -1;
+      if (this.ataxxGame.getToMove() == AtaxxColor.BLACK) {
+        colorToMove = 1;
+      }
 
-      int v = negaMax(this.ataxxGame, depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
-
-      System.out.println(v + "  " + move);
+      int v = negaMax(this.ataxxGame, depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, colorToMove);
+      // System.out.println("Position:\n" + this.ataxxGame);
+      System.out.println("Move:\n" + move);
+      System.out.println("Evaluation: " + v);
 
       this.ataxxGame.undoLastMove();
     }
@@ -93,7 +102,9 @@ class AtaxxAI {
 
     for (AtaxxMove move : childMoves) {
       try {
+        System.out.println(move);
         game.makeMove(move);
+        // System.out.println(game);
       } catch (AtaxxException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
