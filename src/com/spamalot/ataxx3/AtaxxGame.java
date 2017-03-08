@@ -231,7 +231,7 @@ class AtaxxGame {
    *          the move to check.
    * @return true if the square is empty.
    */
-  private boolean toSquareIsEmpty(final AtaxxMove move) {
+  boolean toSquareIsEmpty(final AtaxxMove move) {
     return this.board.squareIsEmpty(move.getTo());
   }
 

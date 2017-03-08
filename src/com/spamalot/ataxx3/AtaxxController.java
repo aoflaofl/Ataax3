@@ -27,7 +27,7 @@ class AtaxxController {
    * Start control of the Ataxx Game.
    */
   final void control() {
-    int depth = 3;
+    int depth = 6;
     try (Scanner scan = new Scanner(System.in, "UTF-8")) {
       String text;
       do {
@@ -52,7 +52,32 @@ class AtaxxController {
             break;
           case "think":
             AtaxxAI ai = new AtaxxAI(this.ataxxGame);
-            ai.think(depth);
+            AtaxxMove move = ai.think(depth);
+
+            System.out.println("Move:\n" + move);
+
+            try {
+              this.ataxxGame.makeMove(move);
+            } catch (AtaxxException e1) {
+              // TODO Auto-generated catch block
+              e1.printStackTrace();
+            }
+            System.out.println(this.ataxxGame.boardToString());
+            System.out.println("Color to move: " + this.ataxxGame.getToMove());
+            System.out.println(this.ataxxGame.getScore());
+            break;
+          case "play":
+            while (!this.ataxxGame.isOver()) {
+              AtaxxAI aip = new AtaxxAI(this.ataxxGame);
+              AtaxxMove movep = aip.think(depth);
+              System.out.println("Move:\n" + movep);
+              try {
+                this.ataxxGame.makeMove(movep);
+              } catch (AtaxxException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+              }
+            }
             break;
           case "help":
             System.out.println("moves board undo help");
