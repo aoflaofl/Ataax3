@@ -9,10 +9,11 @@ import java.util.List;
  *
  */
 class AtaxxAI {
-  /**
-   * Game to think about.
-   */
+  /** Game to think about. */
   private AtaxxGame ataxxGame;
+
+  /** How many nodes were looked at in the search. */
+  private int nodeCount = 0;
 
   /**
    * Construct a thinker.
@@ -25,7 +26,7 @@ class AtaxxAI {
   }
 
   /**
-   * Start thinking.
+   * Start thinking using iterative deepening.
    * 
    * @param depth
    *          How deep to evaluate
@@ -35,48 +36,72 @@ class AtaxxAI {
     if (depth < 1) {
       return null;
     }
+    return negaMaxAlphaBetaRoot(depth);
+  }
+
+  /**
+   * Root call to the NegaMaxAlphaBeta routine.
+   * 
+   * @param depth
+   *          How deep to search
+   * @return the best move found.
+   */
+  private AtaxxMove negaMaxAlphaBetaRoot(final int depth) {
+    int color = 1;
+    if (this.ataxxGame.getToMove() == AtaxxColor.BLACK) {
+      color = -1;
+    }
+
+    // if (depth == 0 || game.isOver()) {
+    // return color * game.evaluate();
+    // }
+
+    int alpha = Integer.MIN_VALUE;
+    int beta = Integer.MAX_VALUE;
+
+    List<AtaxxMove> childMoves = this.ataxxGame.getAvailableMoves();
 
     int bestValue = Integer.MIN_VALUE;
     AtaxxMove bestMove = null;
-    List<AtaxxMove> a = this.ataxxGame.getAvailableMoves();
-    System.out.println("Current Board:\n" + this.ataxxGame);
-    for (AtaxxMove move : a) {
+
+    for (AtaxxMove move : childMoves) {
       try {
+        // System.out.println(move);
         this.ataxxGame.makeMove(move);
+        this.nodeCount++;
+        // System.out.println(this.ataxxGame);
       } catch (AtaxxException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
+        System.out.println("This is me: " + this.ataxxGame);
+        System.out.println("This is the move that made me cry: " + move);
       }
-      int v;
+      int v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -alpha, -color);
+      // System.out.println("Move: " + move);
+      // System.out.println("Evaluation: " + v);
 
-      if (this.ataxxGame.getToMove() == AtaxxColor.BLACK) {
-        System.out.println("Here 1");
-        v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, -1);
-        // v = negamax(this.ataxxGame, depth - 1, 1);
-      } else {
-        System.out.println("Here 2");
-        v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
-        // v = negamax(this.ataxxGame, depth - 1, -1);
-      }
+      this.ataxxGame.undoLastMove();
 
-      // int v = negamax(this.ataxxGame, depth - 1, colorToMove);
       if (v > bestValue) {
         bestValue = v;
         bestMove = move;
+
+        System.out.println("New Best Move: " + move);
+        System.out.println("New Best Evaluation: " + v);
+        System.out.println("Node Count: " + this.nodeCount);
+
       }
-      // System.out.println("Position:\n" + this.ataxxGame);
-      System.out.println("Move:\n" + move);
-      System.out.println("Evaluation: " + v);
-
-      this.ataxxGame.undoLastMove();
+      // bestValue = Math.max(bestValue, v);
+      alpha = Math.max(alpha, v);
+      if (alpha >= beta) {
+        break;
+      }
     }
-
-    System.out.println("Best Value: " + bestValue);
-
+    System.out.println("Final Move: " + bestMove);
+    System.out.println("Final Evaluation: " + bestValue);
+    System.out.println("Final Node Count: " + this.nodeCount);
     return bestMove;
-
   }
-
   // 01 function negamax(node, depth, alpha, beta, color)
   // 02 if depth = 0 or node is a terminal node
   // 03 ~~ return color * the heuristic value of node
@@ -111,8 +136,11 @@ class AtaxxAI {
     if (depth == 0 || game.isOver()) {
       return color * game.evaluate();
     }
-
+    // System.out.println("Alpha: " + alpha + " Beta: " + beta);
     List<AtaxxMove> childMoves = game.getAvailableMoves();
+    if (childMoves.size() == 0) {
+      childMoves.add(null);
+    }
     // Order Moves Here
     int bestValue = Integer.MIN_VALUE;
     int newAlpha = alpha;
@@ -120,6 +148,7 @@ class AtaxxAI {
       try {
         // System.out.println(move);
         game.makeMove(move);
+        this.nodeCount++;
         // System.out.println(game);
       } catch (AtaxxException e) {
         // TODO Auto-generated catch block
@@ -175,6 +204,7 @@ class AtaxxAI {
       try {
         // System.out.println(move);
         game.makeMove(move);
+        this.nodeCount++;
         int v = -negamax(game, depth - 1, -color);
         bestValue = Math.max(v, bestValue);
         game.undoLastMove();

@@ -27,7 +27,7 @@ class AtaxxController {
    * Start control of the Ataxx Game.
    */
   final void control() {
-    int depth = 6;
+    int depth = 1;
     try (Scanner scan = new Scanner(System.in, "UTF-8")) {
       String text;
       do {
@@ -68,19 +68,30 @@ class AtaxxController {
             break;
           case "play":
             while (!this.ataxxGame.isOver()) {
+              if (this.ataxxGame.getToMove() == AtaxxColor.BLACK) {
+                depth = 8;
+              } else {
+                depth = 1;
+              }
               AtaxxAI aip = new AtaxxAI(this.ataxxGame);
               AtaxxMove movep = aip.think(depth);
-              System.out.println("Move:\n" + movep);
+              // System.out.println("Move:\n" + movep);
               try {
                 this.ataxxGame.makeMove(movep);
               } catch (AtaxxException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
               }
+              System.out.println(this.ataxxGame.boardToString());
+              System.out.println("Color to move: " + this.ataxxGame.getToMove());
+              System.out.println(this.ataxxGame.getScore());
             }
+            System.out.println("Done.");
             break;
           case "help":
             System.out.println("moves board undo help");
+            break;
+          case "end":
             break;
           default:
             // If it is not a recognized command then it might be a move.

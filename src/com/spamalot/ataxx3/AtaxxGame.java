@@ -59,6 +59,8 @@ class AtaxxGame {
 
     dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(0, this.board.getWidth() - 1));
     dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(this.board.getHeight() - 1, 0));
+
+    // dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(1, 0));
   }
 
   /**
@@ -70,6 +72,13 @@ class AtaxxGame {
    *           When something goes wrong
    */
   void makeMove(final AtaxxMove move) throws AtaxxException {
+    // A null move would indicate a pass.
+    if (move == null) {
+      this.colorToMove = this.colorToMove.getOpposite();
+      this.undoMoveStack.push(null);
+      return;
+    }
+
     if (!isLegal(move)) {
       throw new AtaxxException(move, "Problem with move.");
     }
@@ -99,8 +108,10 @@ class AtaxxGame {
    */
   void undoLastMove() {
     AtaxxUndoMove move = this.undoMoveStack.pop();
-    this.undoPieceMove(move.getMove());
-    this.board.flipPiecesAtCoordinates(move.getFlipped());
+    if (move != null) {
+      this.undoPieceMove(move.getMove());
+      this.board.flipPiecesAtCoordinates(move.getFlipped());
+    }
     this.colorToMove = this.colorToMove.getOpposite();
   }
 
@@ -403,7 +414,7 @@ class AtaxxGame {
 
     int boardSize = getWidth() * getHeight();
 
-    return (s.getBlack() + s.getWhite()) == boardSize;
+    return ((s.getBlack() + s.getWhite()) == boardSize) || s.getBlack() == 0 || s.getWhite() == 0;
   }
 
   /**
@@ -413,6 +424,14 @@ class AtaxxGame {
    */
   public int evaluate() {
     AtaxxScore s = getScore();
+    if (s.getWhite() == 0) {
+      return -1000;
+    }
+
+    if (s.getBlack() == 0) {
+      return +1000;
+    }
+
     return s.getWhite() - s.getBlack();
   }
 

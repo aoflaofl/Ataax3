@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class AtaxxMove {
+class AtaxxMove implements Comparable<AtaxxMove> {
   /**
    * The two types of an Ataxx move.
    * 
@@ -125,5 +125,18 @@ class AtaxxMove {
     builder.append(this.to);
     builder.append("]");
     return builder.toString();
+  }
+
+  @Override
+  public int compareTo(final AtaxxMove o) {
+    if (this.getType() == o.getType()) {
+      return 0;
+    }
+
+    if (this.getType() == Type.EXPAND) {
+      return -1;
+    }
+
+    return 1;
   }
 }
