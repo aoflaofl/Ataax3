@@ -96,7 +96,7 @@ class AtaxxGame {
     }
     dropPiece(piece, move.getTo());
 
-    List<Coordinate> flipped = this.board.flipPiecesAroundSquare(move.getTo(), move.getColor());
+    List<AtaxxSquare> flipped = this.board.flipPiecesAroundSquare(move.getTo(), move.getColor());
 
     this.undoMoveStack.push(new AtaxxUndoMove(move, flipped));
 

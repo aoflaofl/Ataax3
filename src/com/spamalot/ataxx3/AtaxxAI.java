@@ -66,19 +66,14 @@ class AtaxxAI {
 
     for (AtaxxMove move : childMoves) {
       try {
-        // System.out.println(move);
         this.ataxxGame.makeMove(move);
         this.nodeCount++;
-        // System.out.println(this.ataxxGame);
       } catch (AtaxxException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
         System.out.println("This is me: " + this.ataxxGame);
         System.out.println("This is the move that made me cry: " + move);
       }
       int v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -alpha, -color);
-      // System.out.println("Move: " + move);
-      // System.out.println("Evaluation: " + v);
 
       this.ataxxGame.undoLastMove();
 
@@ -89,9 +84,7 @@ class AtaxxAI {
         System.out.println("New Best Move: " + move);
         System.out.println("New Best Evaluation: " + v);
         System.out.println("Node Count: " + this.nodeCount);
-
       }
-      // bestValue = Math.max(bestValue, v);
       alpha = Math.max(alpha, v);
       if (alpha >= beta) {
         break;

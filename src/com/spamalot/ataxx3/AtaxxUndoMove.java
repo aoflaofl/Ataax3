@@ -18,7 +18,7 @@ class AtaxxUndoMove {
    * @param flipped2
    *          List of coordinates of pieces to flip
    */
-  AtaxxUndoMove(final AtaxxMove move2, final List<Coordinate> flipped2) {
+  AtaxxUndoMove(final AtaxxMove move2, final List<AtaxxSquare> flipped2) {
     this.move = move2;
     this.flipped = flipped2;
   }
@@ -27,7 +27,7 @@ class AtaxxUndoMove {
   private AtaxxMove move;
 
   /** List of coordinates of pieces that have been flipped. */
-  private List<Coordinate> flipped;
+  private List<AtaxxSquare> flipped;
 
   /**
    * @return the move
@@ -39,7 +39,7 @@ class AtaxxUndoMove {
   /**
    * @return the flipped
    */
-  public List<Coordinate> getFlipped() {
+  public List<AtaxxSquare> getFlipped() {
     return this.flipped;
   }
 

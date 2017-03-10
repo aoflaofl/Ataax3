@@ -11,8 +11,8 @@ import java.util.List;
  */
 class AtaxxBoard {
 
-  /** Holds the pieces of the game. */
-  private AtaxxPiece[][] board;
+  /** Hold Array of AtaxxSquares to represent the board. */
+  private AtaxxSquare[][] board;
 
   /** The height of this board. */
   private int height;
@@ -41,18 +41,46 @@ class AtaxxBoard {
   AtaxxBoard(final int w, final int h) {
     this.setWidth(w);
     this.setHeight(h);
-    setBoard(new AtaxxPiece[w][h]);
+
+    initBoard(w, h);
+  }
+
+  /**
+   * Initialize the board.
+   * 
+   * @param w
+   *          width of board
+   * @param h
+   *          height of board
+   */
+  private void initBoard(final int w, final int h) {
+    this.board = new AtaxxSquare[w][h];
+    for (int i = 0; i < w; i++) {
+      for (int j = 0; j < h; j++) {
+        this.board[i][j] = new AtaxxSquare(AtaxxSquare.Type.PLAYABLE);
+      }
+    }
+  }
+
+  /**
+   * Set the sqboard.
+   * 
+   * @param ataxxSquares
+   *          Array of AtaxxSquares
+   */
+  private void setSquareBoard(final AtaxxSquare[][] ataxxSquares) {
+    this.board = ataxxSquares;
   }
 
   /**
    * Flip the pieces at the coordinates in the list.
    * 
-   * @param flipCoords
+   * @param list
    *          List of Coordinates of pieces to flip
    */
-  final void flipPiecesAtCoordinates(final List<Coordinate> flipCoords) {
-    for (Coordinate c : flipCoords) {
-      getPieceAtCoord(c).flip();
+  final void flipPiecesAtCoordinates(final List<AtaxxSquare> list) {
+    for (AtaxxSquare square : list) {
+      square.getPiece().flip();
     }
   }
 
@@ -65,7 +93,7 @@ class AtaxxBoard {
    *          Color to flip to
    * @return a List of Coordinates of squares that had flipped pieces.
    */
-  final List<Coordinate> flipPiecesAroundSquare(final Coordinate coordinate, final AtaxxColor color) {
+  final List<AtaxxSquare> flipPiecesAroundSquare(final Coordinate coordinate, final AtaxxColor color) {
     AtaxxColor oppositeColor = color.getOpposite();
 
     int minX = Math.max(coordinate.getX() - 1, 0);
@@ -73,17 +101,17 @@ class AtaxxBoard {
     int minY = Math.max(coordinate.getY() - 1, 0);
     int maxY = Math.min(coordinate.getY() + 1, this.height - 1);
 
-    List<Coordinate> ret = new ArrayList<>();
+    List<AtaxxSquare> ret = new ArrayList<>();
 
     for (int x = minX; x <= maxX; x++) {
       for (int y = minY; y <= maxY; y++) {
 
-        AtaxxPiece p = getPieceAt(x, y);
+        AtaxxSquare square = getSquareAt(x, y);
+        AtaxxPiece piece = square.getPiece();
 
-        if (p != null && p.getColor() == oppositeColor) {
-          p.flip();
-          Coordinate co = new Coordinate(x, y);
-          ret.add(co);
+        if (piece != null && piece.getColor() == oppositeColor) {
+          piece.flip();
+          ret.add(square);
         }
       }
     }
@@ -91,10 +119,14 @@ class AtaxxBoard {
   }
 
   /**
-   * @return the board
+   * @param x
+   *          the X ordinate
+   * @param y
+   *          the Y ordinate
+   * @return the AtaxxSquare object.
    */
-  private AtaxxPiece[][] getBoard() {
-    return this.board;
+  private AtaxxSquare getSquareAt(final int x, final int y) {
+    return this.board[x][y];
   }
 
   /**
@@ -128,7 +160,16 @@ class AtaxxBoard {
    * @return Ataxx Piece.
    */
   private AtaxxPiece getPieceAt(final int x, final int y) {
-    return this.getBoard()[x][y];
+    return this.getSquareBoard()[x][y].getPiece();
+  }
+
+  /**
+   * Get the Board.
+   * 
+   * @return the board.
+   */
+  private AtaxxSquare[][] getSquareBoard() {
+    return this.board;
   }
 
   /**
@@ -162,16 +203,16 @@ class AtaxxBoard {
    *          the Coordinate
    */
   final void putPieceAtCoord(final AtaxxPiece p, final Coordinate c) {
-    this.getBoard()[c.getX()][c.getY()] = p;
+    this.getSquareBoard()[c.getX()][c.getY()].setPiece(p);
   }
 
   /**
    * @param b
    *          the board to set
    */
-  private void setBoard(final AtaxxPiece[][] b) {
-    this.board = b;
-  }
+  // private void setBoard(final AtaxxPiece[][] b) {
+  // this.board = b;
+  // }
 
   /**
    * Set the height of this board.
@@ -215,7 +256,7 @@ class AtaxxBoard {
 
     for (int i = 0; i < getHeight(); i++) {
       for (int j = 0; j < getWidth(); j++) {
-        AtaxxPiece p = getBoard()[i][j];
+        AtaxxPiece p = getSquareBoard()[i][j].getPiece();
         if (p != null) {
           if (p.getColor() == AtaxxColor.BLACK) {
             black++;
