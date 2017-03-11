@@ -54,11 +54,11 @@ class AtaxxGame {
    *           when there is some Ataxx related problem.
    */
   private void initBoard() throws AtaxxException {
-    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), new Coordinate(0, 0));
-    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), new Coordinate(this.board.getHeight() - 1, this.board.getWidth() - 1));
+    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAtCoord(0, 0));
+    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAtCoord(this.board.getHeight() - 1, this.board.getWidth() - 1));
 
-    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(0, this.board.getWidth() - 1));
-    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(this.board.getHeight() - 1, 0));
+    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAtCoord(0, this.board.getWidth() - 1));
+    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAtCoord(this.board.getHeight() - 1, 0));
 
     // dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(1, 0));
   }
@@ -94,7 +94,7 @@ class AtaxxGame {
       default:
         throw new AtaxxException(move, "Wrong Move Type.");
     }
-    dropPiece(piece, move.getTo());
+    dropPiece(piece, this.board.getSquareAtCoord(move.getTo().getX(), move.getTo().getY()));
 
     List<AtaxxSquare> flipped = this.board.flipPiecesAroundSquare(move.getTo(), move.getColor());
 
@@ -177,9 +177,9 @@ class AtaxxGame {
    * @throws AtaxxException
    *           if square is not empty
    */
-  void dropPiece(final AtaxxPiece piece, final Coordinate coord) throws AtaxxException {
-    if (this.board.getPieceAtCoord(coord) == null) {
-      this.board.putPieceAtCoord(piece, coord);
+  private void dropPiece(final AtaxxPiece piece, final AtaxxSquare coord) throws AtaxxException {
+    if (coord.getPiece() == null) {
+      coord.setPiece(piece);
     } else {
       throw new AtaxxException("Square is not empty.");
     }
@@ -305,13 +305,13 @@ class AtaxxGame {
    *          Coordinate of piece
    * @return color of piece.
    */
-  final AtaxxColor getColorOfPieceAt(final Coordinate coord) {
-    AtaxxPiece p = this.board.getPieceAtCoord(coord);
-    if (p == null) {
-      return null;
-    }
-    return p.getColor();
-  }
+  // final AtaxxColor getColorOfPieceAt(final AtaxxSquare coord) {
+  // AtaxxPiece p = this.board.getPieceAtCoord(coord);
+  // if (p == null) {
+  // return null;
+  // }
+  // return p.getColor();
+  // }
 
   /**
    * @return the width
@@ -433,6 +433,11 @@ class AtaxxGame {
     }
 
     return s.getWhite() - s.getBlack();
+  }
+
+  public AtaxxSquare getSquareAt(final int x, final int y) {
+    // TODO Auto-generated method stub
+    return this.board.getSquareAtCoord(x, y);
   }
 
 }

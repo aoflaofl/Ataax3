@@ -15,7 +15,7 @@ import java.util.Set;
 class AtaxxMoveGenerator {
 
   /** Board for moves. */
-  private AtaxxGame boardObj;
+  private AtaxxGame ataxxGame;
 
   /** Avoid coordinates of expand moves that have already been seen. */
   private Set<Coordinate> seen = new HashSet<>();
@@ -27,7 +27,7 @@ class AtaxxMoveGenerator {
    *          Board to construct generator for.
    */
   AtaxxMoveGenerator(final AtaxxGame ataxxGame) {
-    this.boardObj = ataxxGame;
+    this.ataxxGame = ataxxGame;
   }
 
   /**
@@ -41,15 +41,15 @@ class AtaxxMoveGenerator {
    */
   private List<AtaxxMove> expandMoves(final AtaxxColor ataxxColor, final Coordinate fromCoord) {
     int minX = Math.max(fromCoord.getX() - 1, 0);
-    int maxX = Math.min(fromCoord.getX() + 1, this.boardObj.getWidth() - 1);
+    int maxX = Math.min(fromCoord.getX() + 1, this.ataxxGame.getWidth() - 1);
     int minY = Math.max(fromCoord.getY() - 1, 0);
-    int maxY = Math.min(fromCoord.getY() + 1, this.boardObj.getHeight() - 1);
+    int maxY = Math.min(fromCoord.getY() + 1, this.ataxxGame.getHeight() - 1);
 
     List<AtaxxMove> result = new ArrayList<>();
 
     for (int x = minX; x <= maxX; x++) {
       for (int y = minY; y <= maxY; y++) {
-        if (this.boardObj.getColorOfPieceAt(new Coordinate(x, y)) == null) {
+        if (this.ataxxGame.getSquareAt(x, y).getPiece() == null) {
           Coordinate toCoord = new Coordinate(x, y);
           if (!this.seen.contains(toCoord)) {
             result.add(new AtaxxMove(AtaxxMove.Type.EXPAND, ataxxColor, fromCoord, toCoord));
@@ -72,9 +72,9 @@ class AtaxxMoveGenerator {
   public List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
     List<AtaxxMove> result = new ArrayList<>();
     this.seen = new HashSet<>();
-    for (int i = 0; i < this.boardObj.getHeight(); i++) {
-      for (int j = 0; j < this.boardObj.getWidth(); j++) {
-        if (this.boardObj.getColorOfPieceAt(new Coordinate(i, j)) != null && this.boardObj.getColorOfPieceAt(new Coordinate(i, j)).equals(toMove)) {
+    for (int i = 0; i < this.ataxxGame.getHeight(); i++) {
+      for (int j = 0; j < this.ataxxGame.getWidth(); j++) {
+        if (this.ataxxGame.getSquareAt(i, j).getPiece() != null && this.ataxxGame.getSquareAt(i, j).getPiece().getColor().equals(toMove)) {
           Coordinate fromCoord = new Coordinate(i, j);
           result.addAll(expandMoves(toMove, fromCoord));
           result.addAll(jumpMoves(toMove, fromCoord));
@@ -101,7 +101,7 @@ class AtaxxMoveGenerator {
       for (int j = -2; j <= 2; j += 2) {
         if (!(i == 0 && j == 0)) {
           AtaxxMove m = new AtaxxMove(AtaxxMove.Type.JUMP, colorToMove, fromCoord, new Coordinate(fromCoord.getX() + i, fromCoord.getY() + j));
-          if (this.boardObj.isOnBoard(m) && this.boardObj.toSquareIsEmpty(m)) {
+          if (this.ataxxGame.isOnBoard(m) && this.ataxxGame.toSquareIsEmpty(m)) {
             result.add(m);
           }
         }
@@ -113,52 +113,52 @@ class AtaxxMoveGenerator {
     int j = -1;
 
     AtaxxMove m = new AtaxxMove(AtaxxMove.Type.JUMP, colorToMove, fromCoord, new Coordinate(fromCoord.getX() + i, fromCoord.getY() + j));
-    if (this.boardObj.isOnBoard(m) && this.boardObj.toSquareIsEmpty(m)) {
+    if (this.ataxxGame.isOnBoard(m) && this.ataxxGame.toSquareIsEmpty(m)) {
       result.add(m);
     }
 
     j = 1;
     m = new AtaxxMove(AtaxxMove.Type.JUMP, colorToMove, fromCoord, new Coordinate(fromCoord.getX() + i, fromCoord.getY() + j));
-    if (this.boardObj.isOnBoard(m) && this.boardObj.toSquareIsEmpty(m)) {
+    if (this.ataxxGame.isOnBoard(m) && this.ataxxGame.toSquareIsEmpty(m)) {
       result.add(m);
     }
 
     i = -1;
     j = -2;
     m = new AtaxxMove(AtaxxMove.Type.JUMP, colorToMove, fromCoord, new Coordinate(fromCoord.getX() + i, fromCoord.getY() + j));
-    if (this.boardObj.isOnBoard(m) && this.boardObj.toSquareIsEmpty(m)) {
+    if (this.ataxxGame.isOnBoard(m) && this.ataxxGame.toSquareIsEmpty(m)) {
       result.add(m);
     }
 
     j = 2;
     m = new AtaxxMove(AtaxxMove.Type.JUMP, colorToMove, fromCoord, new Coordinate(fromCoord.getX() + i, fromCoord.getY() + j));
-    if (this.boardObj.isOnBoard(m) && this.boardObj.toSquareIsEmpty(m)) {
+    if (this.ataxxGame.isOnBoard(m) && this.ataxxGame.toSquareIsEmpty(m)) {
       result.add(m);
     }
 
     i = 1;
     j = -2;
     m = new AtaxxMove(AtaxxMove.Type.JUMP, colorToMove, fromCoord, new Coordinate(fromCoord.getX() + i, fromCoord.getY() + j));
-    if (this.boardObj.isOnBoard(m) && this.boardObj.toSquareIsEmpty(m)) {
+    if (this.ataxxGame.isOnBoard(m) && this.ataxxGame.toSquareIsEmpty(m)) {
       result.add(m);
     }
 
     j = 2;
     m = new AtaxxMove(AtaxxMove.Type.JUMP, colorToMove, fromCoord, new Coordinate(fromCoord.getX() + i, fromCoord.getY() + j));
-    if (this.boardObj.isOnBoard(m) && this.boardObj.toSquareIsEmpty(m)) {
+    if (this.ataxxGame.isOnBoard(m) && this.ataxxGame.toSquareIsEmpty(m)) {
       result.add(m);
     }
 
     i = 2;
     j = -1;
     m = new AtaxxMove(AtaxxMove.Type.JUMP, colorToMove, fromCoord, new Coordinate(fromCoord.getX() + i, fromCoord.getY() + j));
-    if (this.boardObj.isOnBoard(m) && this.boardObj.toSquareIsEmpty(m)) {
+    if (this.ataxxGame.isOnBoard(m) && this.ataxxGame.toSquareIsEmpty(m)) {
       result.add(m);
     }
 
     j = +1;
     m = new AtaxxMove(AtaxxMove.Type.JUMP, colorToMove, fromCoord, new Coordinate(fromCoord.getX() + i, fromCoord.getY() + j));
-    if (this.boardObj.isOnBoard(m) && this.boardObj.toSquareIsEmpty(m)) {
+    if (this.ataxxGame.isOnBoard(m) && this.ataxxGame.toSquareIsEmpty(m)) {
       result.add(m);
     }
 

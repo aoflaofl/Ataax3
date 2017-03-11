@@ -295,4 +295,19 @@ class AtaxxBoard {
     return s.toString();
   }
 
+  public AtaxxSquare getSquareAtCoord(int x, int y) {
+    return this.board[x][y];
+  }
+
+  /**
+   * Get the Square.
+   * 
+   * @param coordinate
+   *          the coordinate
+   * @return the square.
+   */
+  // public AtaxxSquare getSquareAtCoord(final Coordinate coordinate) {
+  // return this.board[coordinate.getX()][coordinate.getY()];
+  // }
+
 }
