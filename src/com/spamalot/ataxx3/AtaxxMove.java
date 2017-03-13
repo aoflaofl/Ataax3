@@ -24,16 +24,16 @@ class AtaxxMove implements Comparable<AtaxxMove> {
   private AtaxxColor color;
 
   /** The from square. */
-  private Coordinate from;
+  private AtaxxSquare from;
   /** The to square. */
-  private Coordinate to;
+  private AtaxxSquare to;
 
   /**
    * The From Coordinate.
    * 
    * @return the from
    */
-  public Coordinate getFrom() {
+  public AtaxxSquare getFrom() {
     return this.from;
   }
 
@@ -42,7 +42,7 @@ class AtaxxMove implements Comparable<AtaxxMove> {
    * 
    * @return the to
    */
-  public Coordinate getTo() {
+  public AtaxxSquare getTo() {
     return this.to;
   }
 
@@ -61,7 +61,7 @@ class AtaxxMove implements Comparable<AtaxxMove> {
    * @param toCoord
    *          the to square
    */
-  AtaxxMove(final Type moveType, final AtaxxColor pieceColor, final Coordinate fromCoord, final Coordinate toCoord) {
+  AtaxxMove(final Type moveType, final AtaxxColor pieceColor, final AtaxxSquare fromCoord, final AtaxxSquare toCoord) {
     this.type = moveType;
     this.color = pieceColor;
     this.from = fromCoord;

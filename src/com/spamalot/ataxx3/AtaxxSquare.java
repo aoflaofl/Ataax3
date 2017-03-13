@@ -6,6 +6,10 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
+/**
+ * @author gej
+ *
+ */
 class AtaxxSquare {
   /**
    * Type of square.
@@ -20,23 +24,34 @@ class AtaxxSquare {
     BLOCKED
   }
 
-  /** Piece in the square. */
-  private AtaxxPiece piece;
   /** Type of Square. */
   private Type type;
 
+  /** Piece in the square. */
+  private AtaxxPiece piece;
+
+  /** Coordinate of this square. */
+  private Coordinate coordinate;
+
   /**
-   * Construct an AtaxxSqaure object.
+   * Construct an AtaxxSquare object.
    * 
    * @param t
-   *          Type of Square.
+   *          Type of Square
+   * @param rank
+   *          rank the piece is on
+   * @param file
+   *          file the piece is on
    */
-  AtaxxSquare(final Type t) {
+  AtaxxSquare(final Type t, final int file, final int rank) {
     this.type = t;
+    this.coordinate = new Coordinate(file, rank);
   }
 
   /**
-   * @return AtaxxPiece in this AtaxxSquare.
+   * Get the AtaxxPiece in this AtaxxSquare.
+   * 
+   * @return the AtaxxPiece in this AtaxxSquare.
    */
   public AtaxxPiece getPiece() {
     return this.piece;
@@ -46,9 +61,36 @@ class AtaxxSquare {
    * Set the piece.
    * 
    * @param p
-   *          Piece to set
+   *          AtaxxPiece to set in this AtaxxSquare
    */
   public void setPiece(final AtaxxPiece p) {
     this.piece = p;
+  }
+
+  /**
+   * Get the Coordinate this Square is at in the board.
+   * 
+   * @return the coordinate
+   */
+  public Coordinate getCoordinate() {
+    return this.coordinate;
+  }
+
+  /**
+   * Get the numeric file this AtaxxSquare is at.
+   * 
+   * @return the numeric file this AtaxxSquare is at.
+   */
+  public int getFile() {
+    return this.coordinate.getX();
+  }
+
+  /**
+   * Get the numeric rank this AtaxxSquare is at.
+   * 
+   * @return the numeric rank this AtaxxSquare is at.
+   */
+  public int getRank() {
+    return this.coordinate.getY();
   }
 }

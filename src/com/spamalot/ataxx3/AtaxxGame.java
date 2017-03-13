@@ -94,7 +94,7 @@ class AtaxxGame {
       default:
         throw new AtaxxException(move, "Wrong Move Type.");
     }
-    dropPiece(piece, this.board.getSquareAtCoord(move.getTo().getX(), move.getTo().getY()));
+    dropPiece(piece, move.getTo());
 
     List<AtaxxSquare> flipped = this.board.flipPiecesAroundSquare(move.getTo(), move.getColor());
 
@@ -110,7 +110,7 @@ class AtaxxGame {
     AtaxxUndoMove move = this.undoMoveStack.pop();
     if (move != null) {
       this.undoPieceMove(move.getMove());
-      this.board.flipPiecesAtCoordinates(move.getFlipped());
+      AtaxxBoard.flipPiecesInSquares(move.getFlipped());
     }
     this.colorToMove = this.colorToMove.getOpposite();
   }
@@ -152,18 +152,18 @@ class AtaxxGame {
   /**
    * Pick up a piece from the board. This removes the piece from the board.
    * 
-   * @param coord
+   * @param ataxxSquare
    *          Coordinate to pick up piece
    * @return the Piece.
    * @throws AtaxxException
    *           if no piece in square
    */
-  AtaxxPiece pickupPiece(final Coordinate coord) throws AtaxxException {
-    AtaxxPiece piece = this.board.getPieceAtCoord(coord);
+  AtaxxPiece pickupPiece(final AtaxxSquare ataxxSquare) throws AtaxxException {
+    AtaxxPiece piece = ataxxSquare.getPiece();
     if (piece == null) {
       throw new AtaxxException("No piece in square.");
     }
-    this.board.putPieceAtCoord(null, coord);
+    this.board.putPieceAtCoord(null, ataxxSquare);
     return piece;
   }
 
@@ -177,7 +177,7 @@ class AtaxxGame {
    * @throws AtaxxException
    *           if square is not empty
    */
-  private void dropPiece(final AtaxxPiece piece, final AtaxxSquare coord) throws AtaxxException {
+  private static void dropPiece(final AtaxxPiece piece, final AtaxxSquare coord) throws AtaxxException {
     if (coord.getPiece() == null) {
       coord.setPiece(piece);
     } else {
@@ -229,8 +229,8 @@ class AtaxxGame {
    * @return true if the from piece exists and has the correct color for the
    *         move.
    */
-  private boolean pieceInFromSquareMatchesColor(final AtaxxMove move) {
-    AtaxxPiece piece = this.board.getPieceAtCoord(move.getFrom());
+  private static boolean pieceInFromSquareMatchesColor(final AtaxxMove move) {
+    AtaxxPiece piece = move.getFrom().getPiece();
     if (piece == null) {
       return false;
     }
@@ -242,8 +242,9 @@ class AtaxxGame {
    *          the move to check.
    * @return true if the square is empty.
    */
-  boolean toSquareIsEmpty(final AtaxxMove move) {
-    return this.board.squareIsEmpty(move.getTo());
+  static boolean toSquareIsEmpty(final AtaxxMove move) {
+    return move.getTo().getPiece() == null;
+    // return this.board.squareIsEmpty(move.getTo());
   }
 
   /**
@@ -255,8 +256,8 @@ class AtaxxGame {
    * @return true if the to square can be moved to from the from square.
    */
   private static boolean checkDistance(final AtaxxMove move) {
-    int xDiff = Math.abs(move.getTo().getX() - move.getFrom().getX());
-    int yDiff = Math.abs(move.getTo().getY() - move.getFrom().getY());
+    int xDiff = Math.abs(move.getTo().getFile() - move.getFrom().getFile());
+    int yDiff = Math.abs(move.getTo().getRank() - move.getFrom().getRank());
 
     // If it's the same square, obviously not right
     if (xDiff == 0 && yDiff == 0) {
@@ -376,7 +377,10 @@ class AtaxxGame {
       moveType = AtaxxMove.Type.EXPAND;
     }
 
-    return new AtaxxMove(moveType, this.colorToMove, from, to);
+    AtaxxSquare f = getSquareAt(from.getX(), from.getY());
+    AtaxxSquare t = getSquareAt(to.getX(), to.getY());
+
+    return new AtaxxMove(moveType, this.colorToMove, f, t);
   }
 
   /**
@@ -435,6 +439,15 @@ class AtaxxGame {
     return s.getWhite() - s.getBlack();
   }
 
+  /**
+   * Get the square.
+   * 
+   * @param x
+   *          X
+   * @param y
+   *          Y
+   * @return the square.
+   */
   public AtaxxSquare getSquareAt(final int x, final int y) {
     // TODO Auto-generated method stub
     return this.board.getSquareAtCoord(x, y);
