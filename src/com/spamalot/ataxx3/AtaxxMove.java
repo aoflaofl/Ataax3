@@ -133,7 +133,7 @@ class AtaxxMove implements Comparable<AtaxxMove> {
       return 0;
     }
 
-    if (this.getType() == Type.EXPAND) {
+    if (this.getType() == Type.JUMP) {
       return -1;
     }
 

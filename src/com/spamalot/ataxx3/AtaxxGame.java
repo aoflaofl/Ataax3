@@ -54,11 +54,11 @@ class AtaxxGame {
    *           when there is some Ataxx related problem.
    */
   private void initBoard() throws AtaxxException {
-    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAtCoord(0, 0));
-    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAtCoord(this.board.getHeight() - 1, this.board.getWidth() - 1));
+    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(0, 0));
+    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(this.board.getNumRanks() - 1, this.board.getNumFiles() - 1));
 
-    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAtCoord(0, this.board.getWidth() - 1));
-    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAtCoord(this.board.getHeight() - 1, 0));
+    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(0, this.board.getNumFiles() - 1));
+    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(this.board.getNumRanks() - 1, 0));
 
     // dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(1, 0));
   }
@@ -89,7 +89,7 @@ class AtaxxGame {
         piece = new AtaxxPiece(move.getColor());
         break;
       case JUMP:
-        piece = pickupPiece(move.getFrom());
+        piece = move.getFrom().pickupPiece();
         break;
       default:
         throw new AtaxxException(move, "Wrong Move Type.");
@@ -158,14 +158,15 @@ class AtaxxGame {
    * @throws AtaxxException
    *           if no piece in square
    */
-  AtaxxPiece pickupPiece(final AtaxxSquare ataxxSquare) throws AtaxxException {
-    AtaxxPiece piece = ataxxSquare.getPiece();
-    if (piece == null) {
-      throw new AtaxxException("No piece in square.");
-    }
-    this.board.putPieceAtCoord(null, ataxxSquare);
-    return piece;
-  }
+  // private AtaxxPiece pickupPiece(final AtaxxSquare ataxxSquare) throws
+  // AtaxxException {
+  // AtaxxPiece piece = ataxxSquare.getPiece();
+  // if (piece == null) {
+  // throw new AtaxxException("No piece in square.");
+  // }
+  // this.board.putPieceAtCoord(null, ataxxSquare);
+  // return piece;
+  // }
 
   /**
    * Drop a piece on the board.
@@ -196,7 +197,7 @@ class AtaxxGame {
    * @return true if the move is legal to make on this board.
    */
   private boolean isLegal(final AtaxxMove move) {
-    boolean ret = isLegalColor(move) && isOnBoard(move) && toSquareIsEmpty(move) && pieceInFromSquareMatchesColor(move) && checkDistance(move);
+    boolean ret = isLegalColor(move) && /* isOnBoard(move) && */ toSquareIsEmpty(move) && pieceInFromSquareMatchesColor(move) && checkDistance(move);
 
     return ret;
   }
@@ -217,9 +218,10 @@ class AtaxxGame {
    *          the move to check
    * @return true if the squares involved are on the board.
    */
-  final boolean isOnBoard(final AtaxxMove move) {
-    return (this.board.isOnBoard(move.getFrom()) && this.board.isOnBoard(move.getTo()));
-  }
+  // final boolean isOnBoard(final AtaxxMove move) {
+  // return (this.board.isOnBoard(move.getFrom()) &&
+  // this.board.isOnBoard(move.getTo()));
+  // }
 
   /**
    * Check from piece is the correct color.
@@ -317,15 +319,15 @@ class AtaxxGame {
   /**
    * @return the width
    */
-  public int getWidth() {
-    return this.board.getWidth();
+  public int getNumFiles() {
+    return this.board.getNumFiles();
   }
 
   /**
    * @return the height
    */
-  public int getHeight() {
-    return this.board.getHeight();
+  public int getNumRanks() {
+    return this.board.getNumRanks();
   }
 
   /**
@@ -416,7 +418,7 @@ class AtaxxGame {
   public boolean isOver() {
     AtaxxScore s = getScore();
 
-    int boardSize = getWidth() * getHeight();
+    int boardSize = getNumFiles() * getNumRanks();
 
     return ((s.getBlack() + s.getWhite()) == boardSize) || s.getBlack() == 0 || s.getWhite() == 0;
   }
@@ -442,15 +444,17 @@ class AtaxxGame {
   /**
    * Get the square.
    * 
-   * @param x
+   * @param file
    *          X
-   * @param y
+   * @param rank
    *          Y
    * @return the square.
    */
-  public AtaxxSquare getSquareAt(final int x, final int y) {
-    // TODO Auto-generated method stub
-    return this.board.getSquareAtCoord(x, y);
+  public AtaxxSquare getSquareAt(final int file, final int rank) {
+    if ((file >= 0 && file < this.getNumFiles()) && (rank >= 0 && rank < this.getNumRanks())) {
+      return this.board.getSquareAt(file, rank);
+    }
+    return null;
   }
 
 }

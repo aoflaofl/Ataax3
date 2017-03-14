@@ -85,6 +85,10 @@ class AtaxxSquare {
     return this.coordinate.getX();
   }
 
+  private char getFileAsChar() {
+    return (char) (this.coordinate.getX() + 'a');
+  }
+
   /**
    * Get the numeric rank this AtaxxSquare is at.
    * 
@@ -92,5 +96,68 @@ class AtaxxSquare {
    */
   public int getRank() {
     return this.coordinate.getY();
+  }
+
+  /**
+   * Remove and return a piece from the board.
+   * 
+   * @return the AtaxxPiece in this square.
+   */
+  public AtaxxPiece pickupPiece() {
+    AtaxxPiece p = this.piece;
+    this.piece = null;
+    return p;
+  }
+
+  public boolean isEmpty() {
+    return this.type != Type.BLOCKED && this.piece == null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((coordinate == null) ? 0 : coordinate.hashCode());
+    return result;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    AtaxxSquare other = (AtaxxSquare) obj;
+    if (coordinate == null) {
+      if (other.coordinate != null)
+        return false;
+    } else if (!coordinate.equals(other.coordinate))
+      return false;
+    return true;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(getFileAsChar());
+    builder.append(getRank() + 1);
+    return builder.toString();
   }
 }

@@ -31,7 +31,7 @@ class AtaxxBoard {
   }
 
   /**
-   * Construct a board of given width and height.
+   * Construct a board of given number of files and ranks.
    * 
    * @param files
    *          width of the board
@@ -39,31 +39,27 @@ class AtaxxBoard {
    *          height of the board
    */
   AtaxxBoard(final int files, final int ranks) {
-    this.setWidth(files);
-    this.setHeight(ranks);
+    this.setNumFiles(files);
+    this.setNumRanks(ranks);
 
-    initBoard(files, ranks);
+    this.squares = new AtaxxSquare[files][ranks];
+
+    initBoard();
   }
 
   /**
    * Initialize the board.
-   * 
-   * @param w
-   *          width of board
-   * @param h
-   *          height of board
    */
-  private void initBoard(final int w, final int h) {
-    this.squares = new AtaxxSquare[w][h];
-    for (int i = 0; i < w; i++) {
-      for (int j = 0; j < h; j++) {
-        this.squares[i][j] = new AtaxxSquare(AtaxxSquare.Type.PLAYABLE, i, j);
+  private void initBoard() {
+    for (int file = 0; file < getNumFiles(); file++) {
+      for (int rank = 0; rank < getNumRanks(); rank++) {
+        this.squares[file][rank] = new AtaxxSquare(AtaxxSquare.Type.PLAYABLE, file, rank);
       }
     }
   }
 
   /**
-   * Flip the pieces at the coordinates in the list.
+   * Flip the pieces in the AtaxxSquares in the list.
    * 
    * @param listOfSquares
    *          List of Coordinates of pieces to flip
@@ -75,11 +71,11 @@ class AtaxxBoard {
   }
 
   /**
-   * Flip the pieces around the square that don't match passed in color and make
-   * them match passed in color.
+   * Flip the pieces around the square that don't match the passed in color and
+   * make them match passed in color.
    * 
    * @param ataxxSquare
-   *          Coordinate of square around which to flip
+   *          AtaxxSquare around which to flip
    * @param color
    *          Color to flip to
    * @return a List of AtaxxSquares that had flipped pieces.
@@ -110,48 +106,23 @@ class AtaxxBoard {
   }
 
   /**
-   * @param x
-   *          the X ordinate
-   * @param y
-   *          the Y ordinate
-   * @return the AtaxxSquare object.
+   * @param file
+   *          the file
+   * @param rank
+   *          the rank
+   * @return the AtaxxSquare.
    */
-  private AtaxxSquare getSquareAt(final int x, final int y) {
-    return this.squares[x][y];
+  public AtaxxSquare getSquareAt(final int file, final int rank) {
+    return this.squares[file][rank];
   }
 
   /**
-   * Get the height of this board.
+   * Get the number of ranks on this board.
    * 
-   * @return the height.
+   * @return the number of ranks.
    */
-  public final int getHeight() {
+  public final int getNumRanks() {
     return this.numRanks;
-  }
-
-  /**
-   * Get a Piece at a Coordinate.
-   * 
-   * @param c
-   *          Coordinate of piece to return.
-   * @return Ataxx Piece.
-   */
-  final AtaxxPiece getPieceAtCoord(final Coordinate c) {
-    return getPieceAt(c.getX(), c.getY());
-  }
-
-  /**
-   * Get a Piece at a location.
-   * 
-   * @param x
-   *          The X ordinate
-   * @param y
-   *          The Y ordinate
-   * 
-   * @return Ataxx Piece.
-   */
-  private AtaxxPiece getPieceAt(final int x, final int y) {
-    return this.getSquareBoard()[x][y].getPiece();
   }
 
   /**
@@ -168,21 +139,8 @@ class AtaxxBoard {
    * 
    * @return the width.
    */
-  public final int getWidth() {
+  public final int getNumFiles() {
     return this.numFiles;
-  }
-
-  /**
-   * Check if a square is on the board.
-   * 
-   * @param ataxxSquare
-   *          The square
-   * @return true if the square is on the board
-   */
-  final boolean isOnBoard(final AtaxxSquare ataxxSquare) {
-    int file = ataxxSquare.getFile();
-    int rank = ataxxSquare.getRank();
-    return (file >= 0 && file < this.numFiles && rank >= 0 && rank < this.numRanks);
   }
 
   /**
@@ -198,42 +156,23 @@ class AtaxxBoard {
   }
 
   /**
-   * @param b
-   *          the board to set
-   */
-  // private void setBoard(final AtaxxPiece[][] b) {
-  // this.board = b;
-  // }
-
-  /**
-   * Set the height of this board.
+   * Set the number of ranks of this board.
    * 
-   * @param h
+   * @param ranks
    *          the height to set
    */
-  private void setHeight(final int h) {
-    this.numRanks = h;
+  private void setNumRanks(final int ranks) {
+    this.numRanks = ranks;
   }
 
   /**
-   * Set the width of this board.
+   * Set the number of files on this board.
    * 
-   * @param w
+   * @param files
    *          the width to set
    */
-  private void setWidth(final int w) {
-    this.numFiles = w;
-  }
-
-  /**
-   * Check if square is empty.
-   * 
-   * @param sq
-   *          the Square
-   * @return true if square is empty.
-   */
-  final boolean squareIsEmpty(final Coordinate sq) {
-    return getPieceAtCoord(sq) == null;
+  private void setNumFiles(final int files) {
+    this.numFiles = files;
   }
 
   /**
@@ -245,8 +184,8 @@ class AtaxxBoard {
     int black = 0;
     int white = 0;
 
-    for (int i = 0; i < getHeight(); i++) {
-      for (int j = 0; j < getWidth(); j++) {
+    for (int i = 0; i < getNumRanks(); i++) {
+      for (int j = 0; j < getNumFiles(); j++) {
         AtaxxPiece p = getSquareBoard()[i][j].getPiece();
         if (p != null) {
           if (p.getColor() == AtaxxColor.BLACK) {
@@ -273,7 +212,7 @@ class AtaxxBoard {
       s.append(i + 1);
       s.append("  ");
       for (int j = 0; j < this.numFiles; j++) {
-        AtaxxPiece p = getPieceAt(j, i);
+        AtaxxPiece p = getSquareAt(j, i).getPiece();
         if (p == null) {
           s.append(".");
         } else {
@@ -289,17 +228,13 @@ class AtaxxBoard {
   /**
    * Get the Square.
    * 
-   * @param x
+   * @param file
    *          the x ordinate
-   * @param y
+   * @param rank
    *          the y ordinate
    * @return the square.
    */
-  public AtaxxSquare getSquareAtCoord(final int x, final int y) {
-    return this.squares[x][y];
-  }
-  // public AtaxxSquare getSquareAtCoord(final Coordinate coordinate) {
-  // return this.board[coordinate.getX()][coordinate.getY()];
+  // public AtaxxSquare getSquareAtCoord(final int file, final int rank) {
+  // return this.squares[file][rank];
   // }
-
 }

@@ -29,27 +29,27 @@ public class AtaxxBoardTest {
   @Test
   public final void testAtaxxBoardInt() {
     assertNotNull(this.squareBoard);
-    assertEquals(1, this.squareBoard.getHeight());
-    assertEquals(1, this.squareBoard.getWidth());
+    assertEquals(1, this.squareBoard.getNumRanks());
+    assertEquals(1, this.squareBoard.getNumFiles());
   }
 
   @Test
   public final void testAtaxxBoardIntInt() {
     assertNotNull(this.rectangleBoard);
-    assertEquals(4, this.rectangleBoard.getWidth());
-    assertEquals(5, this.rectangleBoard.getHeight());
+    assertEquals(4, this.rectangleBoard.getNumFiles());
+    assertEquals(5, this.rectangleBoard.getNumRanks());
   }
 
   @Test
   public final void testGetWidth() {
-    assertEquals(1, this.squareBoard.getWidth());
-    assertEquals(4, this.rectangleBoard.getWidth());
+    assertEquals(1, this.squareBoard.getNumFiles());
+    assertEquals(4, this.rectangleBoard.getNumFiles());
   }
 
   @Test
   public final void testGetHeight() {
-    assertEquals(1, this.squareBoard.getHeight());
-    assertEquals(5, this.rectangleBoard.getHeight());
+    assertEquals(1, this.squareBoard.getNumRanks());
+    assertEquals(5, this.rectangleBoard.getNumRanks());
   }
 
   // @Test(expected = com.spamalot.ataxx3.AtaxxException.class)
@@ -58,9 +58,9 @@ public class AtaxxBoardTest {
   // this.squareBoard.setPiece(AtaxxColor.BLACK, new Coordinate(0, 0));
   // }
 
-  @Test
-  public final void testSquareIsEmpty() {
-    assertTrue(this.squareBoard.squareIsEmpty(new Coordinate(0, 0)));
-  }
+//  @Test
+//  public final void testSquareIsEmpty() {
+//    assertTrue(this.squareBoard.squareIsEmpty(new Coordinate(0, 0)));
+//  }
 
 }
