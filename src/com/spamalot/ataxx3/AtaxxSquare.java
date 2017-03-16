@@ -1,5 +1,7 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.ataxx3.AtaxxSquare.Type;
+
 /**
  * A square on an Ataxx Board.
  * 
@@ -85,6 +87,11 @@ class AtaxxSquare {
     return this.coordinate.getX();
   }
 
+  /**
+   * Get file as a character for printing.
+   * 
+   * @return File as a character for printing.
+   */
   private char getFileAsChar() {
     return (char) (this.coordinate.getX() + 'a');
   }
@@ -109,6 +116,11 @@ class AtaxxSquare {
     return p;
   }
 
+  /**
+   * Check if square is empty.
+   * 
+   * @return true if square is empty.
+   */
   public boolean isEmpty() {
     return this.type != Type.BLOCKED && this.piece == null;
   }
@@ -122,7 +134,7 @@ class AtaxxSquare {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((coordinate == null) ? 0 : coordinate.hashCode());
+    result = prime * result + ((this.coordinate == null) ? 0 : this.coordinate.hashCode());
     return result;
   }
 
@@ -132,19 +144,24 @@ class AtaxxSquare {
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
+  public boolean equals(final Object obj) {
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
     AtaxxSquare other = (AtaxxSquare) obj;
-    if (coordinate == null) {
-      if (other.coordinate != null)
+    if (this.coordinate == null) {
+      if (other.coordinate != null) {
         return false;
-    } else if (!coordinate.equals(other.coordinate))
+      }
+    } else if (!this.coordinate.equals(other.coordinate)) {
       return false;
+    }
     return true;
   }
 
@@ -159,5 +176,14 @@ class AtaxxSquare {
     builder.append(getFileAsChar());
     builder.append(getRank() + 1);
     return builder.toString();
+  }
+
+  public void setBlocked() {
+    this.type = Type.BLOCKED;
+  }
+
+  public boolean isBlocked() {
+    // TODO Auto-generated method stub
+    return type == Type.BLOCKED;
   }
 }

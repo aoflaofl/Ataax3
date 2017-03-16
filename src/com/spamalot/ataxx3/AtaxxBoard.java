@@ -1,5 +1,7 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.ataxx3.AtaxxSquare.Type;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,20 +185,26 @@ class AtaxxBoard {
   public final AtaxxScore getScore() {
     int black = 0;
     int white = 0;
+    int blocked = 0;
 
     for (int i = 0; i < getNumRanks(); i++) {
       for (int j = 0; j < getNumFiles(); j++) {
-        AtaxxPiece p = getSquareBoard()[i][j].getPiece();
-        if (p != null) {
-          if (p.getColor() == AtaxxColor.BLACK) {
-            black++;
-          } else {
-            white++;
+        AtaxxSquare ataxxSquare = this.squares[j][i];
+        if (ataxxSquare.isBlocked()) {
+          blocked++;
+        } else {
+          AtaxxPiece p = ataxxSquare.getPiece();
+          if (p != null) {
+            if (p.getColor() == AtaxxColor.BLACK) {
+              black++;
+            } else {
+              white++;
+            }
           }
         }
       }
     }
-    return new AtaxxScore(black, white);
+    return new AtaxxScore(black, white, blocked);
   }
 
   @Override
@@ -212,11 +220,17 @@ class AtaxxBoard {
       s.append(i + 1);
       s.append("  ");
       for (int j = 0; j < this.numFiles; j++) {
-        AtaxxPiece p = getSquareAt(j, i).getPiece();
-        if (p == null) {
-          s.append(".");
+
+        AtaxxSquare squareAt = getSquareAt(j, i);
+        if (squareAt.isBlocked()) {
+          s.append('X');
         } else {
-          s.append(p);
+          AtaxxPiece p = squareAt.getPiece();
+          if (p == null) {
+            s.append(".");
+          } else {
+            s.append(p);
+          }
         }
       }
       s.append("\n");

@@ -1,7 +1,6 @@
 package com.spamalot.ataxx3;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,11 +22,11 @@ class AtaxxMoveGenerator {
   /**
    * Construct the move generator.
    * 
-   * @param ataxxGame
+   * @param game
    *          Board to construct generator for.
    */
-  AtaxxMoveGenerator(final AtaxxGame ataxxGame) {
-    this.ataxxGame = ataxxGame;
+  AtaxxMoveGenerator(final AtaxxGame game) {
+    this.ataxxGame = game;
   }
 
   /**
@@ -48,10 +47,17 @@ class AtaxxMoveGenerator {
         }
       }
     }
-    Collections.sort(result);
+    // Collections.sort(result);
     return result;
   }
 
+  /**
+   * Generate a list of moves for a square.
+   * 
+   * @param square
+   *          Square to generate moves for
+   * @return A list of moves.
+   */
   private List<AtaxxMove> generateMovesForSquare(final AtaxxSquare square) {
     int squareRank = square.getRank();
     int squareFile = square.getFile();

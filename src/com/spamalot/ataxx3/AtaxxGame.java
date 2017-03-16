@@ -60,7 +60,20 @@ class AtaxxGame {
     dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(0, this.board.getNumFiles() - 1));
     dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(this.board.getNumRanks() - 1, 0));
 
-    // dropPiece(new AtaxxPiece(AtaxxColor.BLACK), new Coordinate(1, 0));
+    this.board.getSquareAt(1, 1).setBlocked();
+    this.board.getSquareAt(5, 5).setBlocked();
+    this.board.getSquareAt(1, 5).setBlocked();
+    this.board.getSquareAt(5, 1).setBlocked();
+
+    // dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(0,
+    // 2));
+    // dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(1,
+    // 2));
+    // dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(6,
+    // 6));
+    // dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(0,
+    // 4));
+
   }
 
   /**
@@ -196,7 +209,7 @@ class AtaxxGame {
    *          the move to check
    * @return true if the move is legal to make on this board.
    */
-  private boolean isLegal(final AtaxxMove move) {
+  private static boolean isLegal(final AtaxxMove move) {
     boolean ret = isLegalColor(move) && /* isOnBoard(move) && */ toSquareIsEmpty(move) && pieceInFromSquareMatchesColor(move) && checkDistance(move);
 
     return ret;
@@ -244,7 +257,7 @@ class AtaxxGame {
    *          the move to check.
    * @return true if the square is empty.
    */
-  static boolean toSquareIsEmpty(final AtaxxMove move) {
+  private static boolean toSquareIsEmpty(final AtaxxMove move) {
     return move.getTo().getPiece() == null;
     // return this.board.squareIsEmpty(move.getTo());
   }
@@ -418,7 +431,7 @@ class AtaxxGame {
   public boolean isOver() {
     AtaxxScore s = getScore();
 
-    int boardSize = getNumFiles() * getNumRanks();
+    int boardSize = getNumFiles() * getNumRanks() - s.getBlocked();
 
     return ((s.getBlack() + s.getWhite()) == boardSize) || s.getBlack() == 0 || s.getWhite() == 0;
   }

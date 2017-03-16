@@ -1,5 +1,6 @@
 package com.spamalot.ataxx3;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,6 +26,9 @@ class AtaxxAI {
     this.ataxxGame = game;
   }
 
+  /** Hold list of moves from curent game location. */
+  private List<AtaxxMove> globalChildMoves;
+
   /**
    * Start thinking using iterative deepening.
    * 
@@ -36,7 +40,22 @@ class AtaxxAI {
     if (depth < 1) {
       return null;
     }
-    return negaMaxAlphaBetaRoot(depth);
+
+    this.globalChildMoves = this.ataxxGame.getAvailableMoves();
+
+    AtaxxMove m = null;
+    for (int iter = 1; iter <= depth; iter++) {
+      Collections.sort(this.globalChildMoves);
+      // System.out.println("Sorted List of Moves for Iteration " + iter);
+      for (AtaxxMove mo : this.globalChildMoves) {
+        // System.out.println(mo);
+        mo.setEvaluation(Integer.MIN_VALUE);
+      }
+      // System.out.println("End Sorted List of Moves: ");
+      System.out.println("Iteration " + iter);
+      m = negaMaxAlphaBetaRoot(iter);
+    }
+    return m;
   }
 
   /**
@@ -52,19 +71,15 @@ class AtaxxAI {
       color = -1;
     }
 
-    // if (depth == 0 || game.isOver()) {
-    // return color * game.evaluate();
-    // }
-
     int alpha = Integer.MIN_VALUE;
     int beta = Integer.MAX_VALUE;
 
-    List<AtaxxMove> childMoves = this.ataxxGame.getAvailableMoves();
+    // Collections.sort(this.globalChildMoves);
 
     int bestValue = Integer.MIN_VALUE;
     AtaxxMove bestMove = null;
 
-    for (AtaxxMove move : childMoves) {
+    for (AtaxxMove move : this.globalChildMoves) {
       try {
         this.ataxxGame.makeMove(move);
         this.nodeCount++;
@@ -74,6 +89,10 @@ class AtaxxAI {
         System.out.println("This is the move that made me cry: " + move);
       }
       int v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -alpha, -color);
+      move.setEvaluation(v);
+
+      // System.out.println("Move: " + move);
+      // System.out.println("Evaluation: " + v);
 
       this.ataxxGame.undoLastMove();
 
@@ -83,7 +102,7 @@ class AtaxxAI {
 
         System.out.println("New Best Move: " + move);
         System.out.println("New Best Evaluation: " + v);
-        System.out.println("Node Count: " + this.nodeCount);
+        System.out.println("Node Count to this point: " + this.nodeCount);
       }
       alpha = Math.max(alpha, v);
       if (alpha >= beta) {

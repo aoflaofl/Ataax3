@@ -27,7 +27,7 @@ class AtaxxController {
    * Start control of the Ataxx Game.
    */
   final void control() {
-    int depth = 1;
+    int depth = 2;
     try (Scanner scan = new Scanner(System.in, "UTF-8")) {
       String text;
       do {
@@ -69,7 +69,7 @@ class AtaxxController {
           case "play":
             while (!this.ataxxGame.isOver()) {
               if (this.ataxxGame.getToMove() == AtaxxColor.BLACK) {
-                depth = 8;
+                depth = 2;
               } else {
                 depth = 8;
               }

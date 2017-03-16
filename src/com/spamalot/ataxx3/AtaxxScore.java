@@ -13,6 +13,9 @@ class AtaxxScore {
   /** White score. */
   private int white;
 
+  /** Number of blocked squares. */
+  private int blocked;
+
   /**
    * @return the black
    */
@@ -35,10 +38,13 @@ class AtaxxScore {
    *          Count of black pieces
    * @param w
    *          Count of white pieces
+   * @param blocked
+   *          Number of blocked squares
    */
-  AtaxxScore(final int b, final int w) {
+  AtaxxScore(final int b, final int w, final int bl) {
     this.black = b;
     this.white = w;
+    this.blocked = bl;
   }
 
   /**
@@ -70,6 +76,10 @@ class AtaxxScore {
     builder.append(this.white);
     builder.append("]");
     return builder.toString();
+  }
+
+  public int getBlocked() {
+    return blocked;
   }
 
 }

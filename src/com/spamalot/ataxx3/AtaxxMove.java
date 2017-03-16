@@ -49,6 +49,9 @@ class AtaxxMove implements Comparable<AtaxxMove> {
   /** What Type of Ataxx move this is. */
   private Type type;
 
+  /** AI evaluation of move. Set to min value until evaluated. */
+  private int evaluation = Integer.MIN_VALUE;
+
   /**
    * Construct an Ataxx Move.
    * 
@@ -123,20 +126,35 @@ class AtaxxMove implements Comparable<AtaxxMove> {
     builder.append(this.from);
     builder.append(", to=");
     builder.append(this.to);
+    builder.append(", evaluation=");
+    builder.append(this.evaluation);
     builder.append("]");
     return builder.toString();
   }
 
   @Override
   public int compareTo(final AtaxxMove o) {
-    if (this.getType() == o.getType()) {
-      return 0;
-    }
 
-    if (this.getType() == Type.JUMP) {
+    if (this.evaluation == o.evaluation) {
+      if (this.getType() == o.getType()) {
+        return 0;
+      }
+      if (this.getType() == Type.JUMP) {
+        return 1;
+      }
       return -1;
     }
 
-    return 1;
+    return o.evaluation - this.evaluation;
+  }
+
+  /**
+   * Set the eveluation.
+   * 
+   * @param v
+   *          the evaluation of this move
+   */
+  public void setEvaluation(final int v) {
+    this.evaluation = v;
   }
 }
