@@ -2,7 +2,7 @@ package com.spamalot.ataxx3;
 
 /**
  * Hold the score of an AtaxxGame.
- * 
+ *
  * @author gej
  *
  */
@@ -13,8 +13,19 @@ class AtaxxScore {
   /** White score. */
   private int white;
 
-  /** Number of blocked squares. */
-  private int blocked;
+  /**
+   * Construct a score object.
+   *
+   * @param b
+   *          Count of black pieces
+   * @param w
+   *          Count of white pieces
+   *
+   */
+  AtaxxScore(final int b, final int w) {
+    this.black = b;
+    this.white = w;
+  }
 
   /**
    * @return the black
@@ -24,34 +35,18 @@ class AtaxxScore {
   }
 
   /**
+   * @return the white
+   */
+  public int getWhite() {
+    return this.white;
+  }
+
+  /**
    * @param b
    *          the black score to set
    */
   public void setBlack(final int b) {
     this.black = b;
-  }
-
-  /**
-   * Construct a score object.
-   * 
-   * @param b
-   *          Count of black pieces
-   * @param w
-   *          Count of white pieces
-   * @param blocked
-   *          Number of blocked squares
-   */
-  AtaxxScore(final int b, final int w, final int bl) {
-    this.black = b;
-    this.white = w;
-    this.blocked = bl;
-  }
-
-  /**
-   * @return the white
-   */
-  public int getWhite() {
-    return this.white;
   }
 
   /**
@@ -64,7 +59,7 @@ class AtaxxScore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.lang.Object#toString()
    */
   @Override
@@ -77,9 +72,4 @@ class AtaxxScore {
     builder.append("]");
     return builder.toString();
   }
-
-  public int getBlocked() {
-    return blocked;
-  }
-
 }

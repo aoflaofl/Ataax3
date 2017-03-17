@@ -60,10 +60,10 @@ class AtaxxGame {
     dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(0, this.board.getNumFiles() - 1));
     dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(this.board.getNumRanks() - 1, 0));
 
-    this.board.getSquareAt(1, 1).setBlocked();
-    this.board.getSquareAt(5, 5).setBlocked();
-    this.board.getSquareAt(1, 5).setBlocked();
-    this.board.getSquareAt(5, 1).setBlocked();
+//    this.board.getSquareAt(1, 1).setBlocked();
+//    this.board.getSquareAt(5, 5).setBlocked();
+//    this.board.getSquareAt(1, 5).setBlocked();
+//    this.board.getSquareAt(5, 1).setBlocked();
 
     // dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(0,
     // 2));
@@ -431,7 +431,7 @@ class AtaxxGame {
   public boolean isOver() {
     AtaxxScore s = getScore();
 
-    int boardSize = getNumFiles() * getNumRanks() - s.getBlocked();
+    int boardSize = getNumFiles() * getNumRanks();
 
     return ((s.getBlack() + s.getWhite()) == boardSize) || s.getBlack() == 0 || s.getWhite() == 0;
   }

@@ -1,7 +1,5 @@
 package com.spamalot.ataxx3;
 
-import com.spamalot.ataxx3.AtaxxSquare.Type;
-
 /**
  * A square on an Ataxx Board.
  * 
@@ -106,7 +104,7 @@ class AtaxxSquare {
   }
 
   /**
-   * Remove and return a piece from the board.
+   * Remove and return a piece from the Square.
    * 
    * @return the AtaxxPiece in this square.
    */
@@ -122,7 +120,7 @@ class AtaxxSquare {
    * @return true if square is empty.
    */
   public boolean isEmpty() {
-    return this.type != Type.BLOCKED && this.piece == null;
+    return this.type == Type.PLAYABLE && this.piece == null;
   }
 
   /*
@@ -134,7 +132,7 @@ class AtaxxSquare {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.coordinate == null) ? 0 : this.coordinate.hashCode());
+    result = prime * result + this.coordinate.hashCode();
     return result;
   }
 
@@ -178,12 +176,17 @@ class AtaxxSquare {
     return builder.toString();
   }
 
+  /**
+   * Set this as a blocked square.
+   */
   public void setBlocked() {
     this.type = Type.BLOCKED;
   }
 
+  /**
+   * @return true if this is a blocked square.
+   */
   public boolean isBlocked() {
-    // TODO Auto-generated method stub
-    return type == Type.BLOCKED;
+    return this.type == Type.BLOCKED;
   }
 }
