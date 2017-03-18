@@ -60,10 +60,10 @@ class AtaxxGame {
     dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(0, this.board.getNumFiles() - 1));
     dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(this.board.getNumRanks() - 1, 0));
 
-//    this.board.getSquareAt(1, 1).setBlocked();
-//    this.board.getSquareAt(5, 5).setBlocked();
-//    this.board.getSquareAt(1, 5).setBlocked();
-//    this.board.getSquareAt(5, 1).setBlocked();
+    // this.board.getSquareAt(1, 1).setBlocked();
+    // this.board.getSquareAt(5, 5).setBlocked();
+    // this.board.getSquareAt(1, 5).setBlocked();
+    // this.board.getSquareAt(5, 1).setBlocked();
 
     // dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(0,
     // 2));
@@ -442,16 +442,23 @@ class AtaxxGame {
    * @return evaluation value.
    */
   public int evaluate() {
+
     AtaxxScore s = getScore();
+
+    int material = 0;
     if (s.getWhite() == 0) {
-      return -1000;
-    }
+      material = -1000;
+    } else
 
     if (s.getBlack() == 0) {
-      return +1000;
+      material = +1000;
+    } else {
+
+      material = s.getWhite() - s.getBlack();
     }
 
-    return s.getWhite() - s.getBlack();
+    int position = 0;
+    return material * 100 + position;
   }
 
   /**

@@ -233,17 +233,4 @@ class AtaxxBoard {
 
     return s.toString();
   }
-
-  /**
-   * Get the Square.
-   * 
-   * @param file
-   *          the x ordinate
-   * @param rank
-   *          the y ordinate
-   * @return the square.
-   */
-  // public AtaxxSquare getSquareAtCoord(final int file, final int rank) {
-  // return this.squares[file][rank];
-  // }
 }

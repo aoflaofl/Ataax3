@@ -10,6 +10,9 @@ import java.util.List;
  *
  */
 class AtaxxAI {
+  /** Used for setting the maximum values for alpha, beta and bestValue. */
+  private static final int MAX_VAL = 1000000;
+
   /** Game to think about. */
   private AtaxxGame ataxxGame;
 
@@ -27,7 +30,7 @@ class AtaxxAI {
   }
 
   /** Hold list of moves from curent game location. */
-  private List<AtaxxMove> globalChildMoves;
+  // private List<AtaxxMove> globalChildMoves;
 
   /**
    * Start thinking using iterative deepening.
@@ -41,19 +44,18 @@ class AtaxxAI {
       return null;
     }
 
-    this.globalChildMoves = this.ataxxGame.getAvailableMoves();
+    int i = 0;
+
+    List<AtaxxMove> globalChildMoves = this.ataxxGame.getAvailableMoves();
 
     AtaxxMove m = null;
-    for (int iter = 1; iter <= depth; iter++) {
-      Collections.sort(this.globalChildMoves);
-      // System.out.println("Sorted List of Moves for Iteration " + iter);
-      for (AtaxxMove mo : this.globalChildMoves) {
-        // System.out.println(mo);
-        mo.setEvaluation(Integer.MIN_VALUE);
-      }
-      // System.out.println("End Sorted List of Moves: ");
-      System.out.println("Iteration " + iter);
-      m = negaMaxAlphaBetaRoot(iter);
+    for (int iter = 1; iter <= depth; iter += 2) {
+      Collections.shuffle(globalChildMoves);
+
+      System.out.println("Iteration " + i);
+      
+      m = negaMaxAlphaBetaRoot(globalChildMoves, 2 * i + 1);i++;
+      System.out.println();
     }
     return m;
   }
@@ -65,21 +67,21 @@ class AtaxxAI {
    *          How deep to search
    * @return the best move found.
    */
-  private AtaxxMove negaMaxAlphaBetaRoot(final int depth) {
+  private AtaxxMove negaMaxAlphaBetaRoot(List<AtaxxMove> globalChildMoves, final int depth) {
+    System.out.println("Searching to a depth of " + depth);
+
     int color = 1;
     if (this.ataxxGame.getToMove() == AtaxxColor.BLACK) {
       color = -1;
     }
 
-    int alpha = Integer.MIN_VALUE;
-    int beta = Integer.MAX_VALUE;
+    int alpha = -MAX_VAL;
+    int beta = MAX_VAL;
 
-    // Collections.sort(this.globalChildMoves);
-
-    int bestValue = Integer.MIN_VALUE;
+    int bestValue = -MAX_VAL;
     AtaxxMove bestMove = null;
 
-    for (AtaxxMove move : this.globalChildMoves) {
+    for (AtaxxMove move : globalChildMoves) {
       try {
         this.ataxxGame.makeMove(move);
         this.nodeCount++;
@@ -90,9 +92,6 @@ class AtaxxAI {
       }
       int v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -alpha, -color);
       move.setEvaluation(v);
-
-      // System.out.println("Move: " + move);
-      // System.out.println("Evaluation: " + v);
 
       this.ataxxGame.undoLastMove();
 
@@ -148,22 +147,20 @@ class AtaxxAI {
     if (depth == 0 || game.isOver()) {
       return color * game.evaluate();
     }
-    // System.out.println("Alpha: " + alpha + " Beta: " + beta);
+
     List<AtaxxMove> childMoves = game.getAvailableMoves();
+    Collections.shuffle(childMoves);
     if (childMoves.size() == 0) {
       childMoves.add(null);
     }
-    // Order Moves Here
-    int bestValue = Integer.MIN_VALUE;
+
+    int bestValue = -MAX_VAL;
     int newAlpha = alpha;
     for (AtaxxMove move : childMoves) {
       try {
-        // System.out.println(move);
         game.makeMove(move);
         this.nodeCount++;
-        // System.out.println(game);
       } catch (AtaxxException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
         System.out.println("This is me: " + game);
         System.out.println("This is the move that made me cry: " + move);
@@ -207,7 +204,7 @@ class AtaxxAI {
       return color * game.evaluate();
     }
 
-    int bestValue = Integer.MIN_VALUE;
+    int bestValue = -MAX_VAL;
 
     List<AtaxxMove> childMoves = game.getAvailableMoves();
     // Order Moves Here
