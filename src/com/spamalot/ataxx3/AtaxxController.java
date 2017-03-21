@@ -56,12 +56,7 @@ class AtaxxController {
 
             System.out.println("Move:\n" + move);
 
-            try {
-              this.ataxxGame.makeMove(move);
-            } catch (AtaxxException e1) {
-              // TODO Auto-generated catch block
-              e1.printStackTrace();
-            }
+            this.ataxxGame.makeMove(move);
             System.out.println(this.ataxxGame.boardToString());
             System.out.println("Color to move: " + this.ataxxGame.getToMove());
             System.out.println(this.ataxxGame.getScore());
@@ -71,17 +66,11 @@ class AtaxxController {
               if (this.ataxxGame.getToMove() == AtaxxColor.BLACK) {
                 depth = 3;
               } else {
-                depth = 7;
+                depth = 4;
               }
               AtaxxAI aip = new AtaxxAI(this.ataxxGame);
               AtaxxMove movep = aip.think(depth);
-              // System.out.println("Move:\n" + movep);
-              try {
-                this.ataxxGame.makeMove(movep);
-              } catch (AtaxxException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-              }
+              this.ataxxGame.makeMove(movep);
               System.out.println(this.ataxxGame.boardToString());
               System.out.println("Color to move: " + this.ataxxGame.getToMove());
               System.out.println(this.ataxxGame.getScore());

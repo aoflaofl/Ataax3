@@ -42,7 +42,7 @@ class AtaxxBoard {
     this.setNumFiles(files);
     this.setNumRanks(ranks);
 
-    this.squares = new AtaxxSquare[files][ranks];
+    this.setSquares(new AtaxxSquare[files][ranks]);
 
     initBoard();
   }
@@ -53,20 +53,8 @@ class AtaxxBoard {
   private void initBoard() {
     for (int file = 0; file < getNumFiles(); file++) {
       for (int rank = 0; rank < getNumRanks(); rank++) {
-        this.squares[file][rank] = new AtaxxSquare(AtaxxSquare.Type.PLAYABLE, file, rank);
+        squares[file][rank] = new AtaxxSquare(AtaxxSquare.Type.PLAYABLE, file, rank);
       }
-    }
-  }
-
-  /**
-   * Flip the pieces in the AtaxxSquares in the list.
-   * 
-   * @param listOfSquares
-   *          List of Coordinates of pieces to flip
-   */
-  static final void flipPiecesInSquares(final List<AtaxxSquare> listOfSquares) {
-    for (AtaxxSquare square : listOfSquares) {
-      square.getPiece().flip();
     }
   }
 
@@ -113,7 +101,7 @@ class AtaxxBoard {
    * @return the AtaxxSquare.
    */
   public AtaxxSquare getSquareAt(final int file, final int rank) {
-    return this.squares[file][rank];
+    return this.getSquares()[file][rank];
   }
 
   /**
@@ -131,7 +119,7 @@ class AtaxxBoard {
    * @return the board.
    */
   private AtaxxSquare[][] getSquareBoard() {
-    return this.squares;
+    return this.getSquares();
   }
 
   /**
@@ -186,7 +174,7 @@ class AtaxxBoard {
 
     for (int i = 0; i < getNumRanks(); i++) {
       for (int j = 0; j < getNumFiles(); j++) {
-        AtaxxSquare ataxxSquare = this.squares[j][i];
+        AtaxxSquare ataxxSquare = this.getSquares()[j][i];
         AtaxxPiece p = ataxxSquare.getPiece();
         if (p != null) {
           if (p.getColor() == AtaxxColor.BLACK) {
@@ -232,5 +220,20 @@ class AtaxxBoard {
     }
 
     return s.toString();
+  }
+
+  /**
+   * @return the squares
+   */
+  public AtaxxSquare[][] getSquares() {
+    return squares;
+  }
+
+  /**
+   * @param squares
+   *          the squares to set
+   */
+  public void setSquares(AtaxxSquare[][] squares) {
+    this.squares = squares;
   }
 }

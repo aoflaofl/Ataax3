@@ -2,7 +2,7 @@ package com.spamalot.ataxx3;
 
 /**
  * A piece in an Ataxx game.
- * 
+ *
  * @author gej
  *
  */
@@ -13,7 +13,7 @@ class AtaxxPiece {
 
   /**
    * Construct an Ataxx piece.
-   * 
+   *
    * @param c
    *          the color.
    */
@@ -21,9 +21,14 @@ class AtaxxPiece {
     this.setColor(c);
   }
 
+  /** Flip the color of this piece. */
+  public final void flip() {
+    setColor(this.color.getOpposite());
+  }
+
   /**
    * Get the color.
-   * 
+   *
    * @return the color.
    */
   public final AtaxxColor getColor() {
@@ -32,17 +37,12 @@ class AtaxxPiece {
 
   /**
    * Set the color.
-   * 
+   *
    * @param c
    *          the color.
    */
   private void setColor(final AtaxxColor c) {
     this.color = c;
-  }
-
-  /** Flip the color of this piece. */
-  public final void flip() {
-    setColor(this.color.getOpposite());
   }
 
   @Override

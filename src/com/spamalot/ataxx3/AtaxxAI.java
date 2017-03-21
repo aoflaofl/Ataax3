@@ -11,7 +11,7 @@ import java.util.List;
  */
 class AtaxxAI {
   /** Used for setting the maximum values for alpha, beta and bestValue. */
-  private static final int MAX_VAL = 1000000;
+  private static final int MAX_VAL = Integer.MAX_VALUE;
 
   /** Game to think about. */
   private AtaxxGame ataxxGame;
@@ -35,26 +35,24 @@ class AtaxxAI {
   /**
    * Start thinking using iterative deepening.
    * 
-   * @param depth
+   * @param maxIteration
    *          How deep to evaluate
    * @return the best move.
    */
-  final AtaxxMove think(final int depth) {
-    if (depth < 1) {
+  final AtaxxMove think(final int maxIteration) {
+    if (maxIteration < 1) {
       return null;
     }
-
-    int i = 0;
 
     List<AtaxxMove> globalChildMoves = this.ataxxGame.getAvailableMoves();
 
     AtaxxMove m = null;
-    for (int iter = 1; iter <= depth; iter += 2) {
-      Collections.shuffle(globalChildMoves);
+    for (int i = 0; i < maxIteration; i++) {
+      Collections.sort(globalChildMoves);
 
       System.out.println("Iteration " + i);
-      
-      m = negaMaxAlphaBetaRoot(globalChildMoves, 2 * i + 1);i++;
+
+      m = negaMaxAlphaBetaRoot(globalChildMoves, 2 * i + 1);
       System.out.println();
     }
     return m;
@@ -67,7 +65,7 @@ class AtaxxAI {
    *          How deep to search
    * @return the best move found.
    */
-  private AtaxxMove negaMaxAlphaBetaRoot(List<AtaxxMove> globalChildMoves, final int depth) {
+  private AtaxxMove negaMaxAlphaBetaRoot(final List<AtaxxMove> moveList, final int depth) {
     System.out.println("Searching to a depth of " + depth);
 
     int color = 1;
@@ -81,15 +79,9 @@ class AtaxxAI {
     int bestValue = -MAX_VAL;
     AtaxxMove bestMove = null;
 
-    for (AtaxxMove move : globalChildMoves) {
-      try {
-        this.ataxxGame.makeMove(move);
-        this.nodeCount++;
-      } catch (AtaxxException e) {
-        e.printStackTrace();
-        System.out.println("This is me: " + this.ataxxGame);
-        System.out.println("This is the move that made me cry: " + move);
-      }
+    for (AtaxxMove move : moveList) {
+      this.ataxxGame.makeMove(move);
+      this.nodeCount++;
       int v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -alpha, -color);
       move.setEvaluation(v);
 
@@ -144,12 +136,13 @@ class AtaxxAI {
    * @return an evaluation.
    */
   private int negaMaxAlphaBeta(final AtaxxGame game, final int depth, final int alpha, final int beta, final int color) {
-    if (depth == 0 || game.isOver()) {
-      return color * game.evaluate();
+    boolean gameOver = game.isOver();
+    if (depth == 0 || gameOver) {
+      return color * game.evaluate(gameOver);
     }
 
     List<AtaxxMove> childMoves = game.getAvailableMoves();
-    Collections.shuffle(childMoves);
+    Collections.sort(childMoves);
     if (childMoves.size() == 0) {
       childMoves.add(null);
     }
@@ -157,14 +150,8 @@ class AtaxxAI {
     int bestValue = -MAX_VAL;
     int newAlpha = alpha;
     for (AtaxxMove move : childMoves) {
-      try {
-        game.makeMove(move);
-        this.nodeCount++;
-      } catch (AtaxxException e) {
-        e.printStackTrace();
-        System.out.println("This is me: " + game);
-        System.out.println("This is the move that made me cry: " + move);
-      }
+      game.makeMove(move);
+      this.nodeCount++;
       int v = -negaMaxAlphaBeta(game, depth - 1, -beta, -newAlpha, -color);
       game.undoLastMove();
 
@@ -200,8 +187,9 @@ class AtaxxAI {
    * @return evaluation of position.
    */
   private int negamax(final AtaxxGame game, final int depth, final int color) {
-    if (depth == 0 || game.isOver()) {
-      return color * game.evaluate();
+    boolean gameOver = game.isOver();
+    if (depth == 0 || gameOver) {
+      return color * game.evaluate(gameOver);
     }
 
     int bestValue = -MAX_VAL;
@@ -210,19 +198,12 @@ class AtaxxAI {
     // Order Moves Here
     for (AtaxxMove move : childMoves) {
 
-      try {
-        // System.out.println(move);
-        game.makeMove(move);
-        this.nodeCount++;
-        int v = -negamax(game, depth - 1, -color);
-        bestValue = Math.max(v, bestValue);
-        game.undoLastMove();
-      } catch (AtaxxException e) {
-
-        e.printStackTrace();
-        System.out.println("This is me: " + game);
-        System.out.println("This is the move that made me cry: " + move);
-      }
+      // System.out.println(move);
+      game.makeMove(move);
+      this.nodeCount++;
+      int v = -negamax(game, depth - 1, -color);
+      bestValue = Math.max(v, bestValue);
+      game.undoLastMove();
 
     }
     return bestValue;
