@@ -427,23 +427,38 @@ class AtaxxGame {
    * @return evaluation value.
    */
   public int evaluate(boolean gameOver) {
+    AtaxxSquare[][] b = this.board.getSquares();
 
-    AtaxxScore s = getScore();
+    int numRanks = this.getNumRanks();
+    int numFiles = this.getNumFiles();
+
+    int white = 0;
+    int black = 0;
+    for (int f = 0; f < numFiles; f++) {
+      for (int r = 0; r < numRanks; r++) {
+        AtaxxPiece p = b[f][r].getPiece();
+        if (p != null) {
+          if (p.getColor() == AtaxxColor.WHITE) {
+            white++;
+          } else {
+            black++;
+          }
+        }
+      }
+    }
+    // AtaxxScore s = getScore();
 
     if (gameOver) {
-      return s.getWhite() - s.getBlack() * 10000;
+      return (white - black) * 10000;
     }
 
     int material = 0;
-    if (s.getWhite() == 0) {
-      material = -10000;
-    } else
-
-    if (s.getBlack() == 0) {
-      material = +10000;
+    if (white == 0) {
+      material = -1000;
+    } else if (black == 0) {
+      material = 1000;
     } else {
-
-      material = s.getWhite() - s.getBlack();
+      material = white - black;
     }
 
     int position = 0;

@@ -46,14 +46,37 @@ class AtaxxAI {
 
     List<AtaxxMove> globalChildMoves = this.ataxxGame.getAvailableMoves();
 
+    int alpha = -100; // -MAX_VAL;
+    int beta = 100; // MAX_VAL;
+
     AtaxxMove m = null;
+
     for (int i = 0; i < maxIteration; i++) {
       Collections.sort(globalChildMoves);
+      int pass = 0;
+      boolean failed = true;
+      while (failed) {
+        System.out.println("Iteration " + i + "." + pass + "  Window: alpha=" + alpha + " beta=" + beta);
+        pass++;
 
-      System.out.println("Iteration " + i);
+        m = negaMaxAlphaBetaRoot(globalChildMoves, alpha, beta, 2 * i + 1);
+        System.out.println();
 
-      m = negaMaxAlphaBetaRoot(globalChildMoves, 2 * i + 1);
-      System.out.println();
+        if (m.getEvaluation() >= beta) {
+          System.out.println("Failed High: " + m);
+          beta = beta + 100;
+          failed = true;
+        } else if (m.getEvaluation() <= alpha) {
+          System.out.println("Failed Low: " + m);
+          alpha = alpha - 100;
+          failed = true;
+        } else {
+          alpha = m.getEvaluation() - 50;
+          beta = m.getEvaluation() + 50;
+          failed = false;
+        }
+      }
+
     }
     return m;
   }
@@ -65,7 +88,7 @@ class AtaxxAI {
    *          How deep to search
    * @return the best move found.
    */
-  private AtaxxMove negaMaxAlphaBetaRoot(final List<AtaxxMove> moveList, final int depth) {
+  private AtaxxMove negaMaxAlphaBetaRoot(final List<AtaxxMove> moveList, int alpha, int beta, final int depth) {
     System.out.println("Searching to a depth of " + depth);
 
     int color = 1;
@@ -73,17 +96,20 @@ class AtaxxAI {
       color = -1;
     }
 
-    int alpha = -MAX_VAL;
-    int beta = MAX_VAL;
+    // int alpha = -MAX_VAL;
+    // int beta = MAX_VAL;
 
     int bestValue = -MAX_VAL;
     AtaxxMove bestMove = null;
 
     for (AtaxxMove move : moveList) {
+      System.out.println("        Evaluating move " + move);
       this.ataxxGame.makeMove(move);
       this.nodeCount++;
       int v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -alpha, -color);
       move.setEvaluation(v);
+
+      // System.out.println(move);
 
       this.ataxxGame.undoLastMove();
 

@@ -157,4 +157,8 @@ class AtaxxMove implements Comparable<AtaxxMove> {
   public void setEvaluation(final int v) {
     this.evaluation = v;
   }
+
+  public int getEvaluation() {
+    return this.evaluation;
+  }
 }
