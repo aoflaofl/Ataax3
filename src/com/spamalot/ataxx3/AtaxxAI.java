@@ -10,6 +10,12 @@ import java.util.List;
  *
  */
 class AtaxxAI {
+  private static final int DIFF_MODIFIER = 2;
+
+  private static final int INITIAL_AB = 1;
+
+  private static final int INITIAL_DIFF = 50;
+
   /** Used for setting the maximum values for alpha, beta and bestValue. */
   private static final int MAX_VAL = Integer.MAX_VALUE;
 
@@ -17,7 +23,7 @@ class AtaxxAI {
   private AtaxxGame ataxxGame;
 
   /** How many nodes were looked at in the search. */
-  private int nodeCount = 0;
+  private long nodeCount = 0;
 
   /**
    * Construct a thinker.
@@ -46,8 +52,14 @@ class AtaxxAI {
 
     List<AtaxxMove> globalChildMoves = this.ataxxGame.getAvailableMoves();
 
-    int alpha = -100; // -MAX_VAL;
-    int beta = 100; // MAX_VAL;
+    int origAlpha = -INITIAL_AB; // -MAX_VAL;
+    int origBeta = INITIAL_AB; // MAX_VAL;
+
+    int alphaDiff = -INITIAL_DIFF;
+    int betaDiff = INITIAL_DIFF;
+
+    int alpha = 0;
+    int beta = 0;
 
     AtaxxMove m = null;
 
@@ -56,23 +68,27 @@ class AtaxxAI {
       int pass = 0;
       boolean failed = true;
       while (failed) {
+        alpha = origAlpha + alphaDiff;
+        beta = origBeta + betaDiff;
         System.out.println("Iteration " + i + "." + pass + "  Window: alpha=" + alpha + " beta=" + beta);
         pass++;
 
-        m = negaMaxAlphaBetaRoot(globalChildMoves, alpha, beta, 2 * i + 1);
+        m = negaMaxAlphaBetaRoot(globalChildMoves, alpha + alphaDiff, beta + betaDiff, 2 * i + 1);
         System.out.println();
 
         if (m.getEvaluation() >= beta) {
           System.out.println("Failed High: " + m);
-          beta = beta + 100;
+          betaDiff = betaDiff * DIFF_MODIFIER;
           failed = true;
         } else if (m.getEvaluation() <= alpha) {
           System.out.println("Failed Low: " + m);
-          alpha = alpha - 100;
+          alphaDiff = alphaDiff * DIFF_MODIFIER;
           failed = true;
         } else {
-          alpha = m.getEvaluation() - 50;
-          beta = m.getEvaluation() + 50;
+          origAlpha = m.getEvaluation();
+          origBeta = m.getEvaluation();
+          alphaDiff = -INITIAL_DIFF;
+          betaDiff = INITIAL_DIFF;
           failed = false;
         }
       }
@@ -189,6 +205,34 @@ class AtaxxAI {
     }
 
     return bestValue;
+  }
+
+  private int negaMaxAlphaBetaFailHard(final AtaxxGame game, final int depth, final int alpha, final int beta, final int color) {
+    boolean gameOver = game.isOver();
+    if (depth == 0 || gameOver) {
+      return color * game.evaluate(gameOver);
+    }
+
+    List<AtaxxMove> childMoves = game.getAvailableMoves();
+    Collections.sort(childMoves);
+    if (childMoves.size() == 0) {
+      childMoves.add(null);
+    }
+
+    int newAlpha = alpha;
+    for (AtaxxMove move : childMoves) {
+      game.makeMove(move);
+      this.nodeCount++;
+      int v = -negaMaxAlphaBetaFailHard(game, depth - 1, -beta, -newAlpha, -color);
+      game.undoLastMove();
+
+      if (v > beta) {
+        return beta;
+      }
+      newAlpha = Math.max(newAlpha, v);      
+    }
+
+    return newAlpha;
   }
 
   // 01 function negamax(node, depth, color)

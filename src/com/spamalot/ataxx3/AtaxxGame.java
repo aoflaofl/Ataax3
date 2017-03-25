@@ -426,7 +426,7 @@ class AtaxxGame {
    * 
    * @return evaluation value.
    */
-  public int evaluate(boolean gameOver) {
+  public int evaluate(final boolean gameOver) {
     AtaxxSquare[][] b = this.board.getSquares();
 
     int numRanks = this.getNumRanks();

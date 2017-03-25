@@ -53,7 +53,7 @@ class AtaxxBoard {
   private void initBoard() {
     for (int file = 0; file < getNumFiles(); file++) {
       for (int rank = 0; rank < getNumRanks(); rank++) {
-        squares[file][rank] = new AtaxxSquare(AtaxxSquare.Type.PLAYABLE, file, rank);
+        this.squares[file][rank] = new AtaxxSquare(AtaxxSquare.Type.PLAYABLE, file, rank);
       }
     }
   }
@@ -226,14 +226,14 @@ class AtaxxBoard {
    * @return the squares
    */
   public AtaxxSquare[][] getSquares() {
-    return squares;
+    return this.squares;
   }
 
   /**
-   * @param squares
+   * @param sqs
    *          the squares to set
    */
-  public void setSquares(AtaxxSquare[][] squares) {
-    this.squares = squares;
+  public void setSquares(final AtaxxSquare[][] sqs) {
+    this.squares = sqs;
   }
 }
