@@ -1,12 +1,12 @@
 package com.spamalot.ataxx3;
 
 /**
- * Colors in a game of Ataxx.
+ * Colors of pieces in a board game.
  * 
  * @author gej
  *
  */
-enum AtaxxColor {
+enum PieceColor {
 
   /** White. */
   WHITE,
@@ -14,7 +14,7 @@ enum AtaxxColor {
   BLACK;
 
   /** Opposite color. */
-  private AtaxxColor opposite;
+  private PieceColor opposite;
 
   /** What the color looks like when printed. */
   private String representation;
@@ -29,7 +29,7 @@ enum AtaxxColor {
   /**
    * @return the opposite color.
    */
-  AtaxxColor getOpposite() {
+  PieceColor getOpposite() {
     return this.opposite;
   }
 

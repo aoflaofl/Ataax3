@@ -15,37 +15,37 @@ public class AtaxxPieceTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.ataxx3.AtaxxPiece#AtaxxPiece(com.spamalot.ataxx3.AtaxxColor)}.
+   * {@link com.spamalot.ataxx3.Piece#AtaxxPiece(com.spamalot.ataxx3.PieceColor)}.
    */
   @SuppressWarnings("static-method")
   @Test
   public final void testAtaxxPiece() {
-    AtaxxPiece p = new AtaxxPiece(AtaxxColor.WHITE);
+    Piece p = new Piece(PieceColor.WHITE);
     assertNotNull(p);
   }
 
   /**
-   * Test method for {@link com.spamalot.ataxx3.AtaxxPiece#getColor()}.
+   * Test method for {@link com.spamalot.ataxx3.Piece#getColor()}.
    */
   @SuppressWarnings("static-method")
   @Test
   public final void testGetColor() {
-    AtaxxPiece p = new AtaxxPiece(AtaxxColor.BLACK);
-    assertEquals(AtaxxColor.BLACK, p.getColor());
+    Piece p = new Piece(PieceColor.BLACK);
+    assertEquals(PieceColor.BLACK, p.getColor());
   }
 
   /**
    * Test method for
-   * {@link com.spamalot.ataxx3.AtaxxPiece#setColor(com.spamalot.ataxx3.AtaxxColor)}.
+   * {@link com.spamalot.ataxx3.Piece#setColor(com.spamalot.ataxx3.PieceColor)}.
    */
   @SuppressWarnings("static-method")
   @Test
   public final void testFlip() {
-    AtaxxPiece p = new AtaxxPiece(AtaxxColor.BLACK);
+    Piece p = new Piece(PieceColor.BLACK);
     p.flip();
-    assertEquals(AtaxxColor.WHITE, p.getColor());
+    assertEquals(PieceColor.WHITE, p.getColor());
     p.flip();
-    assertEquals(AtaxxColor.BLACK, p.getColor());
+    assertEquals(PieceColor.BLACK, p.getColor());
 
   }
 }

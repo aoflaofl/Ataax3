@@ -17,7 +17,7 @@ class AtaxxMoveGenerator {
   private AtaxxGame ataxxGame;
 
   /** Avoid coordinates of expand moves that have already been seen. */
-  private Set<AtaxxSquare> seen = new HashSet<>();
+  private Set<Square> seen = new HashSet<>();
 
   /**
    * Construct the move generator.
@@ -36,12 +36,12 @@ class AtaxxMoveGenerator {
    *          Color to move.
    * @return list of moves.
    */
-  public List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
+  public List<AtaxxMove> getAvailableMoves(final PieceColor toMove) {
     List<AtaxxMove> result = new ArrayList<>();
     this.seen.clear();
     for (int rank = 0; rank < this.ataxxGame.getNumRanks(); rank++) {
       for (int file = 0; file < this.ataxxGame.getNumFiles(); file++) {
-        AtaxxSquare sq = this.ataxxGame.getSquareAt(file, rank);
+        Square sq = this.ataxxGame.getSquareAt(file, rank);
         if (sq.getPiece() != null && sq.getPiece().getColor().equals(toMove)) {
           result.addAll(generateMovesForSquare(sq));
         }
@@ -58,7 +58,7 @@ class AtaxxMoveGenerator {
    *          Square to generate moves for
    * @return A list of moves.
    */
-  private List<AtaxxMove> generateMovesForSquare(final AtaxxSquare square) {
+  private List<AtaxxMove> generateMovesForSquare(final Square square) {
     int squareRank = square.getRank();
     int squareFile = square.getFile();
 
@@ -68,14 +68,14 @@ class AtaxxMoveGenerator {
       for (int rankDiff = -2; rankDiff <= 2; rankDiff++) {
         if (Math.abs(fileDiff) == 2 || Math.abs(rankDiff) == 2) {
           // We've got a jumper
-          AtaxxSquare toSquare = this.ataxxGame.getSquareAt(squareFile + fileDiff, squareRank + rankDiff);
+          Square toSquare = this.ataxxGame.getSquareAt(squareFile + fileDiff, squareRank + rankDiff);
           if (toSquare != null && toSquare.isEmpty()) {
             result.add(new AtaxxMove(AtaxxMove.Type.JUMP, square.getPiece().getColor(), square, toSquare));
           }
         } else {
           if (!(fileDiff == 0 && rankDiff == 0)) {
             // It's an expansion
-            AtaxxSquare toSquare = this.ataxxGame.getSquareAt(squareFile + fileDiff, squareRank + rankDiff);
+            Square toSquare = this.ataxxGame.getSquareAt(squareFile + fileDiff, squareRank + rankDiff);
             if (toSquare != null && toSquare.isEmpty()) {
               if (!this.seen.contains(toSquare)) {
                 this.seen.add(toSquare);

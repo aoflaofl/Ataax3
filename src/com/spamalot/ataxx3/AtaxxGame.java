@@ -17,7 +17,7 @@ class AtaxxGame {
   private AtaxxBoard board;
 
   /** Which color is currently to move. White moves first. */
-  private AtaxxColor colorToMove = AtaxxColor.WHITE;
+  private PieceColor colorToMove = PieceColor.WHITE;
 
   /** Stack for undo move list. */
   private Stack<AtaxxUndoMove> undoMoveStack = new Stack<>();
@@ -54,11 +54,11 @@ class AtaxxGame {
    *           when there is some Ataxx related problem.
    */
   private void initBoard() throws AtaxxException {
-    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(0, 0));
-    dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(this.board.getNumRanks() - 1, this.board.getNumFiles() - 1));
+    dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(0, 0));
+    dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(this.board.getNumRanks() - 1, this.board.getNumFiles() - 1));
 
-    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(0, this.board.getNumFiles() - 1));
-    dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(this.board.getNumRanks() - 1, 0));
+    dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(0, this.board.getNumFiles() - 1));
+    dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(this.board.getNumRanks() - 1, 0));
 
     // this.board.getSquareAt(1, 1).setBlocked();
     // this.board.getSquareAt(5, 5).setBlocked();
@@ -93,10 +93,10 @@ class AtaxxGame {
       return;
     }
 
-    AtaxxPiece piece = null;
+    Piece piece = null;
     switch (move.getType()) {
       case EXPAND:
-        piece = new AtaxxPiece(move.getColor());
+        piece = new Piece(move.getColor());
         break;
       case JUMP:
         piece = move.getFrom().pickupPiece();
@@ -106,7 +106,7 @@ class AtaxxGame {
     }
     dropPiece(piece, move.getTo());
 
-    List<AtaxxSquare> flipped = this.board.flipPiecesAroundSquare(move.getTo(), move.getColor());
+    List<Square> flipped = this.board.flipPiecesAroundSquare(move.getTo(), move.getColor());
 
     this.undoMoveStack.push(new AtaxxUndoMove(move, flipped));
 
@@ -131,8 +131,8 @@ class AtaxxGame {
    * @param listOfSquares
    *          List of Coordinates of pieces to flip
    */
-  static final void flipPiecesInSquares(final List<AtaxxSquare> listOfSquares) {
-    for (AtaxxSquare square : listOfSquares) {
+  static final void flipPiecesInSquares(final List<Square> listOfSquares) {
+    for (Square square : listOfSquares) {
       square.getPiece().flip();
     }
   }
@@ -146,7 +146,7 @@ class AtaxxGame {
   private void undoPieceMove(final AtaxxMove move) {
     this.board.putPieceAtCoord(null, move.getTo());
     if (move.getType() == AtaxxMove.Type.JUMP) {
-      this.board.putPieceAtCoord(new AtaxxPiece(move.getColor()), move.getFrom());
+      this.board.putPieceAtCoord(new Piece(move.getColor()), move.getFrom());
     }
   }
 
@@ -166,7 +166,7 @@ class AtaxxGame {
    *          Color to move.
    * @return a list of moves.
    */
-  private List<AtaxxMove> getAvailableMoves(final AtaxxColor toMove) {
+  private List<AtaxxMove> getAvailableMoves(final PieceColor toMove) {
     AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this);
     return gen.getAvailableMoves(toMove);
   }
@@ -182,7 +182,7 @@ class AtaxxGame {
    * @throws AtaxxException
    *           if square is not empty
    */
-  private static void dropPiece(final AtaxxPiece piece, final AtaxxSquare coord) {
+  private static void dropPiece(final Piece piece, final Square coord) {
     // if (coord.getPiece() == null) {
     coord.setPiece(piece);
     // } else {
@@ -214,7 +214,7 @@ class AtaxxGame {
    * @return true if this is a legal color in an Ataxx game.
    */
   private static boolean isLegalColor(final AtaxxMove move) {
-    return (move.getColor() == AtaxxColor.WHITE || move.getColor() == AtaxxColor.BLACK);
+    return (move.getColor() == PieceColor.WHITE || move.getColor() == PieceColor.BLACK);
   }
 
   /**
@@ -226,7 +226,7 @@ class AtaxxGame {
    *         move.
    */
   private static boolean pieceInFromSquareMatchesColor(final AtaxxMove move) {
-    AtaxxPiece piece = move.getFrom().getPiece();
+    Piece piece = move.getFrom().getPiece();
     if (piece == null) {
       return false;
     }
@@ -357,8 +357,8 @@ class AtaxxGame {
       moveType = AtaxxMove.Type.EXPAND;
     }
 
-    AtaxxSquare f = getSquareAt(from.getX(), from.getY());
-    AtaxxSquare t = getSquareAt(to.getX(), to.getY());
+    Square f = getSquareAt(from.getX(), from.getY());
+    Square t = getSquareAt(to.getX(), to.getY());
 
     return new AtaxxMove(moveType, this.colorToMove, f, t);
   }
@@ -384,7 +384,7 @@ class AtaxxGame {
    * 
    * @return the color to move.
    */
-  public AtaxxColor getToMove() {
+  public PieceColor getToMove() {
     return this.colorToMove;
   }
 
@@ -394,7 +394,7 @@ class AtaxxGame {
    * @return true if the game is over.
    */
   public boolean isOver() {
-    AtaxxSquare[][] b = this.board.getSquares();
+    Square[][] b = this.board.getSquares();
 
     int numRanks = this.getNumRanks();
     int numFiles = this.getNumFiles();
@@ -403,9 +403,9 @@ class AtaxxGame {
     int black = 0;
     for (int f = 0; f < numFiles; f++) {
       for (int r = 0; r < numRanks; r++) {
-        AtaxxPiece p = b[f][r].getPiece();
+        Piece p = b[f][r].getPiece();
         if (p != null) {
-          if (p.getColor() == AtaxxColor.WHITE) {
+          if (p.getColor() == PieceColor.WHITE) {
             white++;
           } else {
             black++;
@@ -427,7 +427,7 @@ class AtaxxGame {
    * @return evaluation value.
    */
   public int evaluate(final boolean gameOver) {
-    AtaxxSquare[][] b = this.board.getSquares();
+    Square[][] b = this.board.getSquares();
 
     int numRanks = this.getNumRanks();
     int numFiles = this.getNumFiles();
@@ -436,9 +436,9 @@ class AtaxxGame {
     int black = 0;
     for (int f = 0; f < numFiles; f++) {
       for (int r = 0; r < numRanks; r++) {
-        AtaxxPiece p = b[f][r].getPiece();
+        Piece p = b[f][r].getPiece();
         if (p != null) {
-          if (p.getColor() == AtaxxColor.WHITE) {
+          if (p.getColor() == PieceColor.WHITE) {
             white++;
           } else {
             black++;
@@ -474,7 +474,7 @@ class AtaxxGame {
    *          Y
    * @return the square.
    */
-  public AtaxxSquare getSquareAt(final int file, final int rank) {
+  public Square getSquareAt(final int file, final int rank) {
     if ((file >= 0 && file < this.getNumFiles()) && (rank >= 0 && rank < this.getNumRanks())) {
       return this.board.getSquareAt(file, rank);
     }

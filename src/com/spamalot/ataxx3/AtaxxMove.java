@@ -21,19 +21,19 @@ class AtaxxMove implements Comparable<AtaxxMove> {
   }
 
   /** The color making this move. */
-  private AtaxxColor color;
+  private PieceColor color;
 
   /** The from square. */
-  private AtaxxSquare from;
+  private Square from;
   /** The to square. */
-  private AtaxxSquare to;
+  private Square to;
 
   /**
    * The From Coordinate.
    * 
    * @return the from
    */
-  public AtaxxSquare getFrom() {
+  public Square getFrom() {
     return this.from;
   }
 
@@ -42,7 +42,7 @@ class AtaxxMove implements Comparable<AtaxxMove> {
    * 
    * @return the to
    */
-  public AtaxxSquare getTo() {
+  public Square getTo() {
     return this.to;
   }
 
@@ -64,7 +64,7 @@ class AtaxxMove implements Comparable<AtaxxMove> {
    * @param toCoord
    *          the to square
    */
-  AtaxxMove(final Type moveType, final AtaxxColor pieceColor, final AtaxxSquare fromCoord, final AtaxxSquare toCoord) {
+  AtaxxMove(final Type moveType, final PieceColor pieceColor, final Square fromCoord, final Square toCoord) {
     this.type = moveType;
     this.color = pieceColor;
     this.from = fromCoord;
@@ -77,7 +77,7 @@ class AtaxxMove implements Comparable<AtaxxMove> {
    * 
    * @return the color
    */
-  public final AtaxxColor getColor() {
+  public final PieceColor getColor() {
     return this.color;
   }
 
@@ -96,7 +96,7 @@ class AtaxxMove implements Comparable<AtaxxMove> {
    * @param c
    *          the color to set
    */
-  public final void setColor(final AtaxxColor c) {
+  public final void setColor(final PieceColor c) {
     this.color = c;
   }
 

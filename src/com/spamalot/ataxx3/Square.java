@@ -1,7 +1,7 @@
 package com.spamalot.ataxx3;
 
 /**
- * A square on an Ataxx Board.
+ * A square boardgame board.
  * 
  * @author gej
  *
@@ -10,7 +10,8 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class AtaxxSquare {
+class Square {
+
   /**
    * Type of square.
    * 
@@ -28,42 +29,42 @@ class AtaxxSquare {
   private Type type;
 
   /** Piece in the square. */
-  private AtaxxPiece piece;
+  private Piece piece;
 
   /** Coordinate of this square. */
   private Coordinate coordinate;
 
   /**
-   * Construct an AtaxxSquare object.
+   * Construct an Square object.
    * 
    * @param t
    *          Type of Square
    * @param rank
-   *          rank the piece is on
+   *          rank the Square is on
    * @param file
-   *          file the piece is on
+   *          file the Square is on
    */
-  AtaxxSquare(final Type t, final int file, final int rank) {
+  Square(final Type t, final int file, final int rank) {
     this.type = t;
     this.coordinate = new Coordinate(file, rank);
   }
 
   /**
-   * Get the AtaxxPiece in this AtaxxSquare.
+   * Get the Piece in this Square. Does not remove the Piece from the Square.
    * 
    * @return the AtaxxPiece in this AtaxxSquare.
    */
-  public AtaxxPiece getPiece() {
+  public Piece getPiece() {
     return this.piece;
   }
 
   /**
-   * Set the piece.
+   * Set the Piece in this Square.
    * 
    * @param p
    *          AtaxxPiece to set in this AtaxxSquare
    */
-  public void setPiece(final AtaxxPiece p) {
+  public void setPiece(final Piece p) {
     this.piece = p;
   }
 
@@ -77,9 +78,9 @@ class AtaxxSquare {
   }
 
   /**
-   * Get the numeric file this AtaxxSquare is at.
+   * Get the numeric file this Square is at.
    * 
-   * @return the numeric file this AtaxxSquare is at.
+   * @return the numeric file this Square is at.
    */
   public int getFile() {
     return this.coordinate.getX();
@@ -95,7 +96,7 @@ class AtaxxSquare {
   }
 
   /**
-   * Get the numeric rank this AtaxxSquare is at.
+   * Get the numeric rank this Square is at.
    * 
    * @return the numeric rank this AtaxxSquare is at.
    */
@@ -106,10 +107,10 @@ class AtaxxSquare {
   /**
    * Remove and return a piece from the Square.
    * 
-   * @return the AtaxxPiece in this square.
+   * @return the Piece in this Square.
    */
-  public AtaxxPiece pickupPiece() {
-    AtaxxPiece p = this.piece;
+  public Piece pickupPiece() {
+    Piece p = this.piece;
     this.piece = null;
     return p;
   }
@@ -152,7 +153,7 @@ class AtaxxSquare {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    AtaxxSquare other = (AtaxxSquare) obj;
+    Square other = (Square) obj;
     if (this.coordinate == null) {
       if (other.coordinate != null) {
         return false;

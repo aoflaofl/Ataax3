@@ -35,9 +35,6 @@ class AtaxxAI {
     this.ataxxGame = game;
   }
 
-  /** Hold list of moves from curent game location. */
-  // private List<AtaxxMove> globalChildMoves;
-
   /**
    * Start thinking using iterative deepening.
    * 
@@ -104,16 +101,18 @@ class AtaxxAI {
    *          How deep to search
    * @return the best move found.
    */
-  private AtaxxMove negaMaxAlphaBetaRoot(final List<AtaxxMove> moveList, int alpha, int beta, final int depth) {
+  private AtaxxMove negaMaxAlphaBetaRoot(final List<AtaxxMove> moveList, final int alpha, final int beta, final int depth) {
     System.out.println("Searching to a depth of " + depth);
 
     int color = 1;
-    if (this.ataxxGame.getToMove() == AtaxxColor.BLACK) {
+    if (this.ataxxGame.getToMove() == PieceColor.BLACK) {
       color = -1;
     }
 
     // int alpha = -MAX_VAL;
     // int beta = MAX_VAL;
+
+    int newAlpha = alpha;
 
     int bestValue = -MAX_VAL;
     AtaxxMove bestMove = null;
@@ -122,7 +121,7 @@ class AtaxxAI {
       System.out.println("        Evaluating move " + move);
       this.ataxxGame.makeMove(move);
       this.nodeCount++;
-      int v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -alpha, -color);
+      int v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -newAlpha, -color);
       move.setEvaluation(v);
 
       // System.out.println(move);
@@ -137,8 +136,8 @@ class AtaxxAI {
         System.out.println("New Best Evaluation: " + v);
         System.out.println("Node Count to this point: " + this.nodeCount);
       }
-      alpha = Math.max(alpha, v);
-      if (alpha >= beta) {
+      newAlpha = Math.max(newAlpha, v);
+      if (newAlpha >= beta) {
         break;
       }
     }
@@ -229,7 +228,7 @@ class AtaxxAI {
       if (v > beta) {
         return beta;
       }
-      newAlpha = Math.max(newAlpha, v);      
+      newAlpha = Math.max(newAlpha, v);
     }
 
     return newAlpha;

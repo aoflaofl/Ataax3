@@ -12,7 +12,7 @@ import java.util.List;
 class AtaxxBoard {
 
   /** Hold Array of AtaxxSquares to represent the board. */
-  private AtaxxSquare[][] squares;
+  private Square[][] squares;
 
   /** The number of ranks on this board. */
   private int numRanks;
@@ -42,7 +42,7 @@ class AtaxxBoard {
     this.setNumFiles(files);
     this.setNumRanks(ranks);
 
-    this.setSquares(new AtaxxSquare[files][ranks]);
+    this.setSquares(new Square[files][ranks]);
 
     initBoard();
   }
@@ -53,7 +53,7 @@ class AtaxxBoard {
   private void initBoard() {
     for (int file = 0; file < getNumFiles(); file++) {
       for (int rank = 0; rank < getNumRanks(); rank++) {
-        this.squares[file][rank] = new AtaxxSquare(AtaxxSquare.Type.PLAYABLE, file, rank);
+        this.squares[file][rank] = new Square(Square.Type.PLAYABLE, file, rank);
       }
     }
   }
@@ -68,21 +68,21 @@ class AtaxxBoard {
    *          Color to flip to
    * @return a List of AtaxxSquares that had flipped pieces.
    */
-  final List<AtaxxSquare> flipPiecesAroundSquare(final AtaxxSquare ataxxSquare, final AtaxxColor color) {
-    AtaxxColor oppositeColor = color.getOpposite();
+  final List<Square> flipPiecesAroundSquare(final Square ataxxSquare, final PieceColor color) {
+    PieceColor oppositeColor = color.getOpposite();
 
     int minFile = Math.max(ataxxSquare.getFile() - 1, 0);
     int maxFile = Math.min(ataxxSquare.getFile() + 1, this.numFiles - 1);
     int minRank = Math.max(ataxxSquare.getRank() - 1, 0);
     int maxRank = Math.min(ataxxSquare.getRank() + 1, this.numRanks - 1);
 
-    List<AtaxxSquare> ret = new ArrayList<>();
+    List<Square> ret = new ArrayList<>();
 
     for (int file = minFile; file <= maxFile; file++) {
       for (int rank = minRank; rank <= maxRank; rank++) {
 
-        AtaxxSquare square = getSquareAt(file, rank);
-        AtaxxPiece piece = square.getPiece();
+        Square square = getSquareAt(file, rank);
+        Piece piece = square.getPiece();
 
         if (piece != null && piece.getColor() == oppositeColor) {
           piece.flip();
@@ -100,7 +100,7 @@ class AtaxxBoard {
    *          the rank
    * @return the AtaxxSquare.
    */
-  public AtaxxSquare getSquareAt(final int file, final int rank) {
+  public Square getSquareAt(final int file, final int rank) {
     return this.getSquares()[file][rank];
   }
 
@@ -118,7 +118,7 @@ class AtaxxBoard {
    * 
    * @return the board.
    */
-  private AtaxxSquare[][] getSquareBoard() {
+  private Square[][] getSquareBoard() {
     return this.getSquares();
   }
 
@@ -139,7 +139,7 @@ class AtaxxBoard {
    * @param ataxxSquare
    *          the Coordinate
    */
-  final void putPieceAtCoord(final AtaxxPiece p, final AtaxxSquare ataxxSquare) {
+  final void putPieceAtCoord(final Piece p, final Square ataxxSquare) {
     this.getSquareBoard()[ataxxSquare.getFile()][ataxxSquare.getRank()].setPiece(p);
   }
 
@@ -174,10 +174,10 @@ class AtaxxBoard {
 
     for (int i = 0; i < getNumRanks(); i++) {
       for (int j = 0; j < getNumFiles(); j++) {
-        AtaxxSquare ataxxSquare = this.getSquares()[j][i];
-        AtaxxPiece p = ataxxSquare.getPiece();
+        Square ataxxSquare = this.getSquares()[j][i];
+        Piece p = ataxxSquare.getPiece();
         if (p != null) {
-          if (p.getColor() == AtaxxColor.BLACK) {
+          if (p.getColor() == PieceColor.BLACK) {
             black++;
           } else {
             white++;
@@ -203,12 +203,12 @@ class AtaxxBoard {
       s.append("  ");
       for (int j = 0; j < this.numFiles; j++) {
 
-        AtaxxSquare squareAt = getSquareAt(j, i);
+        Square squareAt = getSquareAt(j, i);
 
         if (squareAt.isBlocked()) {
           s.append('X');
         } else {
-          AtaxxPiece p = squareAt.getPiece();
+          Piece p = squareAt.getPiece();
           if (p == null) {
             s.append(".");
           } else {
@@ -225,7 +225,7 @@ class AtaxxBoard {
   /**
    * @return the squares
    */
-  public AtaxxSquare[][] getSquares() {
+  public Square[][] getSquares() {
     return this.squares;
   }
 
@@ -233,7 +233,7 @@ class AtaxxBoard {
    * @param sqs
    *          the squares to set
    */
-  public void setSquares(final AtaxxSquare[][] sqs) {
+  public void setSquares(final Square[][] sqs) {
     this.squares = sqs;
   }
 }
