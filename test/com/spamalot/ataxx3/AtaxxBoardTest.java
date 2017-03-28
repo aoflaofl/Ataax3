@@ -16,9 +16,9 @@ import org.junit.Test;
 public class AtaxxBoardTest {
 
   /** A square board to test. */
-  private AtaxxBoard squareBoard;
+  private Board squareBoard;
   /** A rectangular board to test. */
-  private AtaxxBoard rectangleBoard;
+  private Board rectangleBoard;
 
   @Before
   public final void setUp() throws Exception {

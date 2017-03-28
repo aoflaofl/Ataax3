@@ -20,7 +20,7 @@ class Square {
    */
   public enum Type {
     /** Means the square can hold a piece. */
-    PLAYABLE,
+    OPEN,
     /** Means the square is prevented from holding a piece. */
     BLOCKED
   }
@@ -47,6 +47,18 @@ class Square {
   Square(final Type t, final int file, final int rank) {
     this.type = t;
     this.coordinate = new Coordinate(file, rank);
+  }
+
+  /**
+   * Construct an OPEN Square object.
+   * 
+   * @param file
+   *          file the Square is on
+   * @param rank
+   *          rank the Square is on
+   */
+  Square(final int file, final int rank) {
+    this(Square.Type.OPEN, file, rank);
   }
 
   /**
@@ -121,7 +133,7 @@ class Square {
    * @return true if square is empty.
    */
   public boolean isEmpty() {
-    return this.type == Type.PLAYABLE && this.piece == null;
+    return this.type == Type.OPEN && this.piece == null;
   }
 
   /*

@@ -9,53 +9,10 @@ import java.util.List;
  * @author gej
  *
  */
-class AtaxxBoard {
+class AtaxxBoard extends Board {
 
-  /** Hold Array of AtaxxSquares to represent the board. */
-  private Square[][] squares;
-
-  /** The number of ranks on this board. */
-  private int numRanks;
-
-  /** The number of files on this board. */
-  private int numFiles;
-
-  /**
-   * Construct a square board of given size.
-   * 
-   * @param size
-   *          size of a side of the square
-   */
   AtaxxBoard(final int size) {
-    this(size, size);
-  }
-
-  /**
-   * Construct a board of given number of files and ranks.
-   * 
-   * @param files
-   *          width of the board
-   * @param ranks
-   *          height of the board
-   */
-  AtaxxBoard(final int files, final int ranks) {
-    this.setNumFiles(files);
-    this.setNumRanks(ranks);
-
-    this.setSquares(new Square[files][ranks]);
-
-    initBoard();
-  }
-
-  /**
-   * Initialize the board.
-   */
-  private void initBoard() {
-    for (int file = 0; file < getNumFiles(); file++) {
-      for (int rank = 0; rank < getNumRanks(); rank++) {
-        this.squares[file][rank] = new Square(Square.Type.PLAYABLE, file, rank);
-      }
-    }
+    super(size);
   }
 
   /**
@@ -72,9 +29,9 @@ class AtaxxBoard {
     PieceColor oppositeColor = color.getOpposite();
 
     int minFile = Math.max(ataxxSquare.getFile() - 1, 0);
-    int maxFile = Math.min(ataxxSquare.getFile() + 1, this.numFiles - 1);
+    int maxFile = Math.min(ataxxSquare.getFile() + 1, this.getNumFiles() - 1);
     int minRank = Math.max(ataxxSquare.getRank() - 1, 0);
-    int maxRank = Math.min(ataxxSquare.getRank() + 1, this.numRanks - 1);
+    int maxRank = Math.min(ataxxSquare.getRank() + 1, this.getNumRanks() - 1);
 
     List<Square> ret = new ArrayList<>();
 
@@ -91,76 +48,6 @@ class AtaxxBoard {
       }
     }
     return ret;
-  }
-
-  /**
-   * @param file
-   *          the file
-   * @param rank
-   *          the rank
-   * @return the AtaxxSquare.
-   */
-  public Square getSquareAt(final int file, final int rank) {
-    return this.getSquares()[file][rank];
-  }
-
-  /**
-   * Get the number of ranks on this board.
-   * 
-   * @return the number of ranks.
-   */
-  public final int getNumRanks() {
-    return this.numRanks;
-  }
-
-  /**
-   * Get the Board.
-   * 
-   * @return the board.
-   */
-  private Square[][] getSquareBoard() {
-    return this.getSquares();
-  }
-
-  /**
-   * Get the width of this board.
-   * 
-   * @return the width.
-   */
-  public final int getNumFiles() {
-    return this.numFiles;
-  }
-
-  /**
-   * Put a piece on the board. Ignore if square already has a piece.
-   * 
-   * @param p
-   *          the Piece (can be null)
-   * @param ataxxSquare
-   *          the Coordinate
-   */
-  final void putPieceAtCoord(final Piece p, final Square ataxxSquare) {
-    this.getSquareBoard()[ataxxSquare.getFile()][ataxxSquare.getRank()].setPiece(p);
-  }
-
-  /**
-   * Set the number of ranks of this board.
-   * 
-   * @param ranks
-   *          the height to set
-   */
-  private void setNumRanks(final int ranks) {
-    this.numRanks = ranks;
-  }
-
-  /**
-   * Set the number of files on this board.
-   * 
-   * @param files
-   *          the width to set
-   */
-  private void setNumFiles(final int files) {
-    this.numFiles = files;
   }
 
   /**
@@ -193,15 +80,15 @@ class AtaxxBoard {
   public final String toString() {
     StringBuilder s = new StringBuilder();
     s.append("   ");
-    for (byte j = 0; j < this.numFiles; j++) {
+    for (byte j = 0; j < this.getNumFiles(); j++) {
       s.append((char) ('a' + j));
     }
     s.append("\n\n");
 
-    for (int i = 0; i < this.numRanks; i++) {
+    for (int i = 0; i < this.getNumRanks(); i++) {
       s.append(i + 1);
       s.append("  ");
-      for (int j = 0; j < this.numFiles; j++) {
+      for (int j = 0; j < this.getNumFiles(); j++) {
 
         Square squareAt = getSquareAt(j, i);
 
@@ -220,20 +107,5 @@ class AtaxxBoard {
     }
 
     return s.toString();
-  }
-
-  /**
-   * @return the squares
-   */
-  public Square[][] getSquares() {
-    return this.squares;
-  }
-
-  /**
-   * @param sqs
-   *          the squares to set
-   */
-  public void setSquares(final Square[][] sqs) {
-    this.squares = sqs;
   }
 }
