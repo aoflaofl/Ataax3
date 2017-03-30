@@ -60,10 +60,10 @@ class AtaxxGame {
     dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(0, this.board.getNumFiles() - 1));
     dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(this.board.getNumRanks() - 1, 0));
 
-    this.board.getSquareAt(1, 1).setBlocked();
-    this.board.getSquareAt(5, 5).setBlocked();
-    this.board.getSquareAt(1, 5).setBlocked();
-    this.board.getSquareAt(5, 1).setBlocked();
+    // this.board.getSquareAt(1, 1).setBlocked();
+    // this.board.getSquareAt(5, 5).setBlocked();
+    // this.board.getSquareAt(1, 5).setBlocked();
+    // this.board.getSquareAt(5, 1).setBlocked();
 
     // dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(0,
     // 2));
@@ -99,14 +99,14 @@ class AtaxxGame {
         piece = new Piece(move.getColor());
         break;
       case JUMP:
-        piece = move.getFrom().pickupPiece();
+        piece = move.getFromSquare().pickupPiece();
         break;
       default:
         break;
     }
-    dropPiece(piece, move.getTo());
+    dropPiece(piece, move.getToSquare());
 
-    List<Square> flipped = this.board.flipPiecesAroundSquare(move.getTo(), move.getColor());
+    List<Square> flipped = this.board.flipPiecesAroundSquare(move.getToSquare(), move.getColor());
 
     this.undoMoveStack.push(new AtaxxUndoMove(move, flipped));
 
@@ -143,10 +143,10 @@ class AtaxxGame {
    * @param move
    *          the move
    */
-  private void undoPieceMove(final AtaxxMove move) {
-    this.board.putPieceAtCoord(null, move.getTo());
+  private static void undoPieceMove(final AtaxxMove move) {
+    Piece p = move.getToSquare().pickupPiece();
     if (move.getType() == AtaxxMove.Type.JUMP) {
-      this.board.putPieceAtCoord(new Piece(move.getColor()), move.getFrom());
+      move.getFromSquare().setPiece(p);
     }
   }
 
@@ -226,7 +226,7 @@ class AtaxxGame {
    *         move.
    */
   private static boolean pieceInFromSquareMatchesColor(final AtaxxMove move) {
-    Piece piece = move.getFrom().getPiece();
+    Piece piece = move.getFromSquare().getPiece();
     if (piece == null) {
       return false;
     }
@@ -239,7 +239,7 @@ class AtaxxGame {
    * @return true if the square is empty.
    */
   private static boolean toSquareIsEmpty(final AtaxxMove move) {
-    return move.getTo().getPiece() == null;
+    return move.getToSquare().getPiece() == null;
   }
 
   /**
@@ -251,8 +251,8 @@ class AtaxxGame {
    * @return true if the to square can be moved to from the from square.
    */
   private static boolean checkDistance(final AtaxxMove move) {
-    int xDiff = Math.abs(move.getTo().getFile() - move.getFrom().getFile());
-    int yDiff = Math.abs(move.getTo().getRank() - move.getFrom().getRank());
+    int xDiff = Math.abs(move.getToSquare().getFile() - move.getFromSquare().getFile());
+    int yDiff = Math.abs(move.getToSquare().getRank() - move.getFromSquare().getRank());
 
     // If it's the same square, obviously not right
     if (xDiff == 0 && yDiff == 0) {
@@ -434,14 +434,40 @@ class AtaxxGame {
 
     int white = 0;
     int black = 0;
+    int whiteMobility = 0;
+    int blackMobility = 0;
     for (int f = 0; f < numFiles; f++) {
       for (int r = 0; r < numRanks; r++) {
         Piece p = b[f][r].getPiece();
         if (p != null) {
           if (p.getColor() == PieceColor.WHITE) {
             white++;
+            Square[] sq = b[f][r].getOneAway();
+            for (Square s : sq) {
+              if (s.isEmpty()) {
+                whiteMobility++;
+              }
+            }
+            sq = b[f][r].getTwoAway();
+            for (Square s : sq) {
+              if (s.isEmpty()) {
+                whiteMobility++;
+              }
+            }
           } else {
             black++;
+            Square[] sq = b[f][r].getOneAway();
+            for (Square s : sq) {
+              if (s.isEmpty()) {
+                blackMobility++;
+              }
+            }
+            sq = b[f][r].getTwoAway();
+            for (Square s : sq) {
+              if (s.isEmpty()) {
+                blackMobility++;
+              }
+            }
           }
         }
       }
@@ -461,7 +487,7 @@ class AtaxxGame {
       material = white - black;
     }
 
-    int position = 0;
+    int position = whiteMobility - blackMobility;
     return material * 100 + position;
   }
 

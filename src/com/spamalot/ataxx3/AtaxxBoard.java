@@ -13,6 +13,16 @@ class AtaxxBoard extends Board {
 
   AtaxxBoard(final int size) {
     super(size);
+
+    Square[][] s = this.getSquares();
+    for (int rank = 0; rank < getNumRanks(); rank++) {
+      for (int file = 0; file < getNumFiles(); file++) {
+        Square sq = s[file][rank];
+
+        sq.setOneAway(getOneAwaySquares(sq));
+        sq.setTwoAway(getTwoAwaySquares(sq));
+      }
+    }
   }
 
   /**

@@ -65,8 +65,8 @@ class AtaxxAI {
       int pass = 0;
       boolean failed = true;
       while (failed) {
-        alpha = origAlpha + alphaDiff;
-        beta = origBeta + betaDiff;
+        // alpha = origAlpha + alphaDiff;
+        // beta = origBeta + betaDiff;
         System.out.println("Iteration " + i + "." + pass + "  Window: alpha=" + alpha + " beta=" + beta);
         pass++;
 
@@ -75,15 +75,17 @@ class AtaxxAI {
 
         if (m.getEvaluation() >= beta) {
           System.out.println("Failed High: " + m);
+          beta = m.getEvaluation() + betaDiff;
           betaDiff = betaDiff * DIFF_MODIFIER;
           failed = true;
         } else if (m.getEvaluation() <= alpha) {
           System.out.println("Failed Low: " + m);
+          alpha = m.getEvaluation() + alphaDiff;
           alphaDiff = alphaDiff * DIFF_MODIFIER;
           failed = true;
         } else {
-          origAlpha = m.getEvaluation();
-          origBeta = m.getEvaluation();
+          alpha = m.getEvaluation() - INITIAL_DIFF;
+          beta = m.getEvaluation() + INITIAL_DIFF;
           alphaDiff = -INITIAL_DIFF;
           betaDiff = INITIAL_DIFF;
           failed = false;
@@ -118,7 +120,7 @@ class AtaxxAI {
     AtaxxMove bestMove = null;
 
     for (AtaxxMove move : moveList) {
-      System.out.println("        Evaluating move " + move);
+      // System.out.println(" Evaluating move " + move);
       this.ataxxGame.makeMove(move);
       this.nodeCount++;
       int v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -newAlpha, -color);
@@ -133,7 +135,7 @@ class AtaxxAI {
         bestMove = move;
 
         System.out.println("New Best Move: " + move);
-        System.out.println("New Best Evaluation: " + v);
+        // System.out.println("New Best Evaluation: " + v);
         System.out.println("Node Count to this point: " + this.nodeCount);
       }
       newAlpha = Math.max(newAlpha, v);
@@ -142,7 +144,7 @@ class AtaxxAI {
       }
     }
     System.out.println("Final Move: " + bestMove);
-    System.out.println("Final Evaluation: " + bestValue);
+    // System.out.println("Final Evaluation: " + bestValue);
     System.out.println("Final Node Count: " + this.nodeCount);
     return bestMove;
   }

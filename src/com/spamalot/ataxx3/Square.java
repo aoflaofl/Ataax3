@@ -1,5 +1,8 @@
 package com.spamalot.ataxx3;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * A square boardgame board.
  * 
@@ -33,6 +36,10 @@ class Square {
 
   /** Coordinate of this square. */
   private Coordinate coordinate;
+
+  private Square[] oneAway;
+
+  private Square[] twoAway;
 
   /**
    * Construct an Square object.
@@ -201,5 +208,26 @@ class Square {
    */
   public boolean isBlocked() {
     return this.type == Type.BLOCKED;
+  }
+
+  public void setOneAway(List<Square> oneAwaySquares) {
+    oneAway = new Square[oneAwaySquares.size()];
+    oneAwaySquares.toArray(this.oneAway);
+    for (Square s : oneAway) {
+      System.out.println(s);
+    }
+  }
+
+  public void setTwoAway(List<Square> twoAwaySquares) {
+    twoAway = new Square[twoAwaySquares.size()];
+    twoAwaySquares.toArray(this.twoAway);
+  }
+
+  public Square[] getOneAway() {
+    return oneAway;
+  }
+
+  public Square[] getTwoAway() {
+    return twoAway;
   }
 }

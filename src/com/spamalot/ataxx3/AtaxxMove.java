@@ -33,7 +33,7 @@ class AtaxxMove implements Comparable<AtaxxMove> {
    * 
    * @return the from
    */
-  public Square getFrom() {
+  public Square getFromSquare() {
     return this.from;
   }
 
@@ -42,7 +42,7 @@ class AtaxxMove implements Comparable<AtaxxMove> {
    * 
    * @return the to
    */
-  public Square getTo() {
+  public Square getToSquare() {
     return this.to;
   }
 

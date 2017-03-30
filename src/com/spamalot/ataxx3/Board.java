@@ -1,5 +1,9 @@
 package com.spamalot.ataxx3;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Board for board games.
  * 
@@ -83,18 +87,6 @@ public class Board {
   }
 
   /**
-   * Put a piece on the board. Ignore if square already has a piece.
-   * 
-   * @param p
-   *          the Piece (can be null)
-   * @param ataxxSquare
-   *          the Coordinate
-   */
-  protected final void putPieceAtCoord(final Piece p, final Square ataxxSquare) {
-    this.squares[ataxxSquare.getFile()][ataxxSquare.getRank()].setPiece(p);
-  }
-
-  /**
    * Set the number of ranks of this board.
    * 
    * @param ranks
@@ -127,6 +119,118 @@ public class Board {
    */
   public void setSquares(final Square[][] sqs) {
     this.squares = sqs;
+  }
+
+  final List<Square> getOneAwaySquares(final Square sq) {
+    List<Square> ret = new ArrayList<>(8);
+    ret.addAll(getOneAwayOrthogonal(sq));
+    ret.addAll(getOneAwayDiagonal(sq));
+    return ret;
+  }
+
+  private Collection<? extends Square> getOneAwayDiagonal(final Square sq) {
+    List<Square> ret = new ArrayList<>(4);
+
+    int file = sq.getFile();
+    int rank = sq.getRank();
+
+    checkAndAddSquare(ret, file - 1, rank - 1);
+    checkAndAddSquare(ret, file + 1, rank + 1);
+    checkAndAddSquare(ret, file - 1, rank + 1);
+    checkAndAddSquare(ret, file + 1, rank - 1);
+
+    return ret;
+
+  }
+
+  final boolean isPlayableSquare(final int file, final int rank) {
+    if (file < 0 || file >= this.numFiles || rank < 0 || rank >= this.numRanks) {
+      return false;
+    }
+
+    return (!this.squares[file][rank].isBlocked());
+  }
+
+  private Collection<? extends Square> getOneAwayOrthogonal(final Square sq) {
+    List<Square> ret = new ArrayList<>(4);
+
+    int file = sq.getFile();
+    int rank = sq.getRank();
+
+    checkAndAddSquare(ret, file - 1, rank);
+    checkAndAddSquare(ret, file + 1, rank);
+    checkAndAddSquare(ret, file, rank - 1);
+    checkAndAddSquare(ret, file, rank + 1);
+
+    return ret;
+  }
+
+  /**
+   * @param ret
+   * @param file
+   * @param rank
+   */
+  private void checkAndAddSquare(final List<Square> ret, final int file, final int rank) {
+    if (isPlayableSquare(file, rank)) {
+      ret.add(this.squares[file][rank]);
+    }
+  }
+
+  final List<Square> getTwoAwaySquares(final Square sq) {
+    List<Square> ret = new ArrayList<>(16);
+
+    ret.addAll(getTwoAwayOrthogonal(sq));
+    ret.addAll(getTwoAwayDiagonal(sq));
+    ret.addAll(getTwoAwayKnightJump(sq));
+
+    return ret;
+  }
+
+  private Collection<? extends Square> getTwoAwayKnightJump(Square sq) {
+    List<Square> ret = new ArrayList<>(8);
+
+    int file = sq.getFile();
+    int rank = sq.getRank();
+
+    checkAndAddSquare(ret, file - 1, rank - 2);
+    checkAndAddSquare(ret, file - 1, rank + 2);
+    checkAndAddSquare(ret, file + 1, rank - 2);
+    checkAndAddSquare(ret, file + 1, rank + 2);
+
+    checkAndAddSquare(ret, file - 2, rank - 1);
+    checkAndAddSquare(ret, file - 2, rank + 1);
+    checkAndAddSquare(ret, file + 2, rank - 1);
+    checkAndAddSquare(ret, file + 2, rank + 1);
+
+    return ret;
+  }
+
+  private Collection<? extends Square> getTwoAwayDiagonal(Square sq) {
+    List<Square> ret = new ArrayList<>(4);
+
+    int file = sq.getFile();
+    int rank = sq.getRank();
+
+    checkAndAddSquare(ret, file - 2, rank - 2);
+    checkAndAddSquare(ret, file + 2, rank + 2);
+    checkAndAddSquare(ret, file - 2, rank + 2);
+    checkAndAddSquare(ret, file + 2, rank - 2);
+
+    return ret;
+  }
+
+  private Collection<? extends Square> getTwoAwayOrthogonal(Square sq) {
+    List<Square> ret = new ArrayList<>(4);
+
+    int file = sq.getFile();
+    int rank = sq.getRank();
+
+    checkAndAddSquare(ret, file - 2, rank);
+    checkAndAddSquare(ret, file + 2, rank);
+    checkAndAddSquare(ret, file, rank - 2);
+    checkAndAddSquare(ret, file, rank + 2);
+
+    return ret;
   }
 
 }
