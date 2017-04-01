@@ -1,6 +1,5 @@
 package com.spamalot.ataxx3;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,9 +36,11 @@ class Square {
   /** Coordinate of this square. */
   private Coordinate coordinate;
 
-  private Square[] oneAway;
+  /** The Squares that are in the first ring around this one. */
+  private Square[] oneAwaySquares;
 
-  private Square[] twoAway;
+  /** The Squares that are in the second ring around this one. */
+  private Square[] twoAwaySquares;
 
   /**
    * Construct an Square object.
@@ -210,24 +211,35 @@ class Square {
     return this.type == Type.BLOCKED;
   }
 
-  public void setOneAway(List<Square> oneAwaySquares) {
-    oneAway = new Square[oneAwaySquares.size()];
-    oneAwaySquares.toArray(this.oneAway);
-    for (Square s : oneAway) {
-      System.out.println(s);
-    }
+  /**
+   * @param oneAwaySqs
+   *          List of Squares that are one away from this one
+   */
+  public void setOneAwaySquares(final List<Square> oneAwaySqs) {
+    this.oneAwaySquares = new Square[oneAwaySqs.size()];
+    oneAwaySqs.toArray(this.oneAwaySquares);
   }
 
-  public void setTwoAway(List<Square> twoAwaySquares) {
-    twoAway = new Square[twoAwaySquares.size()];
-    twoAwaySquares.toArray(this.twoAway);
+  /**
+   * @param twoAwaySqs
+   *          List of Squares that are two away from this one
+   */
+  public void setTwoAwaySquares(final List<Square> twoAwaySqs) {
+    this.twoAwaySquares = new Square[twoAwaySqs.size()];
+    twoAwaySqs.toArray(this.twoAwaySquares);
   }
 
-  public Square[] getOneAway() {
-    return oneAway;
+  /**
+   * @return array of Squares that are in the first ring around this Square.
+   */
+  public Square[] getOneAwaySquares() {
+    return this.oneAwaySquares;
   }
 
-  public Square[] getTwoAway() {
-    return twoAway;
+  /**
+   * @return array of Squares that are in the second ring around this Square.
+   */
+  public Square[] getTwoAwaySquares() {
+    return this.twoAwaySquares;
   }
 }

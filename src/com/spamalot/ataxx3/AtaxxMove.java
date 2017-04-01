@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class AtaxxMove implements Comparable<AtaxxMove> {
+class AtaxxMove extends Move {
   /**
    * The two types of an Ataxx move.
    * 
@@ -20,37 +20,8 @@ class AtaxxMove implements Comparable<AtaxxMove> {
     JUMP
   }
 
-  /** The color making this move. */
-  private PieceColor color;
-
-  /** The from square. */
-  private Square from;
-  /** The to square. */
-  private Square to;
-
-  /**
-   * The From Coordinate.
-   * 
-   * @return the from
-   */
-  public Square getFromSquare() {
-    return this.from;
-  }
-
-  /**
-   * The To Coordinate.
-   * 
-   * @return the to
-   */
-  public Square getToSquare() {
-    return this.to;
-  }
-
   /** What Type of Ataxx move this is. */
   private Type type;
-
-  /** AI evaluation of move. Set to min value until evaluated. */
-  private int evaluation = Integer.MIN_VALUE;
 
   /**
    * Construct an Ataxx Move.
@@ -66,19 +37,10 @@ class AtaxxMove implements Comparable<AtaxxMove> {
    */
   AtaxxMove(final Type moveType, final PieceColor pieceColor, final Square fromCoord, final Square toCoord) {
     this.type = moveType;
-    this.color = pieceColor;
-    this.from = fromCoord;
-    this.to = toCoord;
+    setColor(pieceColor);
+    setFromSquare(fromCoord);
+    setToSquare(toCoord);
 
-  }
-
-  /**
-   * The Color.
-   * 
-   * @return the color
-   */
-  public final PieceColor getColor() {
-    return this.color;
   }
 
   /**
@@ -91,16 +53,6 @@ class AtaxxMove implements Comparable<AtaxxMove> {
   }
 
   /**
-   * Set the color.
-   * 
-   * @param c
-   *          the color to set
-   */
-  public final void setColor(final PieceColor c) {
-    this.color = c;
-  }
-
-  /**
    * Set the type of this move.
    * 
    * @param t
@@ -110,32 +62,32 @@ class AtaxxMove implements Comparable<AtaxxMove> {
     this.type = t;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#toString()
-   */
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("[type=");
     builder.append(this.type);
     builder.append(", color=");
-    builder.append(this.color);
+    builder.append(getColor());
     builder.append(", from=");
-    builder.append(this.from);
+    builder.append(getFromSquare());
     builder.append(", to=");
-    builder.append(this.to);
+    builder.append(getToSquare());
     builder.append(", evaluation=");
-    builder.append(this.evaluation);
+    builder.append(getEvaluation());
     builder.append("]");
     return builder.toString();
   }
 
-  @Override
+  /**
+   * Do a compare.
+   * 
+   * @param o
+   *          the other
+   * @return the compare
+   */
   public int compareTo(final AtaxxMove o) {
-
-    if (this.evaluation == o.evaluation) {
+    if (this.getEvaluation() == o.getEvaluation()) {
       if (this.getType() == o.getType()) {
         return 0;
       }
@@ -145,20 +97,6 @@ class AtaxxMove implements Comparable<AtaxxMove> {
       return -1;
     }
 
-    return o.evaluation - this.evaluation;
-  }
-
-  /**
-   * Set the eveluation.
-   * 
-   * @param v
-   *          the evaluation of this move
-   */
-  public void setEvaluation(final int v) {
-    this.evaluation = v;
-  }
-
-  public int getEvaluation() {
-    return this.evaluation;
+    return super.compareTo(o);
   }
 }

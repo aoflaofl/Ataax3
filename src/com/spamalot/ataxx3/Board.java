@@ -1,7 +1,6 @@
 package com.spamalot.ataxx3;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -10,7 +9,7 @@ import java.util.List;
  * @author gej
  *
  */
-public class Board {
+class Board {
 
   /** Hold Array of Squares for the board. */
   private Square[][] squares;
@@ -128,7 +127,7 @@ public class Board {
     return ret;
   }
 
-  private Collection<? extends Square> getOneAwayDiagonal(final Square sq) {
+  private List<Square> getOneAwayDiagonal(final Square sq) {
     List<Square> ret = new ArrayList<>(4);
 
     int file = sq.getFile();
@@ -143,7 +142,14 @@ public class Board {
 
   }
 
-  final boolean isPlayableSquare(final int file, final int rank) {
+  /**
+   * @param file
+   *          File of Square
+   * @param rank
+   *          Rank of Square
+   * @return true if the Square is on the board and is not blocked.
+   */
+  private boolean isPlayableSquare(final int file, final int rank) {
     if (file < 0 || file >= this.numFiles || rank < 0 || rank >= this.numRanks) {
       return false;
     }
@@ -151,7 +157,7 @@ public class Board {
     return (!this.squares[file][rank].isBlocked());
   }
 
-  private Collection<? extends Square> getOneAwayOrthogonal(final Square sq) {
+  private List<Square> getOneAwayOrthogonal(final Square sq) {
     List<Square> ret = new ArrayList<>(4);
 
     int file = sq.getFile();
@@ -186,7 +192,7 @@ public class Board {
     return ret;
   }
 
-  private Collection<? extends Square> getTwoAwayKnightJump(Square sq) {
+  private List<Square> getTwoAwayKnightJump(final Square sq) {
     List<Square> ret = new ArrayList<>(8);
 
     int file = sq.getFile();
@@ -205,7 +211,7 @@ public class Board {
     return ret;
   }
 
-  private Collection<? extends Square> getTwoAwayDiagonal(Square sq) {
+  private List<Square> getTwoAwayDiagonal(final Square sq) {
     List<Square> ret = new ArrayList<>(4);
 
     int file = sq.getFile();
@@ -219,7 +225,7 @@ public class Board {
     return ret;
   }
 
-  private Collection<? extends Square> getTwoAwayOrthogonal(Square sq) {
+  private List<Square> getTwoAwayOrthogonal(final Square sq) {
     List<Square> ret = new ArrayList<>(4);
 
     int file = sq.getFile();

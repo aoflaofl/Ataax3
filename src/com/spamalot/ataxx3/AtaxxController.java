@@ -38,7 +38,7 @@ class AtaxxController {
         switch (text) {
           case "moves":
             List<AtaxxMove> moves = this.ataxxGame.getAvailableMoves();
-            for (AtaxxMove move : moves) {
+            for (Move move : moves) {
               System.out.println(move);
             }
             break;
@@ -64,9 +64,9 @@ class AtaxxController {
           case "play":
             while (!this.ataxxGame.isOver()) {
               if (this.ataxxGame.getToMove() == PieceColor.BLACK) {
-                depth = 3;
+                depth = 2;
               } else {
-                depth = 4;
+                depth = 2;
               }
               AtaxxAI aip = new AtaxxAI(this.ataxxGame);
               AtaxxMove movep = aip.think(depth);

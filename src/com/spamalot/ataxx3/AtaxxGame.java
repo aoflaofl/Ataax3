@@ -106,7 +106,7 @@ class AtaxxGame {
     }
     dropPiece(piece, move.getToSquare());
 
-    List<Square> flipped = this.board.flipPiecesAroundSquare(move.getToSquare(), move.getColor());
+    List<Square> flipped = AtaxxBoard.flipPiecesAroundSquare(move.getToSquare(), move.getColor());
 
     this.undoMoveStack.push(new AtaxxUndoMove(move, flipped));
 
@@ -119,7 +119,7 @@ class AtaxxGame {
   void undoLastMove() {
     AtaxxUndoMove move = this.undoMoveStack.pop();
     if (move != null) {
-      this.undoPieceMove(move.getMove());
+      AtaxxGame.undoPieceMove(move.getMove());
       flipPiecesInSquares(move.getFlipped());
     }
     this.colorToMove = this.colorToMove.getOpposite();
@@ -131,7 +131,7 @@ class AtaxxGame {
    * @param listOfSquares
    *          List of Coordinates of pieces to flip
    */
-  static final void flipPiecesInSquares(final List<Square> listOfSquares) {
+  private static void flipPiecesInSquares(final List<Square> listOfSquares) {
     for (Square square : listOfSquares) {
       square.getPiece().flip();
     }
@@ -190,21 +190,23 @@ class AtaxxGame {
     // }
   }
 
-  /**
-   * Check if a move is legal.
-   * 
-   * TODO: Avoid premature optimization, but this will probably have to be
-   * removed to make the AI more efficient.
-   * 
-   * @param move
-   *          the move to check
-   * @return true if the move is legal to make on this board.
-   */
-  private static boolean isLegal(final AtaxxMove move) {
-    boolean ret = isLegalColor(move) && /* isOnBoard(move) && */ toSquareIsEmpty(move) && pieceInFromSquareMatchesColor(move) && checkDistance(move);
-
-    return ret;
-  }
+  // /**
+  // * Check if a move is legal.
+  // *
+  // * TODO: Avoid premature optimization, but this will probably have to be
+  // * removed to make the AI more efficient.
+  // *
+  // * @param move
+  // * the move to check
+  // * @return true if the move is legal to make on this board.
+  // */
+  // private static boolean isLegal(final AtaxxMove move) {
+  // boolean ret = isLegalColor(move) && /* isOnBoard(move) && */
+  // toSquareIsEmpty(move) && pieceInFromSquareMatchesColor(move) &&
+  // checkDistance(move);
+  //
+  // return ret;
+  // }
 
   /**
    * Check whether the color in the move is legal.
@@ -213,7 +215,7 @@ class AtaxxGame {
    *          the move to check
    * @return true if this is a legal color in an Ataxx game.
    */
-  private static boolean isLegalColor(final AtaxxMove move) {
+  private static boolean isLegalColor(final Move move) {
     return (move.getColor() == PieceColor.WHITE || move.getColor() == PieceColor.BLACK);
   }
 
@@ -225,7 +227,7 @@ class AtaxxGame {
    * @return true if the from piece exists and has the correct color for the
    *         move.
    */
-  private static boolean pieceInFromSquareMatchesColor(final AtaxxMove move) {
+  private static boolean pieceInFromSquareMatchesColor(final Move move) {
     Piece piece = move.getFromSquare().getPiece();
     if (piece == null) {
       return false;
@@ -238,7 +240,7 @@ class AtaxxGame {
    *          the move to check.
    * @return true if the square is empty.
    */
-  private static boolean toSquareIsEmpty(final AtaxxMove move) {
+  private static boolean toSquareIsEmpty(final Move move) {
     return move.getToSquare().getPiece() == null;
   }
 
@@ -424,6 +426,8 @@ class AtaxxGame {
   /**
    * An evaluation of the position from white's perspective.
    * 
+   * @param gameOver
+   *          True if game is over and is being evaluated for that
    * @return evaluation value.
    */
   public int evaluate(final boolean gameOver) {
@@ -442,13 +446,13 @@ class AtaxxGame {
         if (p != null) {
           if (p.getColor() == PieceColor.WHITE) {
             white++;
-            Square[] sq = b[f][r].getOneAway();
+            Square[] sq = b[f][r].getOneAwaySquares();
             for (Square s : sq) {
               if (s.isEmpty()) {
                 whiteMobility++;
               }
             }
-            sq = b[f][r].getTwoAway();
+            sq = b[f][r].getTwoAwaySquares();
             for (Square s : sq) {
               if (s.isEmpty()) {
                 whiteMobility++;
@@ -456,13 +460,13 @@ class AtaxxGame {
             }
           } else {
             black++;
-            Square[] sq = b[f][r].getOneAway();
+            Square[] sq = b[f][r].getOneAwaySquares();
             for (Square s : sq) {
               if (s.isEmpty()) {
                 blackMobility++;
               }
             }
-            sq = b[f][r].getTwoAway();
+            sq = b[f][r].getTwoAwaySquares();
             for (Square s : sq) {
               if (s.isEmpty()) {
                 blackMobility++;

@@ -49,9 +49,6 @@ class AtaxxAI {
 
     List<AtaxxMove> globalChildMoves = this.ataxxGame.getAvailableMoves();
 
-    int origAlpha = -INITIAL_AB; // -MAX_VAL;
-    int origBeta = INITIAL_AB; // MAX_VAL;
-
     int alphaDiff = -INITIAL_DIFF;
     int betaDiff = INITIAL_DIFF;
 
@@ -70,7 +67,7 @@ class AtaxxAI {
         System.out.println("Iteration " + i + "." + pass + "  Window: alpha=" + alpha + " beta=" + beta);
         pass++;
 
-        m = negaMaxAlphaBetaRoot(globalChildMoves, alpha + alphaDiff, beta + betaDiff, 2 * i + 1);
+        m = negaMaxAlphaBetaRoot(globalChildMoves, alpha, beta, 2 * i + 1);
         System.out.println();
 
         if (m.getEvaluation() >= beta) {
@@ -91,6 +88,9 @@ class AtaxxAI {
           failed = false;
         }
       }
+
+      System.out.println("Move found: Iteration " + i + "." + pass + " with Alpha=" + alpha + " Beta=" + beta);
+      System.out.println(m);
 
     }
     return m;
@@ -208,6 +208,22 @@ class AtaxxAI {
     return bestValue;
   }
 
+  /**
+   * Implement the negaMax algorithm with AlphaBeta Pruning and fail hard
+   * evaluation.
+   * 
+   * @param game
+   *          Game to evaluate
+   * @param depth
+   *          depth to evaluate
+   * @param alpha
+   *          alph value
+   * @param beta
+   *          beta value
+   * @param color
+   *          color
+   * @return an evaluation.
+   */
   private int negaMaxAlphaBetaFailHard(final AtaxxGame game, final int depth, final int alpha, final int beta, final int color) {
     boolean gameOver = game.isOver();
     if (depth == 0 || gameOver) {

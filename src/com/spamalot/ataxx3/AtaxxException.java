@@ -29,7 +29,7 @@ class AtaxxException extends Exception {
    * @param msg
    *          a message.
    */
-  AtaxxException(final AtaxxMove move, final String msg) {
+  AtaxxException(final Move move, final String msg) {
     // TODO Auto-generated constructor stub
   }
 

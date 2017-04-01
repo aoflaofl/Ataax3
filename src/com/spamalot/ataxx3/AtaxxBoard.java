@@ -11,6 +11,12 @@ import java.util.List;
  */
 class AtaxxBoard extends Board {
 
+  /**
+   * Construct a square Ataxx Board with the given size.
+   * 
+   * @param size
+   *          Size of each side of the Ataxx Board
+   */
   AtaxxBoard(final int size) {
     super(size);
 
@@ -19,8 +25,8 @@ class AtaxxBoard extends Board {
       for (int file = 0; file < getNumFiles(); file++) {
         Square sq = s[file][rank];
 
-        sq.setOneAway(getOneAwaySquares(sq));
-        sq.setTwoAway(getTwoAwaySquares(sq));
+        sq.setOneAwaySquares(getOneAwaySquares(sq));
+        sq.setTwoAwaySquares(getTwoAwaySquares(sq));
       }
     }
   }
@@ -35,28 +41,20 @@ class AtaxxBoard extends Board {
    *          Color to flip to
    * @return a List of AtaxxSquares that had flipped pieces.
    */
-  final List<Square> flipPiecesAroundSquare(final Square ataxxSquare, final PieceColor color) {
+  static final List<Square> flipPiecesAroundSquare(final Square ataxxSquare, final PieceColor color) {
     PieceColor oppositeColor = color.getOpposite();
-
-    int minFile = Math.max(ataxxSquare.getFile() - 1, 0);
-    int maxFile = Math.min(ataxxSquare.getFile() + 1, this.getNumFiles() - 1);
-    int minRank = Math.max(ataxxSquare.getRank() - 1, 0);
-    int maxRank = Math.min(ataxxSquare.getRank() + 1, this.getNumRanks() - 1);
 
     List<Square> ret = new ArrayList<>();
 
-    for (int file = minFile; file <= maxFile; file++) {
-      for (int rank = minRank; rank <= maxRank; rank++) {
-
-        Square square = getSquareAt(file, rank);
-        Piece piece = square.getPiece();
-
-        if (piece != null && piece.getColor() == oppositeColor) {
-          piece.flip();
-          ret.add(square);
-        }
+    Square[] s = ataxxSquare.getOneAwaySquares();
+    for (Square sq : s) {
+      Piece piece = sq.getPiece();
+      if (piece != null && piece.getColor() == oppositeColor) {
+        piece.flip();
+        ret.add(sq);
       }
     }
+
     return ret;
   }
 
