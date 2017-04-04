@@ -64,9 +64,9 @@ class AtaxxController {
           case "play":
             while (!this.ataxxGame.isOver()) {
               if (this.ataxxGame.getToMove() == PieceColor.BLACK) {
-                depth = 2;
+                depth = 3;
               } else {
-                depth = 2;
+                depth = 1;
               }
               AtaxxAI aip = new AtaxxAI(this.ataxxGame);
               AtaxxMove movep = aip.think(depth);

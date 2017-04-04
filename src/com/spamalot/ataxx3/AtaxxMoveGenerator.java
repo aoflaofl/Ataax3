@@ -54,38 +54,26 @@ class AtaxxMoveGenerator {
   /**
    * Generate a list of moves for a square.
    * 
-   * @param square
+   * @param fromSquare
    *          Square to generate moves for
    * @return A list of moves.
    */
-  private List<AtaxxMove> generateMovesForSquare(final Square square) {
-    int squareRank = square.getRank();
-    int squareFile = square.getFile();
+  private static List<AtaxxMove> generateMovesForSquare(final Square fromSquare) {
 
     List<AtaxxMove> result = new ArrayList<>();
 
-    for (int fileDiff = -2; fileDiff <= 2; fileDiff++) {
-      for (int rankDiff = -2; rankDiff <= 2; rankDiff++) {
-        if (Math.abs(fileDiff) == 2 || Math.abs(rankDiff) == 2) {
-          // We've got a jumper
-          Square toSquare = this.ataxxGame.getSquareAt(squareFile + fileDiff, squareRank + rankDiff);
-          if (toSquare != null && toSquare.isEmpty()) {
-            result.add(new AtaxxMove(AtaxxMove.Type.JUMP, square.getPiece().getColor(), square, toSquare));
-          }
-        } else {
-          if (!(fileDiff == 0 && rankDiff == 0)) {
-            // It's an expansion
-            Square toSquare = this.ataxxGame.getSquareAt(squareFile + fileDiff, squareRank + rankDiff);
-            if (toSquare != null && toSquare.isEmpty()) {
-              if (!this.seen.contains(toSquare)) {
-                this.seen.add(toSquare);
-                result.add(new AtaxxMove(AtaxxMove.Type.EXPAND, square.getPiece().getColor(), square, toSquare));
-              }
-            }
-          }
-        }
+    for (Square sq : fromSquare.getOneAwaySquares()) {
+      if (sq.isEmpty()) {
+        result.add(new AtaxxMove(AtaxxMove.Type.EXPAND, fromSquare.getPiece().getColor(), fromSquare, sq));
       }
     }
+
+    for (Square sq : fromSquare.getTwoAwaySquares()) {
+      if (sq.isEmpty()) {
+        result.add(new AtaxxMove(AtaxxMove.Type.JUMP, fromSquare.getPiece().getColor(), fromSquare, sq));
+      }
+    }
+
     return result;
   }
 

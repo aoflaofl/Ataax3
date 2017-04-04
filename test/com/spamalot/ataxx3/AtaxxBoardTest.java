@@ -58,9 +58,9 @@ public class AtaxxBoardTest {
   // this.squareBoard.setPiece(AtaxxColor.BLACK, new Coordinate(0, 0));
   // }
 
-//  @Test
-//  public final void testSquareIsEmpty() {
-//    assertTrue(this.squareBoard.squareIsEmpty(new Coordinate(0, 0)));
-//  }
+  // @Test
+  // public final void testSquareIsEmpty() {
+  // assertTrue(this.squareBoard.squareIsEmpty(new Coordinate(0, 0)));
+  // }
 
 }

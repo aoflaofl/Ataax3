@@ -11,6 +11,9 @@ import java.util.List;
  */
 class AtaxxBoard extends Board {
 
+  /** Number of Blocked Squares. */
+  private int numBlockedSquares;
+
   /**
    * Construct a square Ataxx Board with the given size.
    * 
@@ -19,8 +22,18 @@ class AtaxxBoard extends Board {
    */
   AtaxxBoard(final int size) {
     super(size);
+    setBlocked(1, 1);
+    setBlocked(5, 5);
+    setBlocked(1, 5);
+    setBlocked(5, 1);
+    initSquares(this.getSquares());
+  }
 
-    Square[][] s = this.getSquares();
+  /**
+   * @param s
+   *          Array of squares that make up the board
+   */
+  private void initSquares(final Square[][] s) {
     for (int rank = 0; rank < getNumRanks(); rank++) {
       for (int file = 0; file < getNumFiles(); file++) {
         Square sq = s[file][rank];
@@ -64,24 +77,24 @@ class AtaxxBoard extends Board {
    * @return the score object.
    */
   public final AtaxxScore getScore() {
-    int black = 0;
-    int white = 0;
+    int numBlack = 0;
+    int numWhite = 0;
 
-    for (int i = 0; i < getNumRanks(); i++) {
-      for (int j = 0; j < getNumFiles(); j++) {
-        Square ataxxSquare = this.getSquares()[j][i];
-        Piece p = ataxxSquare.getPiece();
-        if (p != null) {
-          if (p.getColor() == PieceColor.BLACK) {
-            black++;
+    for (int rank = 0; rank < getNumRanks(); rank++) {
+      for (int file = 0; file < getNumFiles(); file++) {
+        Square ataxxSquare = this.getSquares()[file][rank];
+        Piece attaxPiece = ataxxSquare.getPiece();
+        if (attaxPiece != null) {
+          if (attaxPiece.getColor() == PieceColor.BLACK) {
+            numBlack++;
           } else {
-            white++;
+            numWhite++;
           }
         }
 
       }
     }
-    return new AtaxxScore(black, white);
+    return new AtaxxScore(numBlack, numWhite);
   }
 
   @Override
@@ -115,5 +128,27 @@ class AtaxxBoard extends Board {
     }
 
     return s.toString();
+  }
+
+  /**
+   * Set a square as blocked.
+   * 
+   * @param file
+   *          File of Square
+   * @param rank
+   *          Rank of Square
+   */
+  public void setBlocked(final int file, final int rank) {
+    Square sq = getSquareAt(file, rank);
+    sq.setBlocked();
+    // sq.setOneAwaySquares(getOneAwaySquares(sq));
+    this.numBlockedSquares++;
+  }
+
+  /**
+   * @return the number of blocked squares.
+   */
+  public int getNumBlockedSquares() {
+    return this.numBlockedSquares;
   }
 }

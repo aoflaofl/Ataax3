@@ -109,6 +109,9 @@ class Move implements Comparable<Move> {
     return this.evaluation;
   }
 
+  /**
+   * Note: this class has a natural ordering that is inconsistent with equals.
+   */
   @Override
   public int compareTo(final Move o) {
     return o.evaluation - this.evaluation;

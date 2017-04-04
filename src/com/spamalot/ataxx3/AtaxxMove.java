@@ -14,7 +14,7 @@ class AtaxxMove extends Move {
    *
    */
   public enum Type {
-    /** Grow to an adjacent (orthogonal and diagonal). */
+    /** Grow to an adjacent (orthogonal or diagonal). */
     EXPAND,
     /** Jump to a square two squares away (Knight moves count). */
     JUMP
@@ -40,7 +40,6 @@ class AtaxxMove extends Move {
     setColor(pieceColor);
     setFromSquare(fromCoord);
     setToSquare(toCoord);
-
   }
 
   /**
@@ -87,16 +86,16 @@ class AtaxxMove extends Move {
    * @return the compare
    */
   public int compareTo(final AtaxxMove o) {
-    if (this.getEvaluation() == o.getEvaluation()) {
+    int ret = super.compareTo(o);
+    if (ret == 0) {
       if (this.getType() == o.getType()) {
-        return 0;
+        ret = 0;
+      } else if (this.getType() == Type.JUMP) {
+        ret = 1;
       }
-      if (this.getType() == Type.JUMP) {
-        return 1;
-      }
-      return -1;
+      ret = -1;
     }
 
-    return super.compareTo(o);
+    return ret;
   }
 }

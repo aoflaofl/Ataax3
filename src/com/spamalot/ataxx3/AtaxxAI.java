@@ -70,22 +70,26 @@ class AtaxxAI {
         m = negaMaxAlphaBetaRoot(globalChildMoves, alpha, beta, 2 * i + 1);
         System.out.println();
 
-        if (m.getEvaluation() >= beta) {
-          System.out.println("Failed High: " + m);
-          beta = m.getEvaluation() + betaDiff;
-          betaDiff = betaDiff * DIFF_MODIFIER;
-          failed = true;
-        } else if (m.getEvaluation() <= alpha) {
-          System.out.println("Failed Low: " + m);
-          alpha = m.getEvaluation() + alphaDiff;
-          alphaDiff = alphaDiff * DIFF_MODIFIER;
-          failed = true;
-        } else {
-          alpha = m.getEvaluation() - INITIAL_DIFF;
-          beta = m.getEvaluation() + INITIAL_DIFF;
-          alphaDiff = -INITIAL_DIFF;
-          betaDiff = INITIAL_DIFF;
+        if (m == null) {
           failed = false;
+        } else {
+          if (m.getEvaluation() >= beta) {
+            System.out.println("Failed High: " + m);
+            beta = m.getEvaluation() + betaDiff;
+            betaDiff = betaDiff * DIFF_MODIFIER;
+            failed = true;
+          } else if (m.getEvaluation() <= alpha) {
+            System.out.println("Failed Low: " + m);
+            alpha = m.getEvaluation() + alphaDiff;
+            alphaDiff = alphaDiff * DIFF_MODIFIER;
+            failed = true;
+          } else {
+            alpha = m.getEvaluation() - INITIAL_DIFF;
+            beta = m.getEvaluation() + INITIAL_DIFF;
+            alphaDiff = -INITIAL_DIFF;
+            betaDiff = INITIAL_DIFF;
+            failed = false;
+          }
         }
       }
 
