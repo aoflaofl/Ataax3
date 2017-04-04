@@ -85,9 +85,9 @@ class AtaxxController {
           default:
             // If it is not a recognized command then it might be a move.
             try {
-              AtaxxMove m = this.ataxxGame.parseMove(text);
-              System.out.println(m);
-              this.ataxxGame.makeMove(m);
+              AtaxxMove move2 = this.ataxxGame.parseMove(text);
+              System.out.println(move2);
+              this.ataxxGame.makeMove(move2);
             } catch (AtaxxException e) {
               System.out.println(e);
               System.out.println("Try again.");

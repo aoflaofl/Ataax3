@@ -120,6 +120,13 @@ class Board {
     this.squares = sqs;
   }
 
+  /**
+   * A list of Squares that are one away neighbors of this one.
+   * 
+   * @param sq
+   *          The Square
+   * @return a List of Squares that are direct neighbors of the one passed in.
+   */
   final List<Square> getOneAwaySquares(final Square sq) {
     List<Square> ret = new ArrayList<>(8);
     ret.addAll(getOneAwayOrthogonal(sq));
@@ -127,6 +134,14 @@ class Board {
     return ret;
   }
 
+  /**
+   * A list of Squares that are diagonal neighbors of this one.
+   * 
+   * @param sq
+   *          The Square
+   * @return a List of Squares that are one away diagonally from this one and
+   *         can be occupied.
+   */
   private List<Square> getOneAwayDiagonal(final Square sq) {
     List<Square> ret = new ArrayList<>(4);
 
@@ -139,7 +154,6 @@ class Board {
     checkAndAddSquare(ret, file + 1, rank - 1);
 
     return ret;
-
   }
 
   /**
@@ -157,6 +171,14 @@ class Board {
     return (!this.squares[file][rank].isBlocked());
   }
 
+  /**
+   * A list of Squares that are orthogonal neighbors of this one.
+   * 
+   * @param sq
+   *          The Square
+   * @return a List of Squares that are one away orthogonally from this one and
+   *         can be occupied.
+   */
   private List<Square> getOneAwayOrthogonal(final Square sq) {
     List<Square> ret = new ArrayList<>(4);
 
@@ -172,16 +194,30 @@ class Board {
   }
 
   /**
-   * @param ret
+   * Check that the Square at file and rank can be played to and add it to the
+   * Squares List if so.
+   * 
+   * @param squareList
+   *          the List of Squares
    * @param file
+   *          the File
    * @param rank
+   *          the Rank
    */
-  private void checkAndAddSquare(final List<Square> ret, final int file, final int rank) {
+  private void checkAndAddSquare(final List<Square> squareList, final int file, final int rank) {
     if (isPlayableSquare(file, rank)) {
-      ret.add(this.squares[file][rank]);
+      squareList.add(this.squares[file][rank]);
     }
   }
 
+  /**
+   * A list of Squares that are two away neighbors of this one, including knight
+   * jumps.
+   * 
+   * @param sq
+   *          The Square
+   * @return a List of Squares that are two away neighbors of the one passed in.
+   */
   final List<Square> getTwoAwaySquares(final Square sq) {
     List<Square> ret = new ArrayList<>(16);
 
@@ -192,6 +228,14 @@ class Board {
     return ret;
   }
 
+  /**
+   * A list of Squares that are knight jump neighbors of this one.
+   * 
+   * @param sq
+   *          The Square
+   * @return a List of Squares that are knight jumps from this one and can be
+   *         occupied.
+   */
   private List<Square> getTwoAwayKnightJump(final Square sq) {
     List<Square> ret = new ArrayList<>(8);
 
@@ -211,6 +255,14 @@ class Board {
     return ret;
   }
 
+  /**
+   * A list of Squares that are two away diagonal neighbors of this one.
+   * 
+   * @param sq
+   *          The Square
+   * @return a List of Squares that are two away diagonally from this one and
+   *         can be occupied.
+   */
   private List<Square> getTwoAwayDiagonal(final Square sq) {
     List<Square> ret = new ArrayList<>(4);
 
@@ -225,6 +277,14 @@ class Board {
     return ret;
   }
 
+  /**
+   * A list of Squares that are two away orthogonal neighbors of this one.
+   * 
+   * @param sq
+   *          The Square
+   * @return a List of Squares that are two away orthogonally from this one and
+   *         can be occupied.
+   */
   private List<Square> getTwoAwayOrthogonal(final Square sq) {
     List<Square> ret = new ArrayList<>(4);
 

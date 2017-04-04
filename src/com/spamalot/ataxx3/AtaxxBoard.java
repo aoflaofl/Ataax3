@@ -30,6 +30,8 @@ class AtaxxBoard extends Board {
   }
 
   /**
+   * Initialize the Squares to have information about their neighbors.
+   * 
    * @param s
    *          Array of squares that make up the board
    */
@@ -59,8 +61,8 @@ class AtaxxBoard extends Board {
 
     List<Square> ret = new ArrayList<>();
 
-    Square[] s = ataxxSquare.getOneAwaySquares();
-    for (Square sq : s) {
+    Square[] squares = ataxxSquare.getOneAwaySquares();
+    for (Square sq : squares) {
       Piece piece = sq.getPiece();
       if (piece != null && piece.getColor() == oppositeColor) {
         piece.flip();
@@ -99,35 +101,35 @@ class AtaxxBoard extends Board {
 
   @Override
   public final String toString() {
-    StringBuilder s = new StringBuilder();
-    s.append("   ");
+    StringBuilder sb = new StringBuilder();
+    sb.append("   ");
     for (byte j = 0; j < this.getNumFiles(); j++) {
-      s.append((char) ('a' + j));
+      sb.append((char) ('a' + j));
     }
-    s.append("\n\n");
+    sb.append("\n\n");
 
     for (int i = 0; i < this.getNumRanks(); i++) {
-      s.append(i + 1);
-      s.append("  ");
+      sb.append(i + 1);
+      sb.append("  ");
       for (int j = 0; j < this.getNumFiles(); j++) {
 
         Square squareAt = getSquareAt(j, i);
 
         if (squareAt.isBlocked()) {
-          s.append('X');
+          sb.append('X');
         } else {
-          Piece p = squareAt.getPiece();
-          if (p == null) {
-            s.append(".");
+          Piece piece = squareAt.getPiece();
+          if (piece == null) {
+            sb.append(".");
           } else {
-            s.append(p);
+            sb.append(piece);
           }
         }
       }
-      s.append("\n");
+      sb.append("\n");
     }
 
-    return s.toString();
+    return sb.toString();
   }
 
   /**
@@ -146,6 +148,8 @@ class AtaxxBoard extends Board {
   }
 
   /**
+   * Return the number of Squares not allowed to be moved to.
+   * 
    * @return the number of blocked squares.
    */
   public int getNumBlockedSquares() {

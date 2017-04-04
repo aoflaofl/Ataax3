@@ -2,10 +2,10 @@ package com.spamalot.ataxx3;
 
 /**
  * Play the game of Ataxx.
- * <p>
- * Ataxx is a board game originally appearing in an arcade game.
- * <p>
- * The rules are simple and something like Othello (Reversi).
+ * 
+ * <p>Ataxx is a board game originally appearing in an arcade game.
+ * 
+ * <p>The rules are simple and something like Othello (Reversi).
  * <ul>
  * <li>The usual board is 7x7 with black's and white's stones starting in the
  * corners.

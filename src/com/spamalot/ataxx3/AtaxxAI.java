@@ -10,10 +10,10 @@ import java.util.List;
  *
  */
 class AtaxxAI {
+  /** What to multiply the diff by every time there is a fail high or low. */
   private static final int DIFF_MODIFIER = 2;
 
-  private static final int INITIAL_AB = 1;
-
+  /** Initial diff value. */
   private static final int INITIAL_DIFF = 50;
 
   /** Used for setting the maximum values for alpha, beta and bestValue. */
@@ -47,7 +47,7 @@ class AtaxxAI {
       return null;
     }
 
-    List<AtaxxMove> globalChildMoves = this.ataxxGame.getAvailableMoves();
+    List<AtaxxMove> candidateMoves = this.ataxxGame.getAvailableMoves();
 
     int alphaDiff = -INITIAL_DIFF;
     int betaDiff = INITIAL_DIFF;
@@ -55,37 +55,46 @@ class AtaxxAI {
     int alpha = 0;
     int beta = 0;
 
-    AtaxxMove m = null;
+    AtaxxMove move = null;
 
     for (int i = 0; i < maxIteration; i++) {
-      Collections.sort(globalChildMoves);
+      // Sorting for an AtaxxMove sorts first by evaluation, and then for equal
+      // evaluations sorts expand moves before jump moves.
+      Collections.sort(candidateMoves);
+
       int pass = 0;
+
+      // Whether the search failes high or low
       boolean failed = true;
+
+      System.out.println("-------------------------");
+
       while (failed) {
-        // alpha = origAlpha + alphaDiff;
-        // beta = origBeta + betaDiff;
-        System.out.println("Iteration " + i + "." + pass + "  Window: alpha=" + alpha + " beta=" + beta);
-        pass++;
-
-        m = negaMaxAlphaBetaRoot(globalChildMoves, alpha, beta, 2 * i + 1);
         System.out.println();
+        System.out.println("    Iteration " + i + "." + pass + "  Window: alpha=" + alpha + " beta=" + beta);
 
-        if (m == null) {
+        move = negaMaxAlphaBetaRoot(candidateMoves, alpha, beta, 2 * i + 1);
+
+        if (move == null) {
+          // a null move means there is no legal move. This is not a search
+          // fail.
           failed = false;
         } else {
-          if (m.getEvaluation() >= beta) {
-            System.out.println("Failed High: " + m);
-            beta = m.getEvaluation() + betaDiff;
+          if (move.getEvaluation() >= beta) {
+            System.out.println("    Failed High: " + move);
+            beta = move.getEvaluation() + betaDiff;
             betaDiff = betaDiff * DIFF_MODIFIER;
             failed = true;
-          } else if (m.getEvaluation() <= alpha) {
-            System.out.println("Failed Low: " + m);
-            alpha = m.getEvaluation() + alphaDiff;
+            pass++;
+          } else if (move.getEvaluation() <= alpha) {
+            System.out.println("    Failed Low: " + move);
+            alpha = move.getEvaluation() + alphaDiff;
             alphaDiff = alphaDiff * DIFF_MODIFIER;
             failed = true;
+            pass++;
           } else {
-            alpha = m.getEvaluation() - INITIAL_DIFF;
-            beta = m.getEvaluation() + INITIAL_DIFF;
+            alpha = move.getEvaluation() - INITIAL_DIFF;
+            beta = move.getEvaluation() + INITIAL_DIFF;
             alphaDiff = -INITIAL_DIFF;
             betaDiff = INITIAL_DIFF;
             failed = false;
@@ -94,10 +103,10 @@ class AtaxxAI {
       }
 
       System.out.println("Move found: Iteration " + i + "." + pass + " with Alpha=" + alpha + " Beta=" + beta);
-      System.out.println(m);
+      System.out.println(move);
 
     }
-    return m;
+    return move;
   }
 
   /**
@@ -115,40 +124,32 @@ class AtaxxAI {
       color = -1;
     }
 
-    // int alpha = -MAX_VAL;
-    // int beta = MAX_VAL;
-
     int newAlpha = alpha;
 
     int bestValue = -MAX_VAL;
     AtaxxMove bestMove = null;
 
     for (AtaxxMove move : moveList) {
-      // System.out.println(" Evaluating move " + move);
       this.ataxxGame.makeMove(move);
       this.nodeCount++;
-      int v = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -newAlpha, -color);
-      move.setEvaluation(v);
-
-      // System.out.println(move);
+      int evaluation = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -newAlpha, -color);
+      move.setEvaluation(evaluation);
 
       this.ataxxGame.undoLastMove();
 
-      if (v > bestValue) {
-        bestValue = v;
+      if (evaluation > bestValue) {
+        bestValue = evaluation;
         bestMove = move;
 
         System.out.println("New Best Move: " + move);
-        // System.out.println("New Best Evaluation: " + v);
         System.out.println("Node Count to this point: " + this.nodeCount);
       }
-      newAlpha = Math.max(newAlpha, v);
+      newAlpha = Math.max(newAlpha, evaluation);
       if (newAlpha >= beta) {
         break;
       }
     }
     System.out.println("Final Move: " + bestMove);
-    // System.out.println("Final Evaluation: " + bestValue);
     System.out.println("Final Node Count: " + this.nodeCount);
     return bestMove;
   }
@@ -199,11 +200,11 @@ class AtaxxAI {
     for (AtaxxMove move : childMoves) {
       game.makeMove(move);
       this.nodeCount++;
-      int v = -negaMaxAlphaBeta(game, depth - 1, -beta, -newAlpha, -color);
+      int evaluation = -negaMaxAlphaBeta(game, depth - 1, -beta, -newAlpha, -color);
       game.undoLastMove();
 
-      bestValue = Math.max(bestValue, v);
-      newAlpha = Math.max(newAlpha, v);
+      bestValue = Math.max(bestValue, evaluation);
+      newAlpha = Math.max(newAlpha, evaluation);
       if (newAlpha >= beta) {
         break;
       }
@@ -244,13 +245,13 @@ class AtaxxAI {
     for (AtaxxMove move : childMoves) {
       game.makeMove(move);
       this.nodeCount++;
-      int v = -negaMaxAlphaBetaFailHard(game, depth - 1, -beta, -newAlpha, -color);
+      int evaluation = -negaMaxAlphaBetaFailHard(game, depth - 1, -beta, -newAlpha, -color);
       game.undoLastMove();
 
-      if (v > beta) {
+      if (evaluation > beta) {
         return beta;
       }
-      newAlpha = Math.max(newAlpha, v);
+      newAlpha = Math.max(newAlpha, evaluation);
     }
 
     return newAlpha;
@@ -292,8 +293,8 @@ class AtaxxAI {
       // System.out.println(move);
       game.makeMove(move);
       this.nodeCount++;
-      int v = -negamax(game, depth - 1, -color);
-      bestValue = Math.max(v, bestValue);
+      int evaluation = -negamax(game, depth - 1, -color);
+      bestValue = Math.max(evaluation, bestValue);
       game.undoLastMove();
 
     }

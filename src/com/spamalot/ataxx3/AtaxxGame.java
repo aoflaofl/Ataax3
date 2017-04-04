@@ -48,6 +48,7 @@ class AtaxxGame {
   /**
    * Put the initial pieces for a standard game of Ataxx.
    * 
+   * <p>
    * TODO: Possibly add barrier squares.
    * 
    * @throws AtaxxException
@@ -206,74 +207,78 @@ class AtaxxGame {
   // return ret;
   // }
 
-  /**
-   * Check whether the color in the move is legal.
-   * 
-   * @param move
-   *          the move to check
-   * @return true if this is a legal color in an Ataxx game.
-   */
-  private static boolean isLegalColor(final Move move) {
-    return (move.getColor() == PieceColor.WHITE || move.getColor() == PieceColor.BLACK);
-  }
+  // /**
+  // * Check whether the color in the move is legal.
+  // *
+  // * @param move
+  // * the move to check
+  // * @return true if this is a legal color in an Ataxx game.
+  // */
+  // private static boolean isLegalColor(final Move move) {
+  // return (move.getColor() == PieceColor.WHITE || move.getColor() ==
+  // PieceColor.BLACK);
+  // }
 
-  /**
-   * Check from piece is the correct color.
-   * 
-   * @param move
-   *          the move
-   * @return true if the from piece exists and has the correct color for the
-   *         move.
-   */
-  private static boolean pieceInFromSquareMatchesColor(final Move move) {
-    Piece piece = move.getFromSquare().getPiece();
-    if (piece == null) {
-      return false;
-    }
-    return piece.getColor() == move.getColor();
-  }
+  // /**
+  // * Check from piece is the correct color.
+  // *
+  // * @param move
+  // * the move
+  // * @return true if the from piece exists and has the correct color for the
+  // * move.
+  // */
+  // private static boolean pieceInFromSquareMatchesColor(final Move move) {
+  // Piece piece = move.getFromSquare().getPiece();
+  // if (piece == null) {
+  // return false;
+  // }
+  // return piece.getColor() == move.getColor();
+  // }
 
-  /**
-   * @param move
-   *          the move to check.
-   * @return true if the square is empty.
-   */
-  private static boolean toSquareIsEmpty(final Move move) {
-    return move.getToSquare().getPiece() == null;
-  }
+  // /**
+  // * @param move
+  // * the move to check.
+  // * @return true if the square is empty.
+  // */
+  // private static boolean toSquareIsEmpty(final Move move) {
+  // return move.getToSquare().getPiece() == null;
+  // }
 
-  /**
-   * Check distance between from square and to square that this is a legal move
-   * for the move type.
-   * 
-   * @param move
-   *          the move to check
-   * @return true if the to square can be moved to from the from square.
-   */
-  private static boolean checkDistance(final AtaxxMove move) {
-    int xDiff = Math.abs(move.getToSquare().getFile() - move.getFromSquare().getFile());
-    int yDiff = Math.abs(move.getToSquare().getRank() - move.getFromSquare().getRank());
-
-    // If it's the same square, obviously not right
-    if (xDiff == 0 && yDiff == 0) {
-      return false;
-    }
-
-    if (move.getType() == AtaxxMove.Type.EXPAND) {
-      if (xDiff > 1 || yDiff > 1) {
-        return false;
-      }
-    } else if (move.getType() == AtaxxMove.Type.JUMP) {
-      if (xDiff == 2 && yDiff > 2) {
-        return false;
-      }
-      if (yDiff == 2 && xDiff > 2) {
-        return false;
-      }
-    }
-
-    return true;
-  }
+  // /**
+  // * Check distance between from square and to square that this is a legal
+  // move
+  // * for the move type.
+  // *
+  // * @param move
+  // * the move to check
+  // * @return true if the to square can be moved to from the from square.
+  // */
+  // private static boolean checkDistance(final AtaxxMove move) {
+  // int xDiff = Math.abs(move.getToSquare().getFile() -
+  // move.getFromSquare().getFile());
+  // int yDiff = Math.abs(move.getToSquare().getRank() -
+  // move.getFromSquare().getRank());
+  //
+  // // If it's the same square, obviously not right
+  // if (xDiff == 0 && yDiff == 0) {
+  // return false;
+  // }
+  //
+  // if (move.getType() == AtaxxMove.Type.EXPAND) {
+  // if (xDiff > 1 || yDiff > 1) {
+  // return false;
+  // }
+  // } else if (move.getType() == AtaxxMove.Type.JUMP) {
+  // if (xDiff == 2 && yDiff > 2) {
+  // return false;
+  // }
+  // if (yDiff == 2 && xDiff > 2) {
+  // return false;
+  // }
+  // }
+  //
+  // return true;
+  // }
 
   /*
    * (non-Javadoc)
@@ -295,6 +300,8 @@ class AtaxxGame {
   }
 
   /**
+   * Return the number of files on the board.
+   * 
    * @return the width
    */
   public int getNumFiles() {
@@ -302,6 +309,8 @@ class AtaxxGame {
   }
 
   /**
+   * Get the number of Ranks on the board.
+   * 
    * @return the height
    */
   public int getNumRanks() {
