@@ -1,4 +1,4 @@
-package com.spamalot.ataxx3;
+package com.spamalot.boardgame;
 
 /**
  * Colors of pieces in a board game.
@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-enum PieceColor {
+public enum PieceColor {
 
   /** White. */
   WHITE,
@@ -29,7 +29,7 @@ enum PieceColor {
   /**
    * @return the opposite color.
    */
-  PieceColor getOpposite() {
+  public PieceColor getOpposite() {
     return this.opposite;
   }
 

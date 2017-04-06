@@ -1,5 +1,7 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.boardgame.GameException;
+
 /**
  * Play the game of Ataxx.
  * 
@@ -42,10 +44,10 @@ public final class Ataxx {
    * 
    * @param args
    *          arguments to the program.
-   * @throws AtaxxException
+   * @throws GameException
    *           when there is some Ataxx related problem.
    */
-  public static void main(final String[] args) throws AtaxxException {
+  public static void main(final String[] args) throws GameException {
     System.out.println("Ataxx Game\nGene Johannsen");
 
     AtaxxGame ataxxGame = new AtaxxGame();

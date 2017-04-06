@@ -1,4 +1,4 @@
-package com.spamalot.ataxx3;
+package com.spamalot.boardgame;
 
 /**
  * A Move in a board game.
@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class Move implements Comparable<Move> {
+public class Move implements Comparable<Move> {
 
   /** The color making this move. */
   private PieceColor color;

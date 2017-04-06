@@ -1,4 +1,4 @@
-package com.spamalot.ataxx3;
+package com.spamalot.boardgame;
 
 /**
  * Hold two ordinates. Should be immutable.
@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-final class Coordinate {
+public final class Coordinate {
   /** The X ordinate. */
   private final int x;
   /** The Y ordinate. */
@@ -20,7 +20,7 @@ final class Coordinate {
    * @param yOrd
    *          the Y ordinate
    */
-  Coordinate(final int xOrd, final int yOrd) {
+  public Coordinate(final int xOrd, final int yOrd) {
     this.x = xOrd;
     this.y = yOrd;
   }
@@ -48,7 +48,7 @@ final class Coordinate {
    *          Another Coordainte
    * @return The max difference.
    */
-  static int maxDiff(final Coordinate a, final Coordinate b) {
+  public static int maxDiff(final Coordinate a, final Coordinate b) {
     int diffX = Math.abs(a.getX() - b.getX());
     int diffY = Math.abs(a.getY() - b.getY());
 

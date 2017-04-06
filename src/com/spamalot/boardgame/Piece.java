@@ -1,4 +1,4 @@
-package com.spamalot.ataxx3;
+package com.spamalot.boardgame;
 
 /**
  * A piece in a board game.
@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class Piece {
+public class Piece {
 
   /** Color of this piece. */
   private PieceColor color;
@@ -17,7 +17,7 @@ class Piece {
    * @param c
    *          the color.
    */
-  Piece(final PieceColor c) {
+  public Piece(final PieceColor c) {
     this.setColor(c);
   }
 

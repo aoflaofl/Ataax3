@@ -1,5 +1,9 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.boardgame.Move;
+import com.spamalot.boardgame.PieceColor;
+import com.spamalot.boardgame.Square;
+
 /**
  * Hold details of a move in a game of Ataxx.
  * 

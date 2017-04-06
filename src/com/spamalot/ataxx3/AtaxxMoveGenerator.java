@@ -1,5 +1,8 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.boardgame.PieceColor;
+import com.spamalot.boardgame.Square;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

@@ -1,5 +1,11 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.boardgame.Score;
+import com.spamalot.boardgame.Board;
+import com.spamalot.boardgame.Piece;
+import com.spamalot.boardgame.PieceColor;
+import com.spamalot.boardgame.Square;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +84,7 @@ class AtaxxBoard extends Board {
    * 
    * @return the score object.
    */
-  public final AtaxxScore getScore() {
+  public final Score getScore() {
     int numBlack = 0;
     int numWhite = 0;
 
@@ -96,7 +102,7 @@ class AtaxxBoard extends Board {
 
       }
     }
-    return new AtaxxScore(numBlack, numWhite);
+    return new Score(numBlack, numWhite);
   }
 
   @Override

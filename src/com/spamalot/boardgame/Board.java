@@ -1,4 +1,4 @@
-package com.spamalot.ataxx3;
+package com.spamalot.boardgame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * @author gej
  *
  */
-class Board {
+public class Board {
 
   /** Hold Array of Squares for the board. */
   private Square[][] squares;
@@ -24,7 +24,7 @@ class Board {
    * @param size
    *          size of a side of the square
    */
-  Board(final int size) {
+  protected Board(final int size) {
     this(size, size);
   }
 
@@ -63,7 +63,7 @@ class Board {
    *          the rank
    * @return the AtaxxSquare.
    */
-  final Square getSquareAt(final int file, final int rank) {
+  public final Square getSquareAt(final int file, final int rank) {
     return this.squares[file][rank];
   }
 
@@ -127,7 +127,7 @@ class Board {
    *          The Square
    * @return a List of Squares that are direct neighbors of the one passed in.
    */
-  final List<Square> getOneAwaySquares(final Square sq) {
+  protected final List<Square> getOneAwaySquares(final Square sq) {
     List<Square> ret = new ArrayList<>(8);
     ret.addAll(getOneAwayOrthogonal(sq));
     ret.addAll(getOneAwayDiagonal(sq));
@@ -218,7 +218,7 @@ class Board {
    *          The Square
    * @return a List of Squares that are two away neighbors of the one passed in.
    */
-  final List<Square> getTwoAwaySquares(final Square sq) {
+  protected final List<Square> getTwoAwaySquares(final Square sq) {
     List<Square> ret = new ArrayList<>(16);
 
     ret.addAll(getTwoAwayOrthogonal(sq));

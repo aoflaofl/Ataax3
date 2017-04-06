@@ -1,4 +1,4 @@
-package com.spamalot.ataxx3;
+package com.spamalot.boardgame;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @author gej
  *
  */
-class Square {
+public class Square {
 
   /**
    * Type of square.
@@ -65,7 +65,7 @@ class Square {
    * @param rank
    *          rank the Square is on
    */
-  Square(final int file, final int rank) {
+  public Square(final int file, final int rank) {
     this(Square.Type.OPEN, file, rank);
   }
 

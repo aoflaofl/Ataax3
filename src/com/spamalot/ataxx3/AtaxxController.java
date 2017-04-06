@@ -1,5 +1,8 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.boardgame.GameException;
+import com.spamalot.boardgame.PieceColor;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -88,7 +91,7 @@ class AtaxxController {
               Evaluatable move2 = this.ataxxGame.parseMove(text);
               System.out.println(move2);
               this.ataxxGame.makeMove(move2);
-            } catch (AtaxxException e) {
+            } catch (GameException e) {
               System.out.println(e);
               System.out.println("Try again.");
             }

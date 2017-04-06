@@ -3,6 +3,9 @@ package com.spamalot.ataxx3;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import com.spamalot.boardgame.Piece;
+import com.spamalot.boardgame.PieceColor;
+
 import org.junit.Test;
 
 /**
@@ -15,7 +18,7 @@ public class AtaxxPieceTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.ataxx3.Piece#AtaxxPiece(com.spamalot.ataxx3.PieceColor)}.
+   * {@link com.spamalot.boardgame.Piece#AtaxxPiece(com.spamalot.boardgame.PieceColor)}.
    */
   @SuppressWarnings("static-method")
   @Test
@@ -25,7 +28,7 @@ public class AtaxxPieceTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.ataxx3.Piece#getColor()}.
+   * Test method for {@link com.spamalot.boardgame.Piece#getColor()}.
    */
   @SuppressWarnings("static-method")
   @Test
@@ -36,7 +39,7 @@ public class AtaxxPieceTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.ataxx3.Piece#setColor(com.spamalot.ataxx3.PieceColor)}.
+   * {@link com.spamalot.boardgame.Piece#setColor(com.spamalot.boardgame.PieceColor)}.
    */
   @SuppressWarnings("static-method")
   @Test

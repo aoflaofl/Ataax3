@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.spamalot.boardgame.GameException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -81,7 +83,7 @@ public class AtaxxGameTest {
       try {
         this.ataxxGame.makeMove(m);
         this.ataxxGame.undoLastMove();
-      } catch (AtaxxException e) {
+      } catch (GameException e) {
         fail("Shouldn't get here\n" + e);
       }
     }

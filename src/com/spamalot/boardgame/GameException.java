@@ -1,4 +1,4 @@
-package com.spamalot.ataxx3;
+package com.spamalot.boardgame;
 
 /**
  * Exception thrown to flag an illegal move in Attax.
@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class AtaxxException extends Exception {
+public class GameException extends Exception {
 
   /** System generated serial ID. */
   private static final long serialVersionUID = -311227822482481911L;
@@ -17,7 +17,7 @@ class AtaxxException extends Exception {
    * @param msg
    *          a message.
    */
-  AtaxxException(final String msg) {
+  public GameException(final String msg) {
     System.out.println(msg);
   }
 
@@ -29,7 +29,7 @@ class AtaxxException extends Exception {
    * @param msg
    *          a message.
    */
-  AtaxxException(final Move move, final String msg) {
+  GameException(final Move move, final String msg) {
     // TODO Auto-generated constructor stub
   }
 

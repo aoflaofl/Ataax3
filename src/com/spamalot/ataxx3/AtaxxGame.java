@@ -1,5 +1,13 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.boardgame.GameException;
+import com.spamalot.boardgame.Score;
+import com.spamalot.boardgame.Coordinate;
+import com.spamalot.boardgame.GameControllable;
+import com.spamalot.boardgame.Piece;
+import com.spamalot.boardgame.PieceColor;
+import com.spamalot.boardgame.Square;
+
 import java.util.List;
 import java.util.Stack;
 
@@ -25,10 +33,10 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
   /**
    * Construct the Ataxx game with default size of side.
    * 
-   * @throws AtaxxException
+   * @throws GameException
    *           when there is some Ataxx related problem.
    */
-  AtaxxGame() throws AtaxxException {
+  AtaxxGame() throws GameException {
     this(DEFAULT_ATAXX_BOARD_SIZE);
   }
 
@@ -37,10 +45,10 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    * 
    * @param size
    *          Size of a side
-   * @throws AtaxxException
+   * @throws GameException
    *           when there is some Ataxx related problem.
    */
-  private AtaxxGame(final int size) throws AtaxxException {
+  private AtaxxGame(final int size) throws GameException {
     this.board = new AtaxxBoard(size);
     initBoard();
   }
@@ -51,10 +59,10 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    * <p>
    * TODO: Possibly add barrier squares.
    * 
-   * @throws AtaxxException
+   * @throws GameException
    *           when there is some Ataxx related problem.
    */
-  private void initBoard() throws AtaxxException {
+  private void initBoard() throws GameException {
     dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(0, 0));
     dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(this.board.getNumRanks() - 1, this.board.getNumFiles() - 1));
 
@@ -81,7 +89,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    * 
    * @param aMove
    *          The move to make
-   * @throws AtaxxException
+   * @throws GameException
    *           When something goes wrong
    */
   @Override
@@ -182,7 +190,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    *          the Piece
    * @param coord
    *          the Coordinate
-   * @throws AtaxxException
+   * @throws GameException
    *           if square is not empty
    */
   private static void dropPiece(final Piece piece, final Square coord) {
@@ -327,7 +335,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    * @return the score object.
    */
   @Override
-  public final AtaxxScore getScore() {
+  public final Score getScore() {
     return this.board.getScore();
   }
 
@@ -347,13 +355,13 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    * @param text
    *          The String of the move
    * @return An AtaxxMove object
-   * @throws AtaxxException
+   * @throws GameException
    *           when move cannot be parsed.
    */
   @Override
-  public final Evaluatable parseMove(final String text) throws AtaxxException {
+  public final Evaluatable parseMove(final String text) throws GameException {
     if (text.length() != 4) {
-      throw new AtaxxException("Not an Ataxx move.");
+      throw new GameException("Not an Ataxx move.");
     }
 
     String moveText = text.replaceAll("\\s", "");
@@ -363,7 +371,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
     int maxDiff = Coordinate.maxDiff(from, to);
 
     if (maxDiff > 2) {
-      throw new AtaxxException("Illegal Move, too far away");
+      throw new GameException("Illegal Move, too far away");
     }
 
     AtaxxMove.Type moveType = null;

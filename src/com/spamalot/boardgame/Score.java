@@ -1,4 +1,4 @@
-package com.spamalot.ataxx3;
+package com.spamalot.boardgame;
 
 /**
  * Hold the score of an AtaxxGame.
@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class AtaxxScore {
+public class Score {
   /** Black score. */
   private int black;
 
@@ -22,7 +22,7 @@ class AtaxxScore {
    *          Count of white pieces
    *
    */
-  AtaxxScore(final int b, final int w) {
+  public Score(final int b, final int w) {
     this.black = b;
     this.white = w;
   }

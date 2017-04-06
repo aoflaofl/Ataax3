@@ -1,14 +1,16 @@
-package com.spamalot.ataxx3;
+package com.spamalot.boardgame;
+
+import com.spamalot.ataxx3.Evaluatable;
 
 import java.util.List;
 
-interface GameControllable {
+public interface GameControllable {
 
   List<? extends Evaluatable> getAvailableMoves();
 
   String boardToString();
 
-  AtaxxScore getScore();
+  Score getScore();
 
   void undoLastMove();
 
@@ -18,6 +20,6 @@ interface GameControllable {
 
   void makeMove(Evaluatable movep);
 
-  Evaluatable parseMove(String text) throws AtaxxException;
+  Evaluatable parseMove(String text) throws GameException;
 
 }

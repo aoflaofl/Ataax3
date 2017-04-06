@@ -1,5 +1,7 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.boardgame.Square;
+
 import java.util.List;
 
 /**
