@@ -76,7 +76,7 @@ public class AtaxxGameTest {
     assertNotNull(a);
     assertTrue(a.size() > 0);
 
-    for (AtaxxMove m : a) {
+    for (Evaluatable m : a) {
       System.out.println(m);
       try {
         this.ataxxGame.makeMove(m);

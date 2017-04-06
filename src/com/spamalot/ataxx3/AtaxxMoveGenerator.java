@@ -36,8 +36,8 @@ class AtaxxMoveGenerator {
    *          Color to move.
    * @return list of moves.
    */
-  public List<Moveable> getAvailableMoves(final PieceColor toMove) {
-    List<Moveable> result = new ArrayList<>();
+  public List<AtaxxMove> getAvailableMoves(final PieceColor toMove) {
+    List<AtaxxMove> result = new ArrayList<>();
     this.seen.clear();
     for (int rank = 0; rank < this.ataxxGame.getNumRanks(); rank++) {
       for (int file = 0; file < this.ataxxGame.getNumFiles(); file++) {

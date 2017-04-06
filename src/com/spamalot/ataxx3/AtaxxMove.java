@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class AtaxxMove extends Move implements Moveable {
+class AtaxxMove extends Move implements Evaluatable {
   /**
    * The two types of an Ataxx move.
    * 
@@ -85,10 +85,13 @@ class AtaxxMove extends Move implements Moveable {
    *          the other
    * @return the compare
    */
-  public int compareTo(final AtaxxMove o) {
-    int ret = super.compareTo(o);
+  @Override
+  public int compareTo(final Evaluatable o) {
+    AtaxxMove mov = (AtaxxMove) o;
+
+    int ret = super.compareTo(mov);
     if (ret == 0) {
-      if (this.getType() == o.getType()) {
+      if (this.getType() == mov.getType()) {
         ret = 0;
       } else if (this.getType() == Type.JUMP) {
         ret = 1;

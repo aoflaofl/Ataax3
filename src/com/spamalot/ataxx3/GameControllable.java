@@ -4,7 +4,7 @@ import java.util.List;
 
 interface GameControllable {
 
-  List<Moveable> getAvailableMoves();
+  List<? extends Evaluatable> getAvailableMoves();
 
   String boardToString();
 
@@ -16,8 +16,8 @@ interface GameControllable {
 
   boolean isOver();
 
-  void makeMove(AtaxxMove movep);
+  void makeMove(Evaluatable movep);
 
-  AtaxxMove parseMove(String text) throws AtaxxException;
+  Evaluatable parseMove(String text) throws AtaxxException;
 
 }

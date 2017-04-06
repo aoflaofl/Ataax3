@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 class AtaxxController {
   /** The Ataxx Game to control. */
-  private GameControllable ataxxGame;
+  private AtaxxGame ataxxGame;
 
   /**
    * Construct an Ataxx Game Controller.
@@ -38,7 +38,7 @@ class AtaxxController {
         switch (text) {
           case "moves":
             List<AtaxxMove> moves = this.ataxxGame.getAvailableMoves();
-            for (Move move : moves) {
+            for (Evaluatable move : moves) {
               System.out.println(move);
             }
             break;
@@ -51,8 +51,8 @@ class AtaxxController {
             this.ataxxGame.undoLastMove();
             break;
           case "think":
-            AtaxxAI ai = new AtaxxAI((MinMaxSearchable) this.ataxxGame);
-            AtaxxMove move = (AtaxxMove) ai.think(depth);
+            AtaxxAI ai = new AtaxxAI(this.ataxxGame);
+            Evaluatable move = ai.think(depth);
 
             System.out.println("Move:\n" + move);
 
@@ -68,8 +68,8 @@ class AtaxxController {
               } else {
                 depth = 4;
               }
-              AtaxxAI aip = new AtaxxAI((MinMaxSearchable) this.ataxxGame);
-              AtaxxMove movep = (AtaxxMove) aip.think(depth);
+              AtaxxAI aip = new AtaxxAI(this.ataxxGame);
+              Evaluatable movep = aip.think(depth);
               this.ataxxGame.makeMove(movep);
               System.out.println(this.ataxxGame.boardToString());
               System.out.println("Color to move: " + this.ataxxGame.getToMove());
@@ -85,7 +85,7 @@ class AtaxxController {
           default:
             // If it is not a recognized command then it might be a move.
             try {
-              AtaxxMove move2 = this.ataxxGame.parseMove(text);
+              Evaluatable move2 = this.ataxxGame.parseMove(text);
               System.out.println(move2);
               this.ataxxGame.makeMove(move2);
             } catch (AtaxxException e) {

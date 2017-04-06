@@ -85,7 +85,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    *           When something goes wrong
    */
   @Override
-  public void makeMove(final Moveable move) {
+  public void makeMove(final Evaluatable move) {
     AtaxxMove aMove = (AtaxxMove) move;
     // A null move would indicate a pass.
     if (aMove == null) {
@@ -158,7 +158,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    * @see com.spamalot.ataxx3.MinMaxSearchable#getAvailableMoves()
    */
   @Override
-  public List<Moveable> getAvailableMoves() {
+  public List<AtaxxMove> getAvailableMoves() {
     return this.getAvailableMoves(this.colorToMove);
   }
 
@@ -169,7 +169,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    *          Color to move.
    * @return a list of moves.
    */
-  private List<Moveable> getAvailableMoves(final PieceColor toMove) {
+  private List<AtaxxMove> getAvailableMoves(final PieceColor toMove) {
     AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this);
     return gen.getAvailableMoves(toMove);
   }
@@ -326,6 +326,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    * 
    * @return the score object.
    */
+  @Override
   public final AtaxxScore getScore() {
     return this.board.getScore();
   }
@@ -335,6 +336,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    * 
    * @return the board as a String.
    */
+  @Override
   public final String boardToString() {
     return this.board.toString();
   }
@@ -348,7 +350,8 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    * @throws AtaxxException
    *           when move cannot be parsed.
    */
-  public final AtaxxMove parseMove(final String text) throws AtaxxException {
+  @Override
+  public final Evaluatable parseMove(final String text) throws AtaxxException {
     if (text.length() != 4) {
       throw new AtaxxException("Not an Ataxx move.");
     }
