@@ -9,7 +9,7 @@ import java.util.Stack;
  * @author gej
  *
  */
-class AtaxxGame {
+class AtaxxGame implements MinMaxSearchable, GameControllable {
   /** Default Board Size Constant. */
   private static final int DEFAULT_ATAXX_BOARD_SIZE = 7;
 
@@ -79,35 +79,37 @@ class AtaxxGame {
    * Make a move in Ataxx game. For performance reasons it is assumed move has
    * been checked for legality before calling this method.
    * 
-   * @param move
+   * @param aMove
    *          The move to make
    * @throws AtaxxException
    *           When something goes wrong
    */
-  void makeMove(final AtaxxMove move) {
+  @Override
+  public void makeMove(final Moveable move) {
+    AtaxxMove aMove = (AtaxxMove) move;
     // A null move would indicate a pass.
-    if (move == null) {
+    if (aMove == null) {
       this.colorToMove = this.colorToMove.getOpposite();
       this.undoMoveStack.push(null);
       return;
     }
 
     Piece piece = null;
-    switch (move.getType()) {
+    switch (aMove.getType()) {
       case EXPAND:
-        piece = new Piece(move.getColor());
+        piece = new Piece(aMove.getColor());
         break;
       case JUMP:
-        piece = move.getFromSquare().pickupPiece();
+        piece = aMove.getFromSquare().pickupPiece();
         break;
       default:
         break;
     }
-    dropPiece(piece, move.getToSquare());
+    dropPiece(piece, aMove.getToSquare());
 
-    List<Square> flipped = AtaxxBoard.flipPiecesAroundSquare(move.getToSquare(), move.getColor());
+    List<Square> flipped = AtaxxBoard.flipPiecesAroundSquare(aMove.getToSquare(), aMove.getColor());
 
-    this.undoMoveStack.push(new AtaxxUndoMove(move, flipped));
+    this.undoMoveStack.push(new AtaxxUndoMove(aMove, flipped));
 
     this.colorToMove = this.colorToMove.getOpposite();
   }
@@ -115,7 +117,8 @@ class AtaxxGame {
   /**
    * Undo the effects of the last move made.
    */
-  void undoLastMove() {
+  @Override
+  public void undoLastMove() {
     AtaxxUndoMove move = this.undoMoveStack.pop();
     if (move != null) {
       AtaxxGame.undoPieceMove(move.getMove());
@@ -149,12 +152,13 @@ class AtaxxGame {
     }
   }
 
-  /**
-   * Get a list of moves.
+  /*
+   * (non-Javadoc)
    * 
-   * @return a list of available moves.
+   * @see com.spamalot.ataxx3.MinMaxSearchable#getAvailableMoves()
    */
-  public List<AtaxxMove> getAvailableMoves() {
+  @Override
+  public List<Moveable> getAvailableMoves() {
     return this.getAvailableMoves(this.colorToMove);
   }
 
@@ -165,7 +169,7 @@ class AtaxxGame {
    *          Color to move.
    * @return a list of moves.
    */
-  private List<AtaxxMove> getAvailableMoves(final PieceColor toMove) {
+  private List<Moveable> getAvailableMoves(final PieceColor toMove) {
     AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this);
     return gen.getAvailableMoves(toMove);
   }
@@ -331,7 +335,7 @@ class AtaxxGame {
    * 
    * @return the board as a String.
    */
-  final String boardToString() {
+  public final String boardToString() {
     return this.board.toString();
   }
 
@@ -344,7 +348,7 @@ class AtaxxGame {
    * @throws AtaxxException
    *           when move cannot be parsed.
    */
-  final AtaxxMove parseMove(final String text) throws AtaxxException {
+  public final AtaxxMove parseMove(final String text) throws AtaxxException {
     if (text.length() != 4) {
       throw new AtaxxException("Not an Ataxx move.");
     }
@@ -393,15 +397,17 @@ class AtaxxGame {
    * 
    * @return the color to move.
    */
+  @Override
   public PieceColor getToMove() {
     return this.colorToMove;
   }
 
-  /**
-   * Check if the game is over.
+  /*
+   * (non-Javadoc)
    * 
-   * @return true if the game is over.
+   * @see com.spamalot.ataxx3.MinMaxSearchable#isOver()
    */
+  @Override
   public boolean isOver() {
     Square[][] b = this.board.getSquares();
 
@@ -430,13 +436,12 @@ class AtaxxGame {
     return ((black + white == boardSize) || black == 0 || white == 0);
   }
 
-  /**
-   * An evaluation of the position from white's perspective.
+  /*
+   * (non-Javadoc)
    * 
-   * @param gameOver
-   *          True if game is over and is being evaluated for that
-   * @return evaluation value.
+   * @see com.spamalot.ataxx3.MinMaxSearchable#evaluate(boolean)
    */
+  @Override
   public int evaluate(final boolean gameOver) {
     Square[][] b = this.board.getSquares();
 

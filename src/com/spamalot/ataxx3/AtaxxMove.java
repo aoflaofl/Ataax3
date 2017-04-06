@@ -6,7 +6,7 @@ package com.spamalot.ataxx3;
  * @author gej
  *
  */
-class AtaxxMove extends Move {
+class AtaxxMove extends Move implements Moveable {
   /**
    * The two types of an Ataxx move.
    * 

@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 class AtaxxController {
   /** The Ataxx Game to control. */
-  private AtaxxGame ataxxGame;
+  private GameControllable ataxxGame;
 
   /**
    * Construct an Ataxx Game Controller.
@@ -51,8 +51,8 @@ class AtaxxController {
             this.ataxxGame.undoLastMove();
             break;
           case "think":
-            AtaxxAI ai = new AtaxxAI(this.ataxxGame);
-            AtaxxMove move = ai.think(depth);
+            AtaxxAI ai = new AtaxxAI((MinMaxSearchable) this.ataxxGame);
+            AtaxxMove move = (AtaxxMove) ai.think(depth);
 
             System.out.println("Move:\n" + move);
 
@@ -64,12 +64,12 @@ class AtaxxController {
           case "play":
             while (!this.ataxxGame.isOver()) {
               if (this.ataxxGame.getToMove() == PieceColor.BLACK) {
-                depth = 3;
+                depth = 7;
               } else {
-                depth = 1;
+                depth = 4;
               }
-              AtaxxAI aip = new AtaxxAI(this.ataxxGame);
-              AtaxxMove movep = aip.think(depth);
+              AtaxxAI aip = new AtaxxAI((MinMaxSearchable) this.ataxxGame);
+              AtaxxMove movep = (AtaxxMove) aip.think(depth);
               this.ataxxGame.makeMove(movep);
               System.out.println(this.ataxxGame.boardToString());
               System.out.println("Color to move: " + this.ataxxGame.getToMove());

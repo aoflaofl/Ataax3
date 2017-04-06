@@ -22,7 +22,7 @@ public class AtaxxGameTest {
   /**
    * Test variable.
    */
-  private AtaxxGame ataxxGame;
+  private MinMaxSearchable ataxxGame;
 
   /**
    * @throws java.lang.Exception
