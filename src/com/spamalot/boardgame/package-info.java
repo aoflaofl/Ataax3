@@ -1,7 +1,6 @@
 /**
+ * Generic Boardgame classes.
  * 
- */
-/**
  * @author gej
  *
  */

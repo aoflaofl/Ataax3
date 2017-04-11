@@ -1,8 +1,8 @@
-package com.spamalot.ataxx3;
+package com.spamalot.boardgame;
 
-import com.spamalot.boardgame.PieceColor;
+import com.spamalot.ataxx3.Evaluatable;
 
-interface MinMaxSearchable {
+public interface MinMaxSearchable {
 
   /**
    * Check if the game is over.

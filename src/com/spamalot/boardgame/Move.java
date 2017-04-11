@@ -16,42 +16,43 @@ public class Move implements Comparable<Move> {
 
   /** The to square. */
   private Square to;
-  /** AI evaluation of move. Set to min value until evaluated. */
+
+  /** AI evaluation of move. Initialized to min value until evaluated. */
   private int evaluation = Integer.MIN_VALUE;
 
   /**
    * Set the to Square of the Move.
    * 
-   * @param toCoord
+   * @param toSquare
    *          the Square being moved to
    */
-  protected void setToSquare(final Square toCoord) {
-    this.to = toCoord;
+  protected void setToSquare(final Square toSquare) {
+    this.to = toSquare;
   }
 
   /**
    * Set the from Square of the Move.
    * 
-   * @param fromCoord
+   * @param fromSquare
    *          the Square being moved from
    */
-  protected void setFromSquare(final Square fromCoord) {
-    this.from = fromCoord;
+  protected void setFromSquare(final Square fromSquare) {
+    this.from = fromSquare;
   }
 
   /**
-   * The From Coordinate.
+   * Get the From Square.
    * 
-   * @return the from
+   * @return the from Square.
    */
   public Square getFromSquare() {
     return this.from;
   }
 
   /**
-   * The To Coordinate.
+   * Get the To Square.
    * 
-   * @return the to
+   * @return the to Square.
    */
   public Square getToSquare() {
     return this.to;
@@ -76,6 +77,9 @@ public class Move implements Comparable<Move> {
     this.color = c;
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
@@ -93,7 +97,7 @@ public class Move implements Comparable<Move> {
   }
 
   /**
-   * Set the eveluation.
+   * Set the evaluation.
    * 
    * @param v
    *          the evaluation of this move
@@ -103,6 +107,8 @@ public class Move implements Comparable<Move> {
   }
 
   /**
+   * Get the Evaluation.
+   * 
    * @return the evaluation of this move.
    */
   public int getEvaluation() {

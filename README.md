@@ -1,0 +1,1 @@
+Implement some boardgames using generic Boardgame classes.

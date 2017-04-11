@@ -57,11 +57,13 @@ public class Board {
   }
 
   /**
+   * Get a Square from the Board.
+   * 
    * @param file
    *          the file
    * @param rank
    *          the rank
-   * @return the AtaxxSquare.
+   * @return the Square.
    */
   public final Square getSquareAt(final int file, final int rank) {
     return this.squares[file][rank];
@@ -106,6 +108,8 @@ public class Board {
   }
 
   /**
+   * Get the Square array of this Board.
+   * 
    * @return the squares
    */
   public Square[][] getSquares() {
@@ -113,6 +117,8 @@ public class Board {
   }
 
   /**
+   * Set the Square array of this Board.
+   * 
    * @param sqs
    *          the squares to set
    */

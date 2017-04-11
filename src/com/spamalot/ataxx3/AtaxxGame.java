@@ -1,11 +1,12 @@
 package com.spamalot.ataxx3;
 
-import com.spamalot.boardgame.GameException;
-import com.spamalot.boardgame.Score;
 import com.spamalot.boardgame.Coordinate;
 import com.spamalot.boardgame.GameControllable;
+import com.spamalot.boardgame.GameException;
+import com.spamalot.boardgame.MinMaxSearchable;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
+import com.spamalot.boardgame.Score;
 import com.spamalot.boardgame.Square;
 
 import java.util.List;

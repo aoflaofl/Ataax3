@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.spamalot.boardgame.GameException;
+import com.spamalot.boardgame.MinMaxSearchable;
 
 import org.junit.After;
 import org.junit.AfterClass;
