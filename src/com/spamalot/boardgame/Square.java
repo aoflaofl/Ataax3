@@ -1,5 +1,6 @@
 package com.spamalot.boardgame;
 
+import java.util.EnumMap;
 import java.util.List;
 
 /**
@@ -41,6 +42,9 @@ public class Square {
 
   /** The Squares that are in the second ring around this one. */
   private Square[] twoAwaySquares;
+
+  /** The Squares in Directions. */
+  EnumMap<Direction, Square> stateMap = new EnumMap<>(Direction.class);
 
   /**
    * Construct an Square object.

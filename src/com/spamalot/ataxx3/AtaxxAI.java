@@ -123,7 +123,7 @@ class AtaxxAI {
     System.out.println("Searching to a depth of " + depth);
 
     int color = 1;
-    if (this.ataxxGame.getToMove() == PieceColor.BLACK) {
+    if (this.ataxxGame.getColorToMove() == PieceColor.BLACK) {
       color = -1;
     }
 

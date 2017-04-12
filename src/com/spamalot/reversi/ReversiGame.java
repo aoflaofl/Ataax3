@@ -1,8 +1,10 @@
 package com.spamalot.reversi;
 
 import com.spamalot.ataxx3.Evaluatable;
+import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
+import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 
 /**
@@ -11,7 +13,7 @@ import com.spamalot.boardgame.PieceColor;
  * @author gej
  *
  */
-class ReversiGame implements MinMaxSearchable {
+class ReversiGame extends Game implements MinMaxSearchable {
   /** Default Board Size Constant. */
   private static final int DEFAULT_REVERSI_BOARD_SIZE = 8;
   /** The board. */
@@ -43,8 +45,13 @@ class ReversiGame implements MinMaxSearchable {
   /**
    * Set up board.
    */
-  private void initBoard() {
-    // TODO Auto-generated method stub
+  protected void initBoard() {
+
+    dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(0, 0));
+    dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(this.board.getNumRanks() - 1, this.board.getNumFiles() - 1));
+
+    dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(0, this.board.getNumFiles() - 1));
+    dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(this.board.getNumRanks() - 1, 0));
 
   }
 
@@ -73,8 +80,16 @@ class ReversiGame implements MinMaxSearchable {
   }
 
   @Override
-  public PieceColor getToMove() {
-    // TODO Auto-generated method stub
-    return null;
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("ReversiGame [board=\n");
+    builder.append(this.board);
+    builder.append("toMove=");
+    builder.append(getColorToMove());
+    // builder.append("\ngetAvailableMoves()=");
+    // builder.append(getAvailableMoves());
+    // builder.append("\nUndo move list=" + this.undoMoveStack);
+    builder.append("\n]");
+    return builder.toString();
   }
 }

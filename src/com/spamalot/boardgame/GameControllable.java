@@ -14,7 +14,7 @@ public interface GameControllable {
 
   void undoLastMove();
 
-  PieceColor getToMove();
+  PieceColor getColorToMove();
 
   boolean isOver();
 

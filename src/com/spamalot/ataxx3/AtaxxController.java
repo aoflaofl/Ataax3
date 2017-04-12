@@ -47,7 +47,7 @@ class AtaxxController {
             break;
           case "board":
             System.out.println(this.ataxxGame.boardToString());
-            System.out.println("Color to move: " + this.ataxxGame.getToMove());
+            System.out.println("Color to move: " + this.ataxxGame.getColorToMove());
             System.out.println(this.ataxxGame.getScore());
             break;
           case "undo":
@@ -61,12 +61,12 @@ class AtaxxController {
 
             this.ataxxGame.makeMove(move);
             System.out.println(this.ataxxGame.boardToString());
-            System.out.println("Color to move: " + this.ataxxGame.getToMove());
+            System.out.println("Color to move: " + this.ataxxGame.getColorToMove());
             System.out.println(this.ataxxGame.getScore());
             break;
           case "play":
             while (!this.ataxxGame.isOver()) {
-              if (this.ataxxGame.getToMove() == PieceColor.BLACK) {
+              if (this.ataxxGame.getColorToMove() == PieceColor.BLACK) {
                 depth = 7;
               } else {
                 depth = 4;
@@ -75,7 +75,7 @@ class AtaxxController {
               Evaluatable movep = aip.think(depth);
               this.ataxxGame.makeMove(movep);
               System.out.println(this.ataxxGame.boardToString());
-              System.out.println("Color to move: " + this.ataxxGame.getToMove());
+              System.out.println("Color to move: " + this.ataxxGame.getColorToMove());
               System.out.println(this.ataxxGame.getScore());
             }
             System.out.println("Done.");

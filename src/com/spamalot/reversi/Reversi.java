@@ -25,8 +25,8 @@ public final class Reversi {
    */
   public static void main(final String[] args) throws GameException {
     System.out.println("Reversi Game\nGene Johannsen");
-    ReversiGame ataxxGame = new ReversiGame();
-    System.out.println(ataxxGame.toString());
+    ReversiGame reversiGame = new ReversiGame();
+    System.out.println(reversiGame.toString());
 
   }
 

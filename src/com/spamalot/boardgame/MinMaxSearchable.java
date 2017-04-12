@@ -24,5 +24,5 @@ public interface MinMaxSearchable {
 
   void makeMove(Evaluatable move);
 
-  PieceColor getToMove();
+  PieceColor getColorToMove();
 }

@@ -1,6 +1,7 @@
 package com.spamalot.ataxx3;
 
 import com.spamalot.boardgame.Coordinate;
+import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameControllable;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
@@ -18,15 +19,12 @@ import java.util.Stack;
  * @author gej
  *
  */
-class AtaxxGame implements MinMaxSearchable, GameControllable {
+class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
   /** Default Board Size Constant. */
   private static final int DEFAULT_ATAXX_BOARD_SIZE = 7;
 
   /** The board for this game. */
   private AtaxxBoard board;
-
-  /** Which color is currently to move. White moves first. */
-  private PieceColor colorToMove = PieceColor.WHITE;
 
   /** Stack for undo move list. */
   private Stack<AtaxxUndoMove> undoMoveStack = new Stack<>();
@@ -63,7 +61,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    * @throws GameException
    *           when there is some Ataxx related problem.
    */
-  private void initBoard() throws GameException {
+  protected void initBoard() throws GameException {
     dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(0, 0));
     dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(this.board.getNumRanks() - 1, this.board.getNumFiles() - 1));
 
@@ -98,7 +96,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
     AtaxxMove aMove = (AtaxxMove) move;
     // A null move would indicate a pass.
     if (aMove == null) {
-      this.colorToMove = this.colorToMove.getOpposite();
+      switchColorToMove();
       this.undoMoveStack.push(null);
       return;
     }
@@ -120,7 +118,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
 
     this.undoMoveStack.push(new AtaxxUndoMove(aMove, flipped));
 
-    this.colorToMove = this.colorToMove.getOpposite();
+    switchColorToMove();
   }
 
   /**
@@ -133,7 +131,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
       AtaxxGame.undoPieceMove(move.getMove());
       flipPiecesInSquares(move.getFlipped());
     }
-    this.colorToMove = this.colorToMove.getOpposite();
+    switchColorToMove();
   }
 
   /**
@@ -168,7 +166,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
    */
   @Override
   public List<AtaxxMove> getAvailableMoves() {
-    return this.getAvailableMoves(this.colorToMove);
+    return this.getAvailableMoves(getColorToMove());
   }
 
   /**
@@ -181,25 +179,6 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
   private List<AtaxxMove> getAvailableMoves(final PieceColor toMove) {
     AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this);
     return gen.getAvailableMoves(toMove);
-  }
-
-  /**
-   * Drop a piece on the board. For performance reasons assume legality has been
-   * checked before method is called.
-   * 
-   * @param piece
-   *          the Piece
-   * @param coord
-   *          the Coordinate
-   * @throws GameException
-   *           if square is not empty
-   */
-  private static void dropPiece(final Piece piece, final Square coord) {
-    // if (coord.getPiece() == null) {
-    coord.setPiece(piece);
-    // } else {
-    // throw new AtaxxException("Square is not empty.");
-    // }
   }
 
   // /**
@@ -304,7 +283,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
     builder.append("AtaxxGame [board=\n");
     builder.append(this.board);
     builder.append("toMove=");
-    builder.append(this.colorToMove);
+    builder.append(getColorToMove());
     // builder.append("\ngetAvailableMoves()=");
     // builder.append(getAvailableMoves());
     // builder.append("\nUndo move list=" + this.undoMoveStack);
@@ -385,7 +364,7 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
     Square f = getSquareAt(from.getX(), from.getY());
     Square t = getSquareAt(to.getX(), to.getY());
 
-    return new AtaxxMove(moveType, this.colorToMove, f, t);
+    return new AtaxxMove(moveType, getColorToMove(), f, t);
   }
 
   /**
@@ -402,16 +381,6 @@ class AtaxxGame implements MinMaxSearchable, GameControllable {
     int y = rank - '0' - 1;
     Coordinate coord = new Coordinate(x, y);
     return coord;
-  }
-
-  /**
-   * Get the color whose move it is.
-   * 
-   * @return the color to move.
-   */
-  @Override
-  public PieceColor getToMove() {
-    return this.colorToMove;
   }
 
   /*
