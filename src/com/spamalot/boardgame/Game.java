@@ -54,6 +54,9 @@ public abstract class Game {
     this.colorToMove = toMove;
   }
 
+  /**
+   * Switch color to move to the opposite color.
+   */
   protected void switchColorToMove() {
     setColorToMove(getColorToMove().getOpposite());
   }
@@ -62,6 +65,7 @@ public abstract class Game {
    * Set up board.
    * 
    * @throws GameException
+   *           if something goes wrong.
    */
   protected abstract void initBoard() throws GameException;
 }

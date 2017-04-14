@@ -41,7 +41,8 @@ class AtaxxBoard extends Board {
    * @param s
    *          Array of squares that make up the board
    */
-  private void initSquares(final Square[][] s) {
+  @Override
+  protected void initSquares(final Square[][] s) {
     for (int rank = 0; rank < getNumRanks(); rank++) {
       for (int file = 0; file < getNumFiles(); file++) {
         Square sq = s[file][rank];
@@ -105,38 +106,38 @@ class AtaxxBoard extends Board {
     return new Score(numBlack, numWhite);
   }
 
-  @Override
-  public final String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("   ");
-    for (byte j = 0; j < this.getNumFiles(); j++) {
-      sb.append((char) ('a' + j));
-    }
-    sb.append("\n\n");
-
-    for (int i = 0; i < this.getNumRanks(); i++) {
-      sb.append(i + 1);
-      sb.append("  ");
-      for (int j = 0; j < this.getNumFiles(); j++) {
-
-        Square squareAt = getSquareAt(j, i);
-
-        if (squareAt.isBlocked()) {
-          sb.append('X');
-        } else {
-          Piece piece = squareAt.getPiece();
-          if (piece == null) {
-            sb.append(".");
-          } else {
-            sb.append(piece);
-          }
-        }
-      }
-      sb.append("\n");
-    }
-
-    return sb.toString();
-  }
+//  @Override
+//  public final String toString() {
+//    StringBuilder sb = new StringBuilder();
+//    sb.append("   ");
+//    for (byte j = 0; j < this.getNumFiles(); j++) {
+//      sb.append((char) ('a' + j));
+//    }
+//    sb.append("\n\n");
+//
+//    for (int i = 0; i < this.getNumRanks(); i++) {
+//      sb.append(i + 1);
+//      sb.append("  ");
+//      for (int j = 0; j < this.getNumFiles(); j++) {
+//
+//        Square squareAt = getSquareAt(j, i);
+//
+//        if (squareAt.isBlocked()) {
+//          sb.append('X');
+//        } else {
+//          Piece piece = squareAt.getPiece();
+//          if (piece == null) {
+//            sb.append(".");
+//          } else {
+//            sb.append(piece);
+//          }
+//        }
+//      }
+//      sb.append("\n");
+//    }
+//
+//    return sb.toString();
+//  }
 
   /**
    * Set a square as blocked.

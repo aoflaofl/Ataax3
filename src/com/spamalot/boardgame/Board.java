@@ -9,7 +9,7 @@ import java.util.List;
  * @author gej
  *
  */
-public class Board {
+public abstract class Board {
 
   /** Hold Array of Squares for the board. */
   private Square[][] squares;
@@ -43,7 +43,18 @@ public class Board {
     this.setSquares(new Square[files][ranks]);
 
     initBoard();
+    initSquares(this.getSquares());
   }
+
+  /**
+   * Method to implement that sets up squares that will be called by the Board
+   * class constructor. This might set up pointers to squares around each
+   * square.
+   * 
+   * @param squares2
+   *          2d array of squares that make up the board
+   */
+  protected abstract void initSquares(Square[][] squares2);
 
   /**
    * Initialize the board.
@@ -169,7 +180,7 @@ public class Board {
    *          Rank of Square
    * @return true if the Square is on the board and is not blocked.
    */
-  private boolean isPlayableSquare(final int file, final int rank) {
+  protected boolean isPlayableSquare(final int file, final int rank) {
     if (file < 0 || file >= this.numFiles || rank < 0 || rank >= this.numRanks) {
       return false;
     }
@@ -303,6 +314,39 @@ public class Board {
     checkAndAddSquare(ret, file, rank + 2);
 
     return ret;
+  }
+
+  @Override
+  public final String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("   ");
+    for (byte j = 0; j < this.getNumFiles(); j++) {
+      sb.append((char) ('a' + j));
+    }
+    sb.append("\n\n");
+  
+    for (int i = 0; i < this.getNumRanks(); i++) {
+      sb.append(i + 1);
+      sb.append("  ");
+      for (int j = 0; j < this.getNumFiles(); j++) {
+  
+        Square squareAt = getSquareAt(j, i);
+  
+        if (squareAt.isBlocked()) {
+          sb.append('X');
+        } else {
+          Piece piece = squareAt.getPiece();
+          if (piece == null) {
+            sb.append(".");
+          } else {
+            sb.append(piece);
+          }
+        }
+      }
+      sb.append("\n");
+    }
+  
+    return sb.toString();
   }
 
 }

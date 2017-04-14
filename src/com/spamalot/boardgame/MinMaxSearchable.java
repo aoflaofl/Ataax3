@@ -2,6 +2,13 @@ package com.spamalot.boardgame;
 
 import com.spamalot.ataxx3.Evaluatable;
 
+/**
+ * Objects that implement the MinMaxSearchable interface are able to be searched
+ * using a MinMax algorithm.
+ * 
+ * @author gej
+ *
+ */
 public interface MinMaxSearchable {
 
   /**
@@ -12,7 +19,8 @@ public interface MinMaxSearchable {
   boolean isOver();
 
   /**
-   * An evaluation of the position from white's perspective.
+   * An evaluation of the position from white's perspective. Positive numbers
+   * mean better for White, negative numbers mean better for Black.
    * 
    * @param gameOver
    *          True if game is over and is being evaluated for that
@@ -20,9 +28,23 @@ public interface MinMaxSearchable {
    */
   int evaluate(boolean gameOver);
 
+  /**
+   * Take back the last move made.
+   */
   void undoLastMove();
 
+  /**
+   * Make a move on the board.
+   * 
+   * @param move
+   *          Move to make
+   */
   void makeMove(Evaluatable move);
 
+  /**
+   * Get the color to move.
+   * 
+   * @return the Color that is to move.
+   */
   PieceColor getColorToMove();
 }

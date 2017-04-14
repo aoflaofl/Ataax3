@@ -5,14 +5,25 @@ package com.spamalot.boardgame;
  *
  */
 public enum Direction {
-  N(-1, 0), E(0, 1), W(0, -1), S(-1, 0);
+  /** The eight Directions. */
+  N(-1, 0), E(0, 1), W(0, -1), S(-1, 0), NE(-1, 1), NW(-1, -1), SE(-1, 1), SW(-1, -1);
 
+  /** The rise. */
   private int rise;
+  /** The run. */
   private int run;
 
-  Direction(final int rs, final int rn) {
-    setRise(rs);
-    setRun(rn);
+  /**
+   * Construct a Direction.
+   * 
+   * @param ri
+   *          the Rise
+   * @param ru
+   *          the Run
+   */
+  Direction(final int ri, final int ru) {
+    setRise(ri);
+    setRun(ru);
   }
 
   /**

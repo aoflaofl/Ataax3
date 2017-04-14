@@ -1,6 +1,7 @@
 package com.spamalot.reversi;
 
 import com.spamalot.ataxx3.Evaluatable;
+import com.spamalot.boardgame.Board;
 import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
@@ -17,7 +18,7 @@ class ReversiGame extends Game implements MinMaxSearchable {
   /** Default Board Size Constant. */
   private static final int DEFAULT_REVERSI_BOARD_SIZE = 8;
   /** The board. */
-  private ReversiBoard board;
+  private Board board;
 
   /**
    * Create a Reversi board of the default size.
@@ -45,13 +46,14 @@ class ReversiGame extends Game implements MinMaxSearchable {
   /**
    * Set up board.
    */
+  @Override
   protected void initBoard() {
 
-    dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(0, 0));
-    dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(this.board.getNumRanks() - 1, this.board.getNumFiles() - 1));
+    dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(3, 3));
+    dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(4, 4));
 
-    dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(0, this.board.getNumFiles() - 1));
-    dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(this.board.getNumRanks() - 1, 0));
+    dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(3, 4));
+    dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(4, 3));
 
   }
 

@@ -44,7 +44,7 @@ public class Square {
   private Square[] twoAwaySquares;
 
   /** The Squares in Directions. */
-  EnumMap<Direction, Square> stateMap = new EnumMap<>(Direction.class);
+  private EnumMap<Direction, Square> directionMap = new EnumMap<>(Direction.class);
 
   /**
    * Construct an Square object.
@@ -245,5 +245,17 @@ public class Square {
    */
   public Square[] getTwoAwaySquares() {
     return this.twoAwaySquares;
+  }
+
+  /**
+   * Set the Square in the direction.
+   * 
+   * @param d
+   *          the Direction
+   * @param sq
+   *          the Square in the direction
+   */
+  public void setSquareInDirection(final Direction d, final Square sq) {
+    this.directionMap.put(d, sq);
   }
 }
