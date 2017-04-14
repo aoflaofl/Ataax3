@@ -1,5 +1,7 @@
 package com.spamalot.boardgame;
 
+import com.spamalot.reversi.ReversiBoard;
+
 /**
  * Game class to be extended.
  * 
@@ -20,15 +22,14 @@ public abstract class Game {
    *           if square is not empty
    */
   protected static void dropPiece(final Piece piece, final Square square) {
-    // if (coord.getPiece() == null) {
     square.setPiece(piece);
-    // } else {
-    // throw new AtaxxException("Square is not empty.");
-    // }
   }
 
   /** Which color is currently to move. White moves first. */
   private PieceColor colorToMove = PieceColor.WHITE;
+
+  /** The board for this game. */
+  private Board board;
 
   /**
    * Constructor.
@@ -68,4 +69,72 @@ public abstract class Game {
    *           if something goes wrong.
    */
   protected abstract void initBoard() throws GameException;
+
+  /**
+   * Get the current score of the game.
+   * 
+   * @return the score object.
+   */
+  public final Score getScore() {
+    int numBlack = 0;
+    int numWhite = 0;
+
+    for (int rank = 0; rank < getNumRanks(); rank++) {
+      for (int file = 0; file < getNumFiles(); file++) {
+        Square square = this.board.getSquares()[file][rank];
+        Piece piece = square.getPiece();
+        if (piece != null) {
+          if (piece.getColor() == PieceColor.BLACK) {
+            numBlack++;
+          } else {
+            numWhite++;
+          }
+        }
+
+      }
+    }
+    return new Score(numBlack, numWhite);
+  }
+
+  /**
+   * Return the number of files on the board.
+   * 
+   * @return the width
+   */
+  public int getNumFiles() {
+    return this.board.getNumFiles();
+  }
+
+  /**
+   * Get the number of Ranks on the board.
+   * 
+   * @return the height
+   */
+  public int getNumRanks() {
+    return this.board.getNumRanks();
+  }
+
+  protected void setBoard(Board reversiBoard) {
+    this.board = reversiBoard;
+  }
+
+  protected Board getBoard() {
+    return this.board;
+  }
+
+  /**
+   * Get the square.
+   * 
+   * @param file
+   *          X
+   * @param rank
+   *          Y
+   * @return the square.
+   */
+  public Square getSquareAt(final int file, final int rank) {
+    if ((file >= 0 && file < this.getNumFiles()) && (rank >= 0 && rank < this.getNumRanks())) {
+      return getBoard().getSquareAt(file, rank);
+    }
+    return null;
+  }
 }

@@ -1,5 +1,6 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 class AtaxxMoveGenerator {
 
   /** Board for moves. */
-  private AtaxxGame ataxxGame;
+  private Game ataxxGame;
 
   /** Avoid coordinates of expand moves that have already been seen. */
   private Set<Square> seen = new HashSet<>();
@@ -28,7 +29,7 @@ class AtaxxMoveGenerator {
    * @param game
    *          Board to construct generator for.
    */
-  AtaxxMoveGenerator(final AtaxxGame game) {
+  AtaxxMoveGenerator(final Game game) {
     this.ataxxGame = game;
   }
 

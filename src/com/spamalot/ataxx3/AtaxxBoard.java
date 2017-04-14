@@ -1,6 +1,5 @@
 package com.spamalot.ataxx3;
 
-import com.spamalot.boardgame.Score;
 import com.spamalot.boardgame.Board;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
@@ -15,10 +14,7 @@ import java.util.List;
  * @author gej
  *
  */
-class AtaxxBoard extends Board {
-
-  /** Number of Blocked Squares. */
-  private int numBlockedSquares;
+public class AtaxxBoard extends Board {
 
   /**
    * Construct a square Ataxx Board with the given size.
@@ -78,88 +74,5 @@ class AtaxxBoard extends Board {
     }
 
     return ret;
-  }
-
-  /**
-   * Get the current score of the game.
-   * 
-   * @return the score object.
-   */
-  public final Score getScore() {
-    int numBlack = 0;
-    int numWhite = 0;
-
-    for (int rank = 0; rank < getNumRanks(); rank++) {
-      for (int file = 0; file < getNumFiles(); file++) {
-        Square ataxxSquare = this.getSquares()[file][rank];
-        Piece attaxPiece = ataxxSquare.getPiece();
-        if (attaxPiece != null) {
-          if (attaxPiece.getColor() == PieceColor.BLACK) {
-            numBlack++;
-          } else {
-            numWhite++;
-          }
-        }
-
-      }
-    }
-    return new Score(numBlack, numWhite);
-  }
-
-//  @Override
-//  public final String toString() {
-//    StringBuilder sb = new StringBuilder();
-//    sb.append("   ");
-//    for (byte j = 0; j < this.getNumFiles(); j++) {
-//      sb.append((char) ('a' + j));
-//    }
-//    sb.append("\n\n");
-//
-//    for (int i = 0; i < this.getNumRanks(); i++) {
-//      sb.append(i + 1);
-//      sb.append("  ");
-//      for (int j = 0; j < this.getNumFiles(); j++) {
-//
-//        Square squareAt = getSquareAt(j, i);
-//
-//        if (squareAt.isBlocked()) {
-//          sb.append('X');
-//        } else {
-//          Piece piece = squareAt.getPiece();
-//          if (piece == null) {
-//            sb.append(".");
-//          } else {
-//            sb.append(piece);
-//          }
-//        }
-//      }
-//      sb.append("\n");
-//    }
-//
-//    return sb.toString();
-//  }
-
-  /**
-   * Set a square as blocked.
-   * 
-   * @param file
-   *          File of Square
-   * @param rank
-   *          Rank of Square
-   */
-  public void setBlocked(final int file, final int rank) {
-    Square sq = getSquareAt(file, rank);
-    sq.setBlocked();
-    // sq.setOneAwaySquares(getOneAwaySquares(sq));
-    this.numBlockedSquares++;
-  }
-
-  /**
-   * Return the number of Squares not allowed to be moved to.
-   * 
-   * @return the number of blocked squares.
-   */
-  public int getNumBlockedSquares() {
-    return this.numBlockedSquares;
   }
 }

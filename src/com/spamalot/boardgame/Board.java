@@ -13,10 +13,15 @@ public abstract class Board {
 
   /** Hold Array of Squares for the board. */
   private Square[][] squares;
+
   /** The number of ranks on this board. */
   private int numRanks;
+
   /** The number of files on this board. */
   private int numFiles;
+
+  /** Number of Blocked Squares. */
+  private int numBlockedSquares;
 
   /**
    * Construct a square board of given size.
@@ -43,7 +48,6 @@ public abstract class Board {
     this.setSquares(new Square[files][ranks]);
 
     initBoard();
-    initSquares(this.getSquares());
   }
 
   /**
@@ -57,7 +61,7 @@ public abstract class Board {
   protected abstract void initSquares(Square[][] squares2);
 
   /**
-   * Initialize the board.
+   * Initialize the board by creating the 2D array of Square Objects.
    */
   private void initBoard() {
     for (int file = 0; file < getNumFiles(); file++) {
@@ -181,11 +185,20 @@ public abstract class Board {
    * @return true if the Square is on the board and is not blocked.
    */
   protected boolean isPlayableSquare(final int file, final int rank) {
-    if (file < 0 || file >= this.numFiles || rank < 0 || rank >= this.numRanks) {
-      return false;
-    }
+    return isOnBoard(file, rank) && (!this.squares[file][rank].isBlocked());
+  }
 
-    return (!this.squares[file][rank].isBlocked());
+  /**
+   * Check if file and rank is on the Board.
+   * 
+   * @param file
+   *          the file
+   * @param rank
+   *          the rank
+   * @return true if the square at file and rank is on the Board.
+   */
+  private boolean isOnBoard(final int file, final int rank) {
+    return (file >= 0 && file < this.numFiles && rank >= 0 && rank < this.numRanks);
   }
 
   /**
@@ -324,14 +337,14 @@ public abstract class Board {
       sb.append((char) ('a' + j));
     }
     sb.append("\n\n");
-  
+
     for (int i = 0; i < this.getNumRanks(); i++) {
       sb.append(i + 1);
       sb.append("  ");
       for (int j = 0; j < this.getNumFiles(); j++) {
-  
+
         Square squareAt = getSquareAt(j, i);
-  
+
         if (squareAt.isBlocked()) {
           sb.append('X');
         } else {
@@ -345,8 +358,31 @@ public abstract class Board {
       }
       sb.append("\n");
     }
-  
+
     return sb.toString();
+  }
+
+  /**
+   * Set a square as blocked.
+   * 
+   * @param file
+   *          File of Square
+   * @param rank
+   *          Rank of Square
+   */
+  public void setBlocked(final int file, final int rank) {
+    Square sq = getSquareAt(file, rank);
+    sq.setBlocked();
+    this.numBlockedSquares++;
+  }
+
+  /**
+   * Return the number of Squares not allowed to be moved to.
+   * 
+   * @return the number of blocked squares.
+   */
+  public int getNumBlockedSquares() {
+    return this.numBlockedSquares;
   }
 
 }

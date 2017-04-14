@@ -47,4 +47,5 @@ public interface MinMaxSearchable {
    * @return the Color that is to move.
    */
   PieceColor getColorToMove();
+
 }

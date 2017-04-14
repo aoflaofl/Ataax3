@@ -7,7 +7,6 @@ import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
-import com.spamalot.boardgame.Score;
 import com.spamalot.boardgame.Square;
 
 import java.util.List;
@@ -19,12 +18,9 @@ import java.util.Stack;
  * @author gej
  *
  */
-class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
-  /** Default Board Size Constant. */
+public class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
+  /** Default Board Size for an Ataxx game. */
   private static final int DEFAULT_ATAXX_BOARD_SIZE = 7;
-
-  /** The board for this game. */
-  private AtaxxBoard board;
 
   /** Stack for undo move list. */
   private Stack<AtaxxUndoMove> undoMoveStack = new Stack<>();
@@ -48,38 +44,23 @@ class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
    *           when there is some Ataxx related problem.
    */
   private AtaxxGame(final int size) throws GameException {
-    this.board = new AtaxxBoard(size);
+    setBoard(new AtaxxBoard(size));
     initBoard();
   }
 
   /**
    * Put the initial pieces for a standard game of Ataxx.
    * 
-   * <p>
-   * TODO: Possibly add barrier squares.
-   * 
    * @throws GameException
    *           when there is some Ataxx related problem.
    */
+  @Override
   protected void initBoard() throws GameException {
-    dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(0, 0));
-    dropPiece(new Piece(PieceColor.WHITE), this.board.getSquareAt(this.board.getNumRanks() - 1, this.board.getNumFiles() - 1));
+    dropPiece(new Piece(PieceColor.WHITE), getBoard().getSquareAt(0, 0));
+    dropPiece(new Piece(PieceColor.WHITE), getBoard().getSquareAt(getBoard().getNumRanks() - 1, getBoard().getNumFiles() - 1));
 
-    dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(0, this.board.getNumFiles() - 1));
-    dropPiece(new Piece(PieceColor.BLACK), this.board.getSquareAt(this.board.getNumRanks() - 1, 0));
-
-    // dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(0,
-    // 2));
-    // dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(1,
-    // 2));
-    // dropPiece(new AtaxxPiece(AtaxxColor.WHITE), this.board.getSquareAt(6,
-    // 6));
-    // dropPiece(new AtaxxPiece(AtaxxColor.BLACK), this.board.getSquareAt(0,
-    // 4));
-
-    for (Square s : this.board.getSquareAt(0, 0).getOneAwaySquares()) {
-      System.out.println(s);
-    }
+    dropPiece(new Piece(PieceColor.BLACK), getBoard().getSquareAt(0, getBoard().getNumFiles() - 1));
+    dropPiece(new Piece(PieceColor.BLACK), getBoard().getSquareAt(getBoard().getNumRanks() - 1, 0));
   }
 
   /**
@@ -281,7 +262,7 @@ class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("AtaxxGame [board=\n");
-    builder.append(this.board);
+    builder.append(getBoard());
     builder.append("toMove=");
     builder.append(getColorToMove());
     // builder.append("\ngetAvailableMoves()=");
@@ -292,41 +273,13 @@ class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
   }
 
   /**
-   * Return the number of files on the board.
-   * 
-   * @return the width
-   */
-  public int getNumFiles() {
-    return this.board.getNumFiles();
-  }
-
-  /**
-   * Get the number of Ranks on the board.
-   * 
-   * @return the height
-   */
-  public int getNumRanks() {
-    return this.board.getNumRanks();
-  }
-
-  /**
-   * Get the score object for the game.
-   * 
-   * @return the score object.
-   */
-  @Override
-  public final Score getScore() {
-    return this.board.getScore();
-  }
-
-  /**
    * Get the board as a String.
    * 
    * @return the board as a String.
    */
   @Override
   public final String boardToString() {
-    return this.board.toString();
+    return getBoard().toString();
   }
 
   /**
@@ -390,7 +343,7 @@ class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
    */
   @Override
   public boolean isOver() {
-    Square[][] b = this.board.getSquares();
+    Square[][] b = getBoard().getSquares();
 
     int numRanks = this.getNumRanks();
     int numFiles = this.getNumFiles();
@@ -412,7 +365,7 @@ class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
 
     // AtaxxScore s = getScore();
 
-    int boardSize = (numRanks * numFiles) - this.board.getNumBlockedSquares();
+    int boardSize = (numRanks * numFiles) - getBoard().getNumBlockedSquares();
 
     return ((black + white == boardSize) || black == 0 || white == 0);
   }
@@ -424,7 +377,7 @@ class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
    */
   @Override
   public int evaluate(final boolean gameOver) {
-    Square[][] b = this.board.getSquares();
+    Square[][] b = getBoard().getSquares();
 
     int numRanks = this.getNumRanks();
     int numFiles = this.getNumFiles();
@@ -486,21 +439,5 @@ class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
 
     int position = whiteMobility - blackMobility;
     return material * 100 + position;
-  }
-
-  /**
-   * Get the square.
-   * 
-   * @param file
-   *          X
-   * @param rank
-   *          Y
-   * @return the square.
-   */
-  public Square getSquareAt(final int file, final int rank) {
-    if ((file >= 0 && file < this.getNumFiles()) && (rank >= 0 && rank < this.getNumRanks())) {
-      return this.board.getSquareAt(file, rank);
-    }
-    return null;
   }
 }

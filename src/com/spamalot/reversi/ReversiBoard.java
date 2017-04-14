@@ -10,7 +10,7 @@ import com.spamalot.boardgame.Square;
  * @author gej
  *
  */
-class ReversiBoard extends Board {
+public class ReversiBoard extends Board {
 
   /**
    * Construct a Reversi board object.
@@ -20,6 +20,7 @@ class ReversiBoard extends Board {
    */
   ReversiBoard(final int size) {
     super(size);
+    initSquares(getSquares());
   }
 
   /**

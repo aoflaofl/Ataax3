@@ -1,5 +1,6 @@
 package com.spamalot.reversi;
 
+import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameException;
 
 /**
@@ -25,7 +26,7 @@ public final class Reversi {
    */
   public static void main(final String[] args) throws GameException {
     System.out.println("Reversi Game\nGene Johannsen");
-    ReversiGame reversiGame = new ReversiGame();
+    Game reversiGame = new ReversiGame();
     System.out.println(reversiGame.toString());
 
   }
