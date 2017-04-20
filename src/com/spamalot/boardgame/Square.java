@@ -65,14 +65,14 @@ public class Square {
    * @param rank
    *          rank the Square is on
    */
-  public Square(final int file, final int rank) {
+  Square(final int file, final int rank) {
     this(Square.Type.OPEN, file, rank);
   }
 
   /**
    * Get the Piece in this Square. Does not remove the Piece from the Square.
    * 
-   * @return the AtaxxPiece in this AtaxxSquare.
+   * @return the Piece in this Square.
    */
   public Piece getPiece() {
     return this.piece;
@@ -82,7 +82,7 @@ public class Square {
    * Set the Piece in this Square.
    * 
    * @param pc
-   *          AtaxxPiece to set in this AtaxxSquare
+   *          Piece to set in this Square
    */
   public void setPiece(final Piece pc) {
     this.piece = pc;
@@ -118,7 +118,7 @@ public class Square {
   /**
    * Get the numeric rank this Square is at.
    * 
-   * @return the numeric rank this AtaxxSquare is at.
+   * @return the numeric board rank this Square is at.
    */
   public int getRank() {
     return this.coordinate.getY();
@@ -200,7 +200,7 @@ public class Square {
   /**
    * Set this as a blocked square.
    */
-  public void setBlocked() {
+  void setBlocked() {
     this.type = Type.BLOCKED;
   }
 
@@ -255,7 +255,7 @@ public class Square {
    * @param sq
    *          the Square in the direction
    */
-  public void setSquareInDirection(final Direction dir, final Square sq) {
+  void setSquareInDirection(final Direction dir, final Square sq) {
     this.directionMap.put(dir, sq);
   }
 

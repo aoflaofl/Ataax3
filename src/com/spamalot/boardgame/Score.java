@@ -6,7 +6,7 @@ package com.spamalot.boardgame;
  * @author gej
  *
  */
-public class Score {
+class Score {
   /** Black score. */
   private int blackScore;
 
@@ -22,7 +22,7 @@ public class Score {
    *          Count of white pieces
    *
    */
-  public Score(final int numBlack, final int numWhite) {
+  Score(final int numBlack, final int numWhite) {
     this.blackScore = numBlack;
     this.whiteScore = numWhite;
   }

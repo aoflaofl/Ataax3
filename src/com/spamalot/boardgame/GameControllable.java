@@ -1,7 +1,5 @@
 package com.spamalot.boardgame;
 
-import com.spamalot.ataxx3.Evaluatable;
-
 import java.util.List;
 
 /**
@@ -12,7 +10,7 @@ import java.util.List;
  */
 public interface GameControllable {
 
-  List<? extends Evaluatable> getAvailableMoves();
+  List<? extends Move> getAvailableMoves();
 
   String boardToString();
 

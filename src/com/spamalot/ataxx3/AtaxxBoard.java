@@ -14,7 +14,7 @@ import java.util.List;
  * @author gej
  *
  */
-public class AtaxxBoard extends Board {
+class AtaxxBoard extends Board {
 
   /**
    * Construct a square Ataxx Board with the given size.

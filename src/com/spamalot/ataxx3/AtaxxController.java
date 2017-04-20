@@ -2,6 +2,7 @@ package com.spamalot.ataxx3;
 
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.Move;
+import com.spamalot.boardgame.NegaMax;
 import com.spamalot.boardgame.PieceColor;
 
 import java.util.List;
@@ -42,7 +43,7 @@ class AtaxxController {
         switch (text) {
           case "moves":
             List<AtaxxMove> moves = this.ataxxGame.getAvailableMoves();
-            for (Evaluatable move : moves) {
+            for (AtaxxMove move : moves) {
               System.out.println(move);
             }
             break;
@@ -55,7 +56,7 @@ class AtaxxController {
             this.ataxxGame.undoLastMove();
             break;
           case "think":
-            AtaxxAI ai = new AtaxxAI(this.ataxxGame);
+            NegaMax<AtaxxGame> ai = new NegaMax<>(this.ataxxGame);
             Move move = ai.think(depth);
 
             System.out.println("Move:\n" + move);
@@ -68,11 +69,11 @@ class AtaxxController {
           case "play":
             while (!this.ataxxGame.isOver()) {
               if (this.ataxxGame.getColorToMove() == PieceColor.BLACK) {
-                depth = 5;
-              } else {
                 depth = 4;
+              } else {
+                depth = 5;
               }
-              AtaxxAI aip = new AtaxxAI(this.ataxxGame);
+              NegaMax<AtaxxGame> aip = new NegaMax<>(this.ataxxGame);
               Move movep = aip.think(depth);
               this.ataxxGame.makeMove(movep);
               System.out.println(this.ataxxGame.boardToString());

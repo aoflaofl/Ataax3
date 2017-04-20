@@ -19,7 +19,7 @@ import java.util.Stack;
  * @author gej
  *
  */
-public class AtaxxGame extends Game implements MinMaxSearchable, GameControllable {
+class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControllable {
   /** Default Board Size for an Ataxx game. */
   private static final int DEFAULT_ATAXX_BOARD_SIZE = 7;
 
@@ -95,7 +95,7 @@ public class AtaxxGame extends Game implements MinMaxSearchable, GameControllabl
         break;
     }
     aMove.getToSquare().setPiece(piece);
-    
+
     List<Square> flipped = AtaxxBoard.flipPiecesAroundSquare(aMove.getToSquare(), aMove.getColor());
 
     this.undoMoveStack.push(new AtaxxUndoMove(aMove, flipped));

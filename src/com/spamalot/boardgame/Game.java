@@ -8,20 +8,21 @@ package com.spamalot.boardgame;
  */
 public abstract class Game {
 
-//  /**
-//   * Drop a piece on the board. For performance reasons assume legality has been
-//   * checked before method is called.
-//   * 
-//   * @param piece
-//   *          the Piece
-//   * @param square
-//   *          the Coordinate
-//   * @throws GameException
-//   *           if square is not empty
-//   */
-//  protected static void dropPiece(final Piece piece, final Square square) {
-//    square.setPiece(piece);
-//  }
+  // /**
+  // * Drop a piece on the board. For performance reasons assume legality has
+  // been
+  // * checked before method is called.
+  // *
+  // * @param piece
+  // * the Piece
+  // * @param square
+  // * the Coordinate
+  // * @throws GameException
+  // * if square is not empty
+  // */
+  // protected static void dropPiece(final Piece piece, final Square square) {
+  // square.setPiece(piece);
+  // }
 
   /** Which color is currently to move. White moves first. */
   private PieceColor colorToMove = PieceColor.WHITE;
@@ -79,10 +80,11 @@ public abstract class Game {
     int numBlack = 0;
     int numWhite = 0;
 
+    Square[][] x = this.board.getSquares();
+
     for (int rank = 0; rank < getNumRanks(); rank++) {
       for (int file = 0; file < getNumFiles(); file++) {
-        Square square = this.board.getSquares()[file][rank];
-        Piece piece = square.getPiece();
+        Piece piece = x[file][rank].getPiece();
         if (piece != null) {
           if (piece.getColor() == PieceColor.BLACK) {
             numBlack++;

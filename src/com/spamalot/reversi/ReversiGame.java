@@ -1,14 +1,11 @@
 package com.spamalot.reversi;
 
-import com.spamalot.ataxx3.Evaluatable;
-import com.spamalot.boardgame.Direction;
 import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
 import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
-import com.spamalot.boardgame.Square;
 
 import java.util.List;
 

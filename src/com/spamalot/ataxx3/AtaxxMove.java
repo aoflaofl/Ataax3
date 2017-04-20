@@ -10,7 +10,7 @@ import com.spamalot.boardgame.Square;
  * @author gej
  *
  */
-class AtaxxMove extends Move implements Evaluatable {
+class AtaxxMove extends Move {
   /**
    * The two types of an Ataxx move.
    * 
@@ -90,17 +90,12 @@ class AtaxxMove extends Move implements Evaluatable {
    * @return the compare
    */
   @Override
-  public int compareTo(final Move  o) {
+  public int compareTo(final Move o) {
     AtaxxMove mov = (AtaxxMove) o;
 
     int ret = super.compareTo(mov);
     if (ret == 0) {
-      if (this.getType() == mov.getType()) {
-        ret = 0;
-      } else if (this.getType() == Type.JUMP) {
-        ret = 1;
-      }
-      ret = -1;
+      ret = this.getType().compareTo(mov.getType());
     }
 
     return ret;

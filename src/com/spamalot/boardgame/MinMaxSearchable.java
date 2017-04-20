@@ -9,7 +9,7 @@ import java.util.List;
  * @author gej
  *
  */
-public interface MinMaxSearchable {
+public interface MinMaxSearchable<T extends Move> {
 
   /**
    * Check if the game is over.
@@ -53,6 +53,6 @@ public interface MinMaxSearchable {
    * 
    * @return a list of moves.
    */
-  List<? extends Move> getAvailableMoves();
+   List<T> getAvailableMoves();
 
 }

@@ -1,19 +1,17 @@
-package com.spamalot.ataxx3;
-
-import com.spamalot.boardgame.MinMaxSearchable;
-import com.spamalot.boardgame.Move;
-import com.spamalot.boardgame.PieceColor;
+package com.spamalot.boardgame;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * AI Class for Ataxx Game.
+ * AI Class for Board Game.
  * 
  * @author gej
  *
+ * @param <T>
+ *          Type of game to search.
  */
-class AtaxxAI {
+public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
   /** What to multiply the diff by every time there is a fail high or low. */
   private static final int DIFF_MODIFIER = 2;
 
@@ -24,7 +22,7 @@ class AtaxxAI {
   private static final int MAX_VAL = Integer.MAX_VALUE;
 
   /** Game to think about. */
-  private AtaxxGame ataxxGame;
+  private T game;
 
   /** How many nodes were looked at in the search. */
   private long nodeCount = 0;
@@ -35,8 +33,8 @@ class AtaxxAI {
    * @param game
    *          Game to think about
    */
-  AtaxxAI(final AtaxxGame game) {
-    this.ataxxGame = game;
+  public NegaMax(final T game) {
+    this.game = game;
   }
 
   /**
@@ -46,12 +44,12 @@ class AtaxxAI {
    *          How deep to evaluate
    * @return the best move.
    */
-  final Move think(final int maxIteration) {
+  public final Move think(final int maxIteration) {
     if (maxIteration < 1) {
       return null;
     }
 
-    List<AtaxxMove> candidateMoves = this.ataxxGame.getAvailableMoves();
+    List<? extends Move> candidateMoves = this.game.getAvailableMoves();
 
     int alphaDiff = -INITIAL_DIFF;
     int betaDiff = INITIAL_DIFF;
@@ -117,15 +115,21 @@ class AtaxxAI {
   /**
    * Root call to the NegaMaxAlphaBeta routine.
    * 
+   * @param candidateMoves
+   *          the move list
+   * @param alpha
+   *          the alpha
+   * @param beta
+   *          the beta
    * @param depth
    *          How deep to search
    * @return the best move found.
    */
-  private Move negaMaxAlphaBetaRoot(final List<? extends Move> moveList, final int alpha, final int beta, final int depth) {
+  private Move negaMaxAlphaBetaRoot(final List<? extends Move> candidateMoves, final int alpha, final int beta, final int depth) {
     System.out.println("Searching to a depth of " + depth);
 
     int color = 1;
-    if (this.ataxxGame.getColorToMove() == PieceColor.BLACK) {
+    if (this.game.getColorToMove() == PieceColor.BLACK) {
       color = -1;
     }
 
@@ -134,13 +138,13 @@ class AtaxxAI {
     int bestValue = -MAX_VAL;
     Move bestMove = null;
 
-    for (Move move : moveList) {
-      this.ataxxGame.makeMove(move);
+    for (Move move : candidateMoves) {
+      this.game.makeMove(move);
       this.nodeCount++;
-      int evaluation = -negaMaxAlphaBeta(this.ataxxGame, depth - 1, -beta, -newAlpha, -color);
+      int evaluation = -negaMaxAlphaBeta(this.game, depth - 1, -beta, -newAlpha, -color);
       move.setEvaluation(evaluation);
 
-      this.ataxxGame.undoLastMove();
+      this.game.undoLastMove();
 
       if (evaluation > bestValue) {
         bestValue = evaluation;
@@ -176,7 +180,7 @@ class AtaxxAI {
   /**
    * Implement the negaMax algorithm with AlphaBeta Pruning.
    * 
-   * @param game
+   * @param game2
    *          Game to evaluate
    * @param depth
    *          depth to evaluate
@@ -188,13 +192,13 @@ class AtaxxAI {
    *          color
    * @return an evaluation.
    */
-  private int negaMaxAlphaBeta(final MinMaxSearchable game, final int depth, final int alpha, final int beta, final int color) {
-    boolean gameOver = game.isOver();
+  private int negaMaxAlphaBeta(final T game2, final int depth, final int alpha, final int beta, final int color) {
+    boolean gameOver = game2.isOver();
     if (depth == 0 || gameOver) {
-      return color * game.evaluate(gameOver);
+      return color * game2.evaluate(gameOver);
     }
 
-    List<? extends Move> childMoves = game.getAvailableMoves();
+    List<? extends Move> childMoves = game2.getAvailableMoves();
     Collections.sort(childMoves);
     if (childMoves.size() == 0) {
       childMoves.add(null);
@@ -203,10 +207,10 @@ class AtaxxAI {
     int bestValue = -MAX_VAL;
     int newAlpha = alpha;
     for (Move move : childMoves) {
-      game.makeMove(move);
+      game2.makeMove(move);
       this.nodeCount++;
-      int evaluation = -negaMaxAlphaBeta(game, depth - 1, -beta, -newAlpha, -color);
-      game.undoLastMove();
+      int evaluation = -negaMaxAlphaBeta(game2, depth - 1, -beta, -newAlpha, -color);
+      game2.undoLastMove();
 
       bestValue = Math.max(bestValue, evaluation);
       newAlpha = Math.max(newAlpha, evaluation);
@@ -234,13 +238,13 @@ class AtaxxAI {
    *          color
    * @return an evaluation.
    */
-  private int negaMaxAlphaBetaFailHard(final AtaxxGame game, final int depth, final int alpha, final int beta, final int color) {
+  private int negaMaxAlphaBetaFailHard(final T game, final int depth, final int alpha, final int beta, final int color) {
     boolean gameOver = game.isOver();
     if (depth == 0 || gameOver) {
       return color * game.evaluate(gameOver);
     }
 
-    List<AtaxxMove> childMoves = game.getAvailableMoves();
+    List<? extends Move> childMoves = game.getAvailableMoves();
     Collections.sort(childMoves);
     if (childMoves.size() == 0) {
       childMoves.add(null);
@@ -283,7 +287,7 @@ class AtaxxAI {
    *          color moving
    * @return evaluation of position.
    */
-  private int negamax(final AtaxxGame game, final int depth, final int color) {
+  private int negamax(final T game, final int depth, final int color) {
     boolean gameOver = game.isOver();
     if (depth == 0 || gameOver) {
       return color * game.evaluate(gameOver);
@@ -291,7 +295,7 @@ class AtaxxAI {
 
     int bestValue = -MAX_VAL;
 
-    List<AtaxxMove> childMoves = game.getAvailableMoves();
+    List<? extends Move> childMoves = game.getAvailableMoves();
     // Order Moves Here
     for (Move move : childMoves) {
 
