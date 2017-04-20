@@ -5,6 +5,7 @@ import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameControllable;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
+import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
@@ -56,24 +57,24 @@ public class AtaxxGame extends Game implements MinMaxSearchable, GameControllabl
    */
   @Override
   protected void initBoard() throws GameException {
-    dropPiece(new Piece(PieceColor.WHITE), getBoard().getSquareAt(0, 0));
-    dropPiece(new Piece(PieceColor.WHITE), getBoard().getSquareAt(getBoard().getNumRanks() - 1, getBoard().getNumFiles() - 1));
+    getBoard().getSquareAt(0, 0).setPiece(new Piece(PieceColor.WHITE));
+    getBoard().getSquareAt(getBoard().getNumRanks() - 1, getBoard().getNumFiles() - 1).setPiece(new Piece(PieceColor.WHITE));
 
-    dropPiece(new Piece(PieceColor.BLACK), getBoard().getSquareAt(0, getBoard().getNumFiles() - 1));
-    dropPiece(new Piece(PieceColor.BLACK), getBoard().getSquareAt(getBoard().getNumRanks() - 1, 0));
+    getBoard().getSquareAt(0, getBoard().getNumFiles() - 1).setPiece(new Piece(PieceColor.BLACK));
+    getBoard().getSquareAt(getBoard().getNumRanks() - 1, 0).setPiece(new Piece(PieceColor.BLACK));
   }
 
   /**
    * Make a move in Ataxx game. For performance reasons it is assumed move has
    * been checked for legality before calling this method.
    * 
-   * @param aMove
+   * @param move
    *          The move to make
    * @throws GameException
    *           When something goes wrong
    */
   @Override
-  public void makeMove(final Evaluatable move) {
+  public void makeMove(final Move move) {
     AtaxxMove aMove = (AtaxxMove) move;
     // A null move would indicate a pass.
     if (aMove == null) {
@@ -93,8 +94,8 @@ public class AtaxxGame extends Game implements MinMaxSearchable, GameControllabl
       default:
         break;
     }
-    dropPiece(piece, aMove.getToSquare());
-
+    aMove.getToSquare().setPiece(piece);
+    
     List<Square> flipped = AtaxxBoard.flipPiecesAroundSquare(aMove.getToSquare(), aMove.getColor());
 
     this.undoMoveStack.push(new AtaxxUndoMove(aMove, flipped));
@@ -162,97 +163,6 @@ public class AtaxxGame extends Game implements MinMaxSearchable, GameControllabl
     return gen.getAvailableMoves(toMove);
   }
 
-  // /**
-  // * Check if a move is legal.
-  // *
-  // * TODO: Avoid premature optimization, but this will probably have to be
-  // * removed to make the AI more efficient.
-  // *
-  // * @param move
-  // * the move to check
-  // * @return true if the move is legal to make on this board.
-  // */
-  // private static boolean isLegal(final AtaxxMove move) {
-  // boolean ret = isLegalColor(move) && /* isOnBoard(move) && */
-  // toSquareIsEmpty(move) && pieceInFromSquareMatchesColor(move) &&
-  // checkDistance(move);
-  //
-  // return ret;
-  // }
-
-  // /**
-  // * Check whether the color in the move is legal.
-  // *
-  // * @param move
-  // * the move to check
-  // * @return true if this is a legal color in an Ataxx game.
-  // */
-  // private static boolean isLegalColor(final Move move) {
-  // return (move.getColor() == PieceColor.WHITE || move.getColor() ==
-  // PieceColor.BLACK);
-  // }
-
-  // /**
-  // * Check from piece is the correct color.
-  // *
-  // * @param move
-  // * the move
-  // * @return true if the from piece exists and has the correct color for the
-  // * move.
-  // */
-  // private static boolean pieceInFromSquareMatchesColor(final Move move) {
-  // Piece piece = move.getFromSquare().getPiece();
-  // if (piece == null) {
-  // return false;
-  // }
-  // return piece.getColor() == move.getColor();
-  // }
-
-  // /**
-  // * @param move
-  // * the move to check.
-  // * @return true if the square is empty.
-  // */
-  // private static boolean toSquareIsEmpty(final Move move) {
-  // return move.getToSquare().getPiece() == null;
-  // }
-
-  // /**
-  // * Check distance between from square and to square that this is a legal
-  // move
-  // * for the move type.
-  // *
-  // * @param move
-  // * the move to check
-  // * @return true if the to square can be moved to from the from square.
-  // */
-  // private static boolean checkDistance(final AtaxxMove move) {
-  // int xDiff = Math.abs(move.getToSquare().getFile() -
-  // move.getFromSquare().getFile());
-  // int yDiff = Math.abs(move.getToSquare().getRank() -
-  // move.getFromSquare().getRank());
-  //
-  // // If it's the same square, obviously not right
-  // if (xDiff == 0 && yDiff == 0) {
-  // return false;
-  // }
-  //
-  // if (move.getType() == AtaxxMove.Type.EXPAND) {
-  // if (xDiff > 1 || yDiff > 1) {
-  // return false;
-  // }
-  // } else if (move.getType() == AtaxxMove.Type.JUMP) {
-  // if (xDiff == 2 && yDiff > 2) {
-  // return false;
-  // }
-  // if (yDiff == 2 && xDiff > 2) {
-  // return false;
-  // }
-  // }
-  //
-  // return true;
-  // }
-
   /*
    * (non-Javadoc)
    * 
@@ -292,7 +202,7 @@ public class AtaxxGame extends Game implements MinMaxSearchable, GameControllabl
    *           when move cannot be parsed.
    */
   @Override
-  public final Evaluatable parseMove(final String text) throws GameException {
+  public final Move parseMove(final String text) throws GameException {
     if (text.length() != 4) {
       throw new GameException("Not an Ataxx move.");
     }

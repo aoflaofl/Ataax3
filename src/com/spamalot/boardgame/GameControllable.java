@@ -24,8 +24,8 @@ public interface GameControllable {
 
   boolean isOver();
 
-  void makeMove(Evaluatable movep);
+  void makeMove(Move movep);
 
-  Evaluatable parseMove(String text) throws GameException;
+  Move parseMove(String text) throws GameException;
 
 }

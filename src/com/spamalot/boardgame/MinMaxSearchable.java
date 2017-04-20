@@ -1,6 +1,6 @@
 package com.spamalot.boardgame;
 
-import com.spamalot.ataxx3.Evaluatable;
+import java.util.List;
 
 /**
  * Objects that implement the MinMaxSearchable interface are able to be searched
@@ -39,7 +39,7 @@ public interface MinMaxSearchable {
    * @param move
    *          Move to make
    */
-  void makeMove(Evaluatable move);
+  void makeMove(Move move);
 
   /**
    * Get the color to move.
@@ -47,5 +47,12 @@ public interface MinMaxSearchable {
    * @return the Color that is to move.
    */
   PieceColor getColorToMove();
+
+  /**
+   * Get list of moves.
+   * 
+   * @return a list of moves.
+   */
+  List<? extends Move> getAvailableMoves();
 
 }

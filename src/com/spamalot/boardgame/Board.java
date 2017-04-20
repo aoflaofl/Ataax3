@@ -51,14 +51,12 @@ public abstract class Board {
   }
 
   /**
-   * Method to implement that sets up squares that will be called by the Board
-   * class constructor. This might set up pointers to squares around each
-   * square.
-   * 
-   * @param squares2
-   *          2d array of squares that make up the board
+   * Method to implement in subclass to initialize properties of the Squares in
+   * this Board for the particular game being implemented. This might set up
+   * pointers to squares around each square to make computing moves easier, for
+   * instance.
    */
-  protected abstract void initSquares(Square[][] squares2);
+  protected abstract void initSquares();
 
   /**
    * Initialize the board by creating the 2D array of Square Objects.
@@ -142,7 +140,7 @@ public abstract class Board {
   }
 
   /**
-   * A list of Squares that are one away neighbors of this one.
+   * Get a list of Squares that are one away neighbors of the one passed in.
    * 
    * @param sq
    *          The Square
@@ -156,7 +154,7 @@ public abstract class Board {
   }
 
   /**
-   * A list of Squares that are diagonal neighbors of this one.
+   * A list of Squares that are diagonal neighbors of the one passed in.
    * 
    * @param sq
    *          The Square
@@ -202,7 +200,7 @@ public abstract class Board {
   }
 
   /**
-   * A list of Squares that are orthogonal neighbors of this one.
+   * A list of Squares that are orthogonal neighbors of the one passed in.
    * 
    * @param sq
    *          The Square
@@ -241,8 +239,8 @@ public abstract class Board {
   }
 
   /**
-   * A list of Squares that are two away neighbors of this one, including knight
-   * jumps.
+   * A list of Squares that are two away neighbors of the one passed in,
+   * including knight jumps.
    * 
    * @param sq
    *          The Square
@@ -259,7 +257,7 @@ public abstract class Board {
   }
 
   /**
-   * A list of Squares that are knight jump neighbors of this one.
+   * A list of Squares that are knight jump neighbors of the one passed in.
    * 
    * @param sq
    *          The Square
@@ -286,7 +284,8 @@ public abstract class Board {
   }
 
   /**
-   * A list of Squares that are two away diagonal neighbors of this one.
+   * A list of Squares that are two away diagonal neighbors of the one passed
+   * in.
    * 
    * @param sq
    *          The Square
@@ -308,7 +307,8 @@ public abstract class Board {
   }
 
   /**
-   * A list of Squares that are two away orthogonal neighbors of this one.
+   * A list of Squares that are two away orthogonal neighbors of the one passed
+   * in.
    * 
    * @param sq
    *          The Square
@@ -383,6 +383,24 @@ public abstract class Board {
    */
   public int getNumBlockedSquares() {
     return this.numBlockedSquares;
+  }
+
+  /**
+   * Initialize the Direction Map in the Square.
+   * 
+   * @param rank
+   *          the Rank
+   * @param file
+   *          the File
+   */
+  protected void initSquareDirectionMap(final int rank, final int file) {
+    Square sq = this.squares[file][rank];
+    for (Direction direction : Direction.values()) {
+
+      if (isPlayableSquare(file + direction.getRun(), rank + direction.getRise())) {
+        sq.setSquareInDirection(direction, this.squares[file + direction.getRun()][rank + direction.getRise()]);
+      }
+    }
   }
 
 }

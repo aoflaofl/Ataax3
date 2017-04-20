@@ -70,14 +70,16 @@ public class Move implements Comparable<Move> {
   /**
    * Set the color.
    * 
-   * @param c
+   * @param clr
    *          the color to set
    */
-  public final void setColor(final PieceColor c) {
-    this.color = c;
+  public final void setColor(final PieceColor clr) {
+    this.color = clr;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.lang.Object#toString()
    */
   @Override
@@ -99,11 +101,11 @@ public class Move implements Comparable<Move> {
   /**
    * Set the evaluation.
    * 
-   * @param v
+   * @param eval
    *          the evaluation of this move
    */
-  public void setEvaluation(final int v) {
-    this.evaluation = v;
+  public void setEvaluation(final int eval) {
+    this.evaluation = eval;
   }
 
   /**
@@ -119,8 +121,8 @@ public class Move implements Comparable<Move> {
    * Note: this class has a natural ordering that is inconsistent with equals.
    */
   @Override
-  public int compareTo(final Move o) {
-    return o.evaluation - this.evaluation;
+  public int compareTo(final Move move) {
+    return move.evaluation - this.evaluation;
   }
 
 }

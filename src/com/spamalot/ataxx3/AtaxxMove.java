@@ -90,7 +90,7 @@ class AtaxxMove extends Move implements Evaluatable {
    * @return the compare
    */
   @Override
-  public int compareTo(final Evaluatable o) {
+  public int compareTo(final Move  o) {
     AtaxxMove mov = (AtaxxMove) o;
 
     int ret = super.compareTo(mov);

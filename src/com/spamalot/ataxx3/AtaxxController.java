@@ -1,6 +1,7 @@
 package com.spamalot.ataxx3;
 
 import com.spamalot.boardgame.GameException;
+import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.PieceColor;
 
 import java.util.List;
@@ -55,7 +56,7 @@ class AtaxxController {
             break;
           case "think":
             AtaxxAI ai = new AtaxxAI(this.ataxxGame);
-            Evaluatable move = ai.think(depth);
+            Move move = ai.think(depth);
 
             System.out.println("Move:\n" + move);
 
@@ -67,12 +68,12 @@ class AtaxxController {
           case "play":
             while (!this.ataxxGame.isOver()) {
               if (this.ataxxGame.getColorToMove() == PieceColor.BLACK) {
-                depth = 7;
+                depth = 5;
               } else {
                 depth = 4;
               }
               AtaxxAI aip = new AtaxxAI(this.ataxxGame);
-              Evaluatable movep = aip.think(depth);
+              Move movep = aip.think(depth);
               this.ataxxGame.makeMove(movep);
               System.out.println(this.ataxxGame.boardToString());
               System.out.println("Color to move: " + this.ataxxGame.getColorToMove());
@@ -88,7 +89,7 @@ class AtaxxController {
           default:
             // If it is not a recognized command then it might be a move.
             try {
-              Evaluatable move2 = this.ataxxGame.parseMove(text);
+              Move move2 = this.ataxxGame.parseMove(text);
               System.out.println(move2);
               this.ataxxGame.makeMove(move2);
             } catch (GameException e) {

@@ -26,6 +26,8 @@ public final class Coordinate {
   }
 
   /**
+   * Get X.
+   * 
    * @return the x ordinate.
    */
   public int getX() {
@@ -33,6 +35,8 @@ public final class Coordinate {
   }
 
   /**
+   * Get Y.
+   * 
    * @return the y ordinate.
    */
   public int getY() {

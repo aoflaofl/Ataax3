@@ -4,12 +4,8 @@ import java.util.EnumMap;
 import java.util.List;
 
 /**
- * A square boardgame board.
+ * Square in a Boardgame.
  * 
- * @author gej
- *
- */
-/**
  * @author gej
  *
  */
@@ -49,15 +45,15 @@ public class Square {
   /**
    * Construct an Square object.
    * 
-   * @param t
+   * @param typ
    *          Type of Square
    * @param rank
    *          rank the Square is on
    * @param file
    *          file the Square is on
    */
-  Square(final Type t, final int file, final int rank) {
-    this.type = t;
+  Square(final Type typ, final int file, final int rank) {
+    this.type = typ;
     this.coordinate = new Coordinate(file, rank);
   }
 
@@ -85,11 +81,11 @@ public class Square {
   /**
    * Set the Piece in this Square.
    * 
-   * @param p
+   * @param pc
    *          AtaxxPiece to set in this AtaxxSquare
    */
-  public void setPiece(final Piece p) {
-    this.piece = p;
+  public void setPiece(final Piece pc) {
+    this.piece = pc;
   }
 
   /**
@@ -134,9 +130,9 @@ public class Square {
    * @return the Piece in this Square.
    */
   public Piece pickupPiece() {
-    Piece p = this.piece;
+    Piece ret = this.piece;
     this.piece = null;
-    return p;
+    return ret;
   }
 
   /**
@@ -216,6 +212,8 @@ public class Square {
   }
 
   /**
+   * Set List of Squares that are neighbors (one square away) from this one.
+   * 
    * @param oneAwaySqs
    *          List of Squares that are one away from this one
    */
@@ -225,6 +223,8 @@ public class Square {
   }
 
   /**
+   * Set List of Squares that are two squares away from this one.
+   * 
    * @param twoAwaySqs
    *          List of Squares that are two away from this one
    */
@@ -250,12 +250,16 @@ public class Square {
   /**
    * Set the Square in the direction.
    * 
-   * @param d
+   * @param dir
    *          the Direction
    * @param sq
    *          the Square in the direction
    */
-  public void setSquareInDirection(final Direction d, final Square sq) {
-    this.directionMap.put(d, sq);
+  public void setSquareInDirection(final Direction dir, final Square sq) {
+    this.directionMap.put(dir, sq);
+  }
+
+  public Square getSquareInDirection(final Direction dir) {
+    return this.directionMap.get(dir);
   }
 }

@@ -28,20 +28,17 @@ public class AtaxxBoard extends Board {
     setBlocked(5, 5);
     setBlocked(1, 5);
     setBlocked(5, 1);
-    initSquares(this.getSquares());
+    initSquares();
   }
 
   /**
    * Initialize the Squares to have information about their neighbors.
-   * 
-   * @param s
-   *          Array of squares that make up the board
    */
   @Override
-  protected void initSquares(final Square[][] s) {
+  protected void initSquares() {
     for (int rank = 0; rank < getNumRanks(); rank++) {
       for (int file = 0; file < getNumFiles(); file++) {
-        Square sq = s[file][rank];
+        Square sq = this.getSquares()[file][rank];
 
         sq.setOneAwaySquares(getOneAwaySquares(sq));
         sq.setTwoAwaySquares(getTwoAwaySquares(sq));

@@ -14,11 +14,11 @@ public class Piece {
   /**
    * Construct a Piece.
    *
-   * @param c
+   * @param clr
    *          the color.
    */
-  public Piece(final PieceColor c) {
-    this.setColor(c);
+  public Piece(final PieceColor clr) {
+    this.setColor(clr);
   }
 
   /** Flip the color of this piece. */
@@ -38,11 +38,11 @@ public class Piece {
   /**
    * Set the color.
    *
-   * @param c
+   * @param clr
    *          the color.
    */
-  private void setColor(final PieceColor c) {
-    this.color = c;
+  private void setColor(final PieceColor clr) {
+    this.color = clr;
   }
 
   @Override

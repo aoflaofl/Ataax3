@@ -1,60 +1,68 @@
 package com.spamalot.boardgame;
 
 /**
- * Hold the score of an AtaxxGame.
+ * Hold the score of a Game.
  *
  * @author gej
  *
  */
 public class Score {
   /** Black score. */
-  private int black;
+  private int blackScore;
 
   /** White score. */
-  private int white;
+  private int whiteScore;
 
   /**
    * Construct a score object.
    *
-   * @param b
+   * @param numBlack
    *          Count of black pieces
-   * @param w
+   * @param numWhite
    *          Count of white pieces
    *
    */
-  public Score(final int b, final int w) {
-    this.black = b;
-    this.white = w;
+  public Score(final int numBlack, final int numWhite) {
+    this.blackScore = numBlack;
+    this.whiteScore = numWhite;
   }
 
   /**
-   * @return the black
+   * Get the Black Score.
+   * 
+   * @return the black score.
    */
-  public int getBlack() {
-    return this.black;
+  public int getBlackScore() {
+    return this.blackScore;
   }
 
   /**
-   * @return the white
+   * Get the White Score.
+   * 
+   * @return the white score.
    */
-  public int getWhite() {
-    return this.white;
+  public int getWhiteScore() {
+    return this.whiteScore;
   }
 
   /**
-   * @param b
+   * Set number of Black pieces.
+   * 
+   * @param numBlack
    *          the black score to set
    */
-  public void setBlack(final int b) {
-    this.black = b;
+  public void setBlack(final int numBlack) {
+    this.blackScore = numBlack;
   }
 
   /**
-   * @param w
+   * Set the White Score.
+   * 
+   * @param numWhite
    *          the white score to set
    */
-  public void setWhite(final int w) {
-    this.white = w;
+  public void setWhite(final int numWhite) {
+    this.whiteScore = numWhite;
   }
 
   /*
@@ -65,10 +73,10 @@ public class Score {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    builder.append("AtaxxScore [black=");
-    builder.append(this.black);
+    builder.append("Score [black=");
+    builder.append(this.blackScore);
     builder.append(", white=");
-    builder.append(this.white);
+    builder.append(this.whiteScore);
     builder.append("]");
     return builder.toString();
   }

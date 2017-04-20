@@ -1,12 +1,14 @@
 package com.spamalot.boardgame;
 
 /**
+ * Directions to use while navigating a board.
+ * 
  * @author gej
  *
  */
 public enum Direction {
   /** The eight Directions. */
-  N(-1, 0), E(0, 1), W(0, -1), S(-1, 0), NE(-1, 1), NW(-1, -1), SE(-1, 1), SW(-1, -1);
+  N(-1, 0), E(0, 1), W(0, -1), S(1, 0), NE(-1, 1), NW(-1, -1), SE(1, 1), SW(1, -1);
 
   /** The rise. */
   private int rise;
@@ -27,6 +29,8 @@ public enum Direction {
   }
 
   /**
+   * Get the geometric rise of this Direction.
+   * 
    * @return the rise
    */
   public int getRise() {
@@ -34,6 +38,8 @@ public enum Direction {
   }
 
   /**
+   * Set the geometric rise of this Direction.
+   * 
    * @param rs
    *          the rise to set
    */
@@ -42,6 +48,8 @@ public enum Direction {
   }
 
   /**
+   * Get the geometric run of this Direction.
+   * 
    * @return the run
    */
   public int getRun() {
@@ -49,6 +57,8 @@ public enum Direction {
   }
 
   /**
+   * Set the geometric run of this Direction.
+   * 
    * @param rn
    *          the run to set
    */

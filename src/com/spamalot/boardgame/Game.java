@@ -1,7 +1,5 @@
 package com.spamalot.boardgame;
 
-import com.spamalot.reversi.ReversiBoard;
-
 /**
  * Game class to be extended.
  * 
@@ -10,20 +8,20 @@ import com.spamalot.reversi.ReversiBoard;
  */
 public abstract class Game {
 
-  /**
-   * Drop a piece on the board. For performance reasons assume legality has been
-   * checked before method is called.
-   * 
-   * @param piece
-   *          the Piece
-   * @param square
-   *          the Coordinate
-   * @throws GameException
-   *           if square is not empty
-   */
-  protected static void dropPiece(final Piece piece, final Square square) {
-    square.setPiece(piece);
-  }
+//  /**
+//   * Drop a piece on the board. For performance reasons assume legality has been
+//   * checked before method is called.
+//   * 
+//   * @param piece
+//   *          the Piece
+//   * @param square
+//   *          the Coordinate
+//   * @throws GameException
+//   *           if square is not empty
+//   */
+//  protected static void dropPiece(final Piece piece, final Square square) {
+//    square.setPiece(piece);
+//  }
 
   /** Which color is currently to move. White moves first. */
   private PieceColor colorToMove = PieceColor.WHITE;
@@ -48,6 +46,8 @@ public abstract class Game {
   }
 
   /**
+   * Set the color who is to move.
+   * 
    * @param toMove
    *          the colorToMove to set
    */
@@ -114,10 +114,21 @@ public abstract class Game {
     return this.board.getNumRanks();
   }
 
-  protected void setBoard(Board reversiBoard) {
-    this.board = reversiBoard;
+  /**
+   * Set the board.
+   * 
+   * @param brd
+   *          the board
+   */
+  protected void setBoard(final Board brd) {
+    this.board = brd;
   }
 
+  /**
+   * Get the board.
+   * 
+   * @return the board.
+   */
   protected Board getBoard() {
     return this.board;
   }

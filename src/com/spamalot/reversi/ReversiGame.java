@@ -1,11 +1,16 @@
 package com.spamalot.reversi;
 
 import com.spamalot.ataxx3.Evaluatable;
+import com.spamalot.boardgame.Direction;
 import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
+import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
+import com.spamalot.boardgame.Square;
+
+import java.util.List;
 
 /**
  * Handle the Reversi Game.
@@ -37,6 +42,14 @@ class ReversiGame extends Game implements MinMaxSearchable {
    */
   private ReversiGame(final int size) throws GameException {
     setBoard(new ReversiBoard(size));
+    initBoard();
+
+    // Square sq = getBoard().getSquareAt(0, 0);
+    // Direction d = Direction.SE;
+    // while (sq != null) {
+    // System.out.println(sq);
+    // sq = sq.getSquareInDirection(d);
+    // }
   }
 
   /**
@@ -44,13 +57,10 @@ class ReversiGame extends Game implements MinMaxSearchable {
    */
   @Override
   protected void initBoard() {
-
-    dropPiece(new Piece(PieceColor.WHITE), getBoard().getSquareAt(3, 3));
-    dropPiece(new Piece(PieceColor.WHITE), getBoard().getSquareAt(4, 4));
-
-    dropPiece(new Piece(PieceColor.BLACK), getBoard().getSquareAt(3, 4));
-    dropPiece(new Piece(PieceColor.BLACK), getBoard().getSquareAt(4, 3));
-
+    getBoard().getSquareAt(3, 3).setPiece(new Piece(PieceColor.WHITE));
+    getBoard().getSquareAt(4, 4).setPiece(new Piece(PieceColor.WHITE));
+    getBoard().getSquareAt(3, 4).setPiece(new Piece(PieceColor.BLACK));
+    getBoard().getSquareAt(4, 3).setPiece(new Piece(PieceColor.BLACK));
   }
 
   @Override
@@ -72,7 +82,7 @@ class ReversiGame extends Game implements MinMaxSearchable {
   }
 
   @Override
-  public void makeMove(final Evaluatable move) {
+  public void makeMove(final Move move) {
     // TODO Auto-generated method stub
 
   }
@@ -89,5 +99,11 @@ class ReversiGame extends Game implements MinMaxSearchable {
     // builder.append("\nUndo move list=" + this.undoMoveStack);
     builder.append("\n]");
     return builder.toString();
+  }
+
+  @Override
+  public List<ReversiMove> getAvailableMoves() {
+    // TODO Auto-generated method stub
+    return null;
   }
 }
