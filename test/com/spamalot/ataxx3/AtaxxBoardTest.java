@@ -2,12 +2,11 @@ package com.spamalot.ataxx3;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import com.spamalot.boardgame.Board;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.spamalot.boardgame.Board;
 
 /**
  * JUnit Test for AtaxxBoard.
@@ -24,33 +23,33 @@ public class AtaxxBoardTest {
 
   @Before
   public final void setUp() throws Exception {
-    this.squareBoard = new AtaxxBoard(1);
-    this.rectangleBoard = new AtaxxBoard(4, 5);
+    this.squareBoard = new AtaxxBoard(6);
+    this.rectangleBoard = new AtaxxBoard(5);
   }
 
   @Test
   public final void testAtaxxBoardInt() {
     assertNotNull(this.squareBoard);
-    assertEquals(1, this.squareBoard.getNumRanks());
-    assertEquals(1, this.squareBoard.getNumFiles());
+    assertEquals(6, this.squareBoard.getNumRanks());
+    assertEquals(6, this.squareBoard.getNumFiles());
   }
 
   @Test
   public final void testAtaxxBoardIntInt() {
     assertNotNull(this.rectangleBoard);
-    assertEquals(4, this.rectangleBoard.getNumFiles());
+    assertEquals(5, this.rectangleBoard.getNumFiles());
     assertEquals(5, this.rectangleBoard.getNumRanks());
   }
 
   @Test
   public final void testGetWidth() {
-    assertEquals(1, this.squareBoard.getNumFiles());
-    assertEquals(4, this.rectangleBoard.getNumFiles());
+    assertEquals(6, this.squareBoard.getNumFiles());
+    assertEquals(5, this.rectangleBoard.getNumFiles());
   }
 
   @Test
   public final void testGetHeight() {
-    assertEquals(1, this.squareBoard.getNumRanks());
+    assertEquals(6, this.squareBoard.getNumRanks());
     assertEquals(5, this.rectangleBoard.getNumRanks());
   }
 

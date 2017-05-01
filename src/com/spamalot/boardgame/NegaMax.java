@@ -22,7 +22,7 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
   private static final int MAX_VAL = Integer.MAX_VALUE;
 
   /** Game to think about. */
-  private T game;
+  private T thisGame;
 
   /** How many nodes were looked at in the search. */
   private long nodeCount = 0;
@@ -34,7 +34,7 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
    *          Game to think about
    */
   public NegaMax(final T game) {
-    this.game = game;
+    this.thisGame = game;
   }
 
   /**
@@ -49,7 +49,7 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
       return null;
     }
 
-    List<? extends Move> candidateMoves = this.game.getAvailableMoves();
+    List<? extends Move> candidateMoves = this.thisGame.getAvailableMoves();
 
     int alphaDiff = -INITIAL_DIFF;
     int betaDiff = INITIAL_DIFF;
@@ -129,7 +129,7 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
     System.out.println("Searching to a depth of " + depth);
 
     int color = 1;
-    if (this.game.getColorToMove() == PieceColor.BLACK) {
+    if (this.thisGame.getColorToMove() == PieceColor.BLACK) {
       color = -1;
     }
 
@@ -139,12 +139,12 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
     Move bestMove = null;
 
     for (Move move : candidateMoves) {
-      this.game.makeMove(move);
+      this.thisGame.makeMove(move);
       this.nodeCount++;
-      int evaluation = -negaMaxAlphaBeta(this.game, depth - 1, -beta, -newAlpha, -color);
+      int evaluation = -negaMaxAlphaBeta(this.thisGame, depth - 1, -beta, -newAlpha, -color);
       move.setEvaluation(evaluation);
 
-      this.game.undoLastMove();
+      this.thisGame.undoLastMove();
 
       if (evaluation > bestValue) {
         bestValue = evaluation;

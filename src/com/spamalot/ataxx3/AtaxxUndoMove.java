@@ -32,6 +32,8 @@ class AtaxxUndoMove {
   private List<Square> flipped;
 
   /**
+   * Get the Move.
+   * 
    * @return the move
    */
   public AtaxxMove getMove() {
@@ -39,6 +41,8 @@ class AtaxxUndoMove {
   }
 
   /**
+   * Get the flipped piece list.
+   * 
    * @return the flipped
    */
   public List<Square> getFlipped() {

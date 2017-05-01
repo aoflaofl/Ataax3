@@ -15,7 +15,7 @@ import java.util.List;
  * @author gej
  *
  */
-class ReversiGame extends Game implements MinMaxSearchable {
+class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
   /** Default Board Size Constant. */
   private static final int DEFAULT_REVERSI_BOARD_SIZE = 8;
 

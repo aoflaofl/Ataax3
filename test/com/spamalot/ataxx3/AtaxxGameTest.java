@@ -1,13 +1,9 @@
 package com.spamalot.ataxx3;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import com.spamalot.boardgame.GameException;
-import com.spamalot.boardgame.MinMaxSearchable;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -15,7 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.List;
+import com.spamalot.boardgame.MinMaxSearchable;
 
 /**
  * @author gej
@@ -25,7 +21,7 @@ public class AtaxxGameTest {
   /**
    * Test variable.
    */
-  private MinMaxSearchable ataxxGame;
+  private MinMaxSearchable<AtaxxMove> ataxxGame;
 
   /**
    * @throws java.lang.Exception
@@ -79,14 +75,10 @@ public class AtaxxGameTest {
     assertNotNull(a);
     assertTrue(a.size() > 0);
 
-    for (Evaluatable m : a) {
+    for (AtaxxMove m : a) {
       System.out.println(m);
-      try {
-        this.ataxxGame.makeMove(m);
-        this.ataxxGame.undoLastMove();
-      } catch (GameException e) {
-        fail("Shouldn't get here\n" + e);
-      }
+      this.ataxxGame.makeMove(m);
+	this.ataxxGame.undoLastMove();
     }
   }
 

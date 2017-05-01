@@ -27,6 +27,8 @@ public enum PieceColor {
   }
 
   /**
+   * Get the Opposite color.
+   * 
    * @return the opposite color.
    */
   public PieceColor getOpposite() {
