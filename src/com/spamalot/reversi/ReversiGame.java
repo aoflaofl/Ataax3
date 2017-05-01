@@ -30,12 +30,12 @@ class ReversiGame extends Game implements MinMaxSearchable {
   }
 
   /**
-   * Construct the Ataxx game with a square board of a specified size.
+   * Construct the game Object with a square board of a specified size.
    * 
    * @param size
    *          Size of a side
    * @throws GameException
-   *           when there is some Ataxx related problem.
+   *           when there is some problem.
    */
   private ReversiGame(final int size) throws GameException {
     setBoard(new ReversiBoard(size));

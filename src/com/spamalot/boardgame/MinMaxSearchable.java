@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Objects that implement the MinMaxSearchable interface are able to be searched
- * using a MinMax algorithm.
+ * using a MinMax type (like NegaMax) algorithm.
  * 
  * @author gej
  *
@@ -53,6 +53,6 @@ public interface MinMaxSearchable<T extends Move> {
    * 
    * @return a list of moves.
    */
-   List<T> getAvailableMoves();
+  List<T> getAvailableMoves();
 
 }

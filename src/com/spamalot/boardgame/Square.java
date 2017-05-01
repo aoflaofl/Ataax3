@@ -200,7 +200,7 @@ public class Square {
   /**
    * Set this as a blocked square.
    */
-  void setBlocked() {
+  final void setBlocked() {
     this.type = Type.BLOCKED;
   }
 
@@ -255,11 +255,18 @@ public class Square {
    * @param sq
    *          the Square in the direction
    */
-  void setSquareInDirection(final Direction dir, final Square sq) {
+  final void setSquareInDirection(final Direction dir, final Square sq) {
     this.directionMap.put(dir, sq);
   }
 
-  public Square getSquareInDirection(final Direction dir) {
+  /**
+   * Return the Square in the given direction.
+   * 
+   * @param dir
+   *          Direction to get Square
+   * @return the Square.
+   */
+  public final Square getSquareInDirection(final Direction dir) {
     return this.directionMap.get(dir);
   }
 }
