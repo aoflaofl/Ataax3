@@ -10,7 +10,7 @@ import java.util.List;
  * @author gej
  *
  */
-class AtaxxUndoMove {
+public class AtaxxUndoMove {
 
   /**
    * Construct an UndoMove object.

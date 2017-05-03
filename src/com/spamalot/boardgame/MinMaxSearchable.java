@@ -8,6 +8,8 @@ import java.util.List;
  * 
  * @author gej
  *
+ * @param <T>
+ *          Type that MinMax tree will be built of
  */
 public interface MinMaxSearchable<T extends Move> {
 

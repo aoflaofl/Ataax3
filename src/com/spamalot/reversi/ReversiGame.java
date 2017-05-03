@@ -1,11 +1,13 @@
 package com.spamalot.reversi;
 
+import com.spamalot.boardgame.Direction;
 import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
 import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
+import com.spamalot.boardgame.Square;
 
 import java.util.List;
 
@@ -54,10 +56,10 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
    */
   @Override
   protected void initBoard() {
-    getBoard().getSquareAt(3, 3).setPiece(new Piece(PieceColor.WHITE));
-    getBoard().getSquareAt(4, 4).setPiece(new Piece(PieceColor.WHITE));
-    getBoard().getSquareAt(3, 4).setPiece(new Piece(PieceColor.BLACK));
-    getBoard().getSquareAt(4, 3).setPiece(new Piece(PieceColor.BLACK));
+    getBoard().getSquareAt((getNumFiles() / 2) - 1, (getNumRanks() / 2) - 1).setPiece(new Piece(PieceColor.WHITE));
+    getBoard().getSquareAt(getNumFiles() / 2, getNumRanks() / 2).setPiece(new Piece(PieceColor.WHITE));
+    getBoard().getSquareAt((getNumFiles() / 2) - 1, getNumRanks() / 2).setPiece(new Piece(PieceColor.BLACK));
+    getBoard().getSquareAt(getNumFiles() / 2, (getNumRanks() / 2) - 1).setPiece(new Piece(PieceColor.BLACK));
   }
 
   @Override
@@ -91,8 +93,8 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
     builder.append(getBoard());
     builder.append("toMove=");
     builder.append(getColorToMove());
-    // builder.append("\ngetAvailableMoves()=");
-    // builder.append(getAvailableMoves());
+    builder.append("\ngetAvailableMoves()=");
+    builder.append(getAvailableMoves());
     // builder.append("\nUndo move list=" + this.undoMoveStack);
     builder.append("\n]");
     return builder.toString();
@@ -100,7 +102,54 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
 
   @Override
   public List<ReversiMove> getAvailableMoves() {
-    // TODO Auto-generated method stub
+    System.out.println("Color to move: " + this.getColorToMove());
+    for (int f = 0; f < getNumFiles(); f++) {
+      for (int r = 0; r < getNumRanks(); r++) {
+        Square s = getBoard().getSquareAt(f, r);
+
+        if (!s.isEmpty() && s.getPiece().getColor() == this.getColorToMove()) {
+          System.out.println(s);
+          for (Direction d : Direction.values()) {
+
+            Square x = look(s, d);
+            if (x != null) {
+              System.out.println("Found one " + d + ":" + x);
+            }
+          }
+        }
+
+      }
+    }
     return null;
   }
+
+  /**
+   * Look in a direction from a square to see if it can make a move.
+   * 
+   * @param s
+   *          Square to start from
+   * @param dir
+   *          Direction to look
+   * @return The Square that can receive a piece to make the move.
+   */
+  private Square look(final Square s, final Direction dir) {
+    PieceColor otherColor = this.getColorToMove().getOpposite();
+
+    Square lookSquare = s.getSquareInDirection(dir);
+
+    if (lookSquare == null || lookSquare.isEmpty() || lookSquare.getPiece().getColor() != otherColor) {
+      return null;
+    }
+
+    while (lookSquare != null && !lookSquare.isEmpty() && lookSquare.getPiece().getColor() == otherColor) {
+      lookSquare = lookSquare.getSquareInDirection(dir);
+    }
+
+    if (lookSquare != null && lookSquare.isEmpty()) {
+      return lookSquare;
+    }
+
+    return null;
+  }
+
 }

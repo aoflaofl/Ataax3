@@ -17,6 +17,9 @@ import java.util.List;
  */
 class AtaxxBoard extends Board {
 
+  /**
+   * Don't go smaller than this.
+   */
   private static final int MINIMUM_BOARD_SIZE = 4;
 
   /**

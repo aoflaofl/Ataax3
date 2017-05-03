@@ -147,7 +147,7 @@ public abstract class Board {
    * @return a List of Squares that are direct neighbors of the one passed in.
    */
   protected final List<Square> getOneAwaySquares(final Square sq) {
-    List<Square> ret = new ArrayList<>(8);
+    List<Square> ret = new ArrayList<>();
     ret.addAll(getOneAwayOrthogonal(sq));
     ret.addAll(getOneAwayDiagonal(sq));
     return ret;
@@ -162,7 +162,7 @@ public abstract class Board {
    *         can be occupied.
    */
   private List<Square> getOneAwayDiagonal(final Square sq) {
-    List<Square> ret = new ArrayList<>(4);
+    List<Square> ret = new ArrayList<>();
 
     int file = sq.getFile();
     int rank = sq.getRank();
@@ -208,7 +208,7 @@ public abstract class Board {
    *         can be occupied.
    */
   private List<Square> getOneAwayOrthogonal(final Square sq) {
-    List<Square> ret = new ArrayList<>(4);
+    List<Square> ret = new ArrayList<>();
 
     int file = sq.getFile();
     int rank = sq.getRank();
@@ -247,7 +247,7 @@ public abstract class Board {
    * @return a List of Squares that are two away neighbors of the one passed in.
    */
   protected final List<Square> getTwoAwaySquares(final Square sq) {
-    List<Square> ret = new ArrayList<>(16);
+    List<Square> ret = new ArrayList<>();
 
     ret.addAll(getTwoAwayOrthogonal(sq));
     ret.addAll(getTwoAwayDiagonal(sq));
@@ -265,7 +265,7 @@ public abstract class Board {
    *         occupied.
    */
   private List<Square> getTwoAwayKnightJump(final Square sq) {
-    List<Square> ret = new ArrayList<>(8);
+    List<Square> ret = new ArrayList<>();
 
     int file = sq.getFile();
     int rank = sq.getRank();
@@ -293,7 +293,7 @@ public abstract class Board {
    *         can be occupied.
    */
   private List<Square> getTwoAwayDiagonal(final Square sq) {
-    List<Square> ret = new ArrayList<>(4);
+    List<Square> ret = new ArrayList<>();
 
     int file = sq.getFile();
     int rank = sq.getRank();
@@ -316,7 +316,7 @@ public abstract class Board {
    *         can be occupied.
    */
   private List<Square> getTwoAwayOrthogonal(final Square sq) {
-    List<Square> ret = new ArrayList<>(4);
+    List<Square> ret = new ArrayList<>();
 
     int file = sq.getFile();
     int rank = sq.getRank();

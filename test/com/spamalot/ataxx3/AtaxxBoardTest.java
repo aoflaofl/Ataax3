@@ -3,10 +3,10 @@ package com.spamalot.ataxx3;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import com.spamalot.boardgame.Board;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import com.spamalot.boardgame.Board;
 
 /**
  * JUnit Test for AtaxxBoard.

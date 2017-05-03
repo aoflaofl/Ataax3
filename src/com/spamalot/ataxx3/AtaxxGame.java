@@ -75,30 +75,30 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    */
   @Override
   public void makeMove(final Move move) {
-    AtaxxMove aMove = (AtaxxMove) move;
+    AtaxxMove theMove = (AtaxxMove) move;
     // A null move would indicate a pass.
-    if (aMove == null) {
+    if (theMove == null) {
       switchColorToMove();
       this.undoMoveStack.push(null);
       return;
     }
 
     Piece piece = null;
-    switch (aMove.getType()) {
+    switch (theMove.getType()) {
       case EXPAND:
-        piece = new Piece(aMove.getColor());
+        piece = new Piece(theMove.getColor());
         break;
       case JUMP:
-        piece = aMove.getFromSquare().pickupPiece();
+        piece = theMove.getFromSquare().pickupPiece();
         break;
       default:
         break;
     }
-    aMove.getToSquare().setPiece(piece);
+    theMove.getToSquare().setPiece(piece);
 
-    List<Square> flipped = AtaxxBoard.flipPiecesAroundSquare(aMove.getToSquare(), aMove.getColor());
+    List<Square> flipped = AtaxxBoard.flipPiecesAroundSquare(theMove.getToSquare(), theMove.getColor());
 
-    this.undoMoveStack.push(new AtaxxUndoMove(aMove, flipped));
+    this.undoMoveStack.push(new AtaxxUndoMove(theMove, flipped));
 
     switchColorToMove();
   }
