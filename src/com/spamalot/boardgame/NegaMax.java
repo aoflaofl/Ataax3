@@ -2,6 +2,7 @@ package com.spamalot.boardgame;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * AI Class for Board Game.

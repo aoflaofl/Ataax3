@@ -8,7 +8,7 @@ import com.spamalot.boardgame.Board;
  * @author gej
  *
  */
-public class ReversiBoard extends Board {
+class ReversiBoard extends Board {
 
   /**
    * Construct a Reversi board object.

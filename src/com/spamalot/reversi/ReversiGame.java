@@ -9,6 +9,8 @@ import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -102,6 +104,9 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
 
   @Override
   public List<ReversiMove> getAvailableMoves() {
+
+    HashSet<ReversiMove> moves = new HashSet<>();
+
     System.out.println("Color to move: " + this.getColorToMove());
     for (int f = 0; f < getNumFiles(); f++) {
       for (int r = 0; r < getNumRanks(); r++) {
@@ -111,16 +116,21 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
           System.out.println(s);
           for (Direction d : Direction.values()) {
 
-            Square x = look(s, d);
+            ReversiMove x = look(s, d);
             if (x != null) {
               System.out.println("Found one " + d + ":" + x);
+              moves.add(x);
             }
           }
         }
 
       }
     }
-    return null;
+    
+    List<ReversiMove> ret = new ArrayList<>();
+    ret.addAll(moves);
+    
+    return ret;
   }
 
   /**
@@ -132,7 +142,7 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
    *          Direction to look
    * @return The Square that can receive a piece to make the move.
    */
-  private Square look(final Square s, final Direction dir) {
+  private ReversiMove look(final Square s, final Direction dir) {
     PieceColor otherColor = this.getColorToMove().getOpposite();
 
     Square lookSquare = s.getSquareInDirection(dir);
@@ -146,7 +156,7 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
     }
 
     if (lookSquare != null && lookSquare.isEmpty()) {
-      return lookSquare;
+      return new ReversiMove(this.getColorToMove(), lookSquare);
     }
 
     return null;

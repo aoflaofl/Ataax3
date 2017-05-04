@@ -62,9 +62,9 @@ class AtaxxMoveGenerator {
    *          Square to generate moves for
    * @return A list of moves.
    */
-  private static List<AtaxxMove> generateMovesForSquare(final Square fromSquare) {
+  private static Set<AtaxxMove> generateMovesForSquare(final Square fromSquare) {
 
-    List<AtaxxMove> result = new ArrayList<>();
+    Set<AtaxxMove> result = new HashSet<>();
 
     for (Square sq : fromSquare.getOneAwaySquares()) {
       if (sq.isEmpty()) {
