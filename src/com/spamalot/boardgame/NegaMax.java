@@ -2,7 +2,6 @@ package com.spamalot.boardgame;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  * AI Class for Board Game.
@@ -10,9 +9,11 @@ import java.util.Set;
  * @author gej
  *
  * @param <T>
- *          Type of game to search.
+ *          Type of game to search
+ * @param <S>
+ *          Type of Move to use in Search
  */
-public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
+public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
   /** What to multiply the diff by every time there is a fail high or low. */
   private static final int DIFF_MODIFIER = 2;
 
@@ -45,12 +46,12 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
    *          How deep to evaluate
    * @return the best move.
    */
-  public final Move think(final int maxIteration) {
+  public S think(final int maxIteration) {
     if (maxIteration < 1) {
       return null;
     }
 
-    List<? extends Move> candidateMoves = this.thisGame.getAvailableMoves();
+    List<S> candidateMoves = this.thisGame.getAvailableMoves();
 
     int alphaDiff = -INITIAL_DIFF;
     int betaDiff = INITIAL_DIFF;
@@ -58,7 +59,7 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
     int alpha = 0;
     int beta = 0;
 
-    Move move = null;
+    S move = null;
 
     for (int i = 0; i < maxIteration; i++) {
       // Sorting for an Moveable sorts first by evaluation, and then for equal
@@ -126,7 +127,7 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
    *          How deep to search
    * @return the best move found.
    */
-  private Move negaMaxAlphaBetaRoot(final List<? extends Move> candidateMoves, final int alpha, final int beta, final int depth) {
+  private S negaMaxAlphaBetaRoot(final List<S> candidateMoves, final int alpha, final int beta, final int depth) {
     System.out.println("Searching to a depth of " + depth);
 
     int color = 1;
@@ -137,9 +138,9 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
     int newAlpha = alpha;
 
     int bestValue = -MAX_VAL;
-    Move bestMove = null;
+    S bestMove = null;
 
-    for (Move move : candidateMoves) {
+    for (S move : candidateMoves) {
       this.thisGame.makeMove(move);
       this.nodeCount++;
       int evaluation = -negaMaxAlphaBeta(this.thisGame, depth - 1, -beta, -newAlpha, -color);
@@ -199,7 +200,7 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
       return color * game2.evaluate(gameOver);
     }
 
-    List<? extends Move> childMoves = game2.getAvailableMoves();
+    List<S> childMoves = game2.getAvailableMoves();
     Collections.sort(childMoves);
     if (childMoves.size() == 0) {
       childMoves.add(null);
@@ -207,7 +208,7 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
 
     int bestValue = -MAX_VAL;
     int newAlpha = alpha;
-    for (Move move : childMoves) {
+    for (S move : childMoves) {
       game2.makeMove(move);
       this.nodeCount++;
       int evaluation = -negaMaxAlphaBeta(game2, depth - 1, -beta, -newAlpha, -color);
@@ -245,14 +246,14 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
       return color * game.evaluate(gameOver);
     }
 
-    List<? extends Move> childMoves = game.getAvailableMoves();
+    List<S> childMoves = game.getAvailableMoves();
     Collections.sort(childMoves);
     if (childMoves.size() == 0) {
       childMoves.add(null);
     }
 
     int newAlpha = alpha;
-    for (Move move : childMoves) {
+    for (S move : childMoves) {
       game.makeMove(move);
       this.nodeCount++;
       int evaluation = -negaMaxAlphaBetaFailHard(game, depth - 1, -beta, -newAlpha, -color);
@@ -296,9 +297,9 @@ public class NegaMax<T extends MinMaxSearchable<? extends Move>> {
 
     int bestValue = -MAX_VAL;
 
-    List<? extends Move> childMoves = game.getAvailableMoves();
+    List<S> childMoves = game.getAvailableMoves();
     // Order Moves Here
-    for (Move move : childMoves) {
+    for (S move : childMoves) {
 
       // System.out.println(move);
       game.makeMove(move);

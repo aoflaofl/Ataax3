@@ -5,7 +5,6 @@ import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameControllable;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
-import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
@@ -19,7 +18,7 @@ import java.util.Stack;
  * @author gej
  *
  */
-class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControllable {
+class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControllable<AtaxxMove> {
   /** Default Board Size for an Ataxx game. */
   private static final int DEFAULT_ATAXX_BOARD_SIZE = 7;
 
@@ -74,8 +73,8 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    *           When something goes wrong
    */
   @Override
-  public void makeMove(final Move move) {
-    AtaxxMove theMove = (AtaxxMove) move;
+  public void makeMove(final AtaxxMove move) {
+    AtaxxMove theMove = move;
     // A null move would indicate a pass.
     if (theMove == null) {
       switchColorToMove();
@@ -202,7 +201,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    *           when move cannot be parsed.
    */
   @Override
-  public final Move parseMove(final String text) throws GameException {
+  public final AtaxxMove parseMove(final String text) throws GameException {
     if (text.length() != 4) {
       throw new GameException("Not an Ataxx move.");
     }

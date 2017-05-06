@@ -41,7 +41,7 @@ public interface MinMaxSearchable<T extends Move> {
    * @param move
    *          Move to make
    */
-  void makeMove(Move move);
+  void makeMove(T move);
 
   /**
    * Get the color to move.

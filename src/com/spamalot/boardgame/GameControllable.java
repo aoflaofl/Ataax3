@@ -7,8 +7,10 @@ import java.util.List;
  * 
  * @author gej
  *
+ * @param <T>
+ *          Move Type
  */
-public interface GameControllable {
+public interface GameControllable<T extends Move> {
 
   List<? extends Move> getAvailableMoves();
 
@@ -22,8 +24,8 @@ public interface GameControllable {
 
   boolean isOver();
 
-  void makeMove(Move movep);
+  void makeMove(T movep);
 
-  Move parseMove(String text) throws GameException;
+  T parseMove(String text) throws GameException;
 
 }

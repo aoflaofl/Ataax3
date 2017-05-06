@@ -4,7 +4,6 @@ import com.spamalot.boardgame.Direction;
 import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
-import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
@@ -12,6 +11,7 @@ import com.spamalot.boardgame.Square;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Handle the Reversi Game.
@@ -83,7 +83,7 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
   }
 
   @Override
-  public void makeMove(final Move move) {
+  public void makeMove(final ReversiMove move) {
     // TODO Auto-generated method stub
 
   }
@@ -105,53 +105,49 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
   @Override
   public List<ReversiMove> getAvailableMoves() {
 
-    HashSet<ReversiMove> moves = new HashSet<>();
+    // Using a Set to avoid duplicate moves being stored.
+    Set<ReversiMove> moves = new HashSet<>();
 
-    System.out.println("Color to move: " + this.getColorToMove());
-    for (int f = 0; f < getNumFiles(); f++) {
-      for (int r = 0; r < getNumRanks(); r++) {
-        Square s = getBoard().getSquareAt(f, r);
-
-        if (!s.isEmpty() && s.getPiece().getColor() == this.getColorToMove()) {
-          System.out.println(s);
-          for (Direction d : Direction.values()) {
-
-            ReversiMove x = look(s, d);
-            if (x != null) {
-              System.out.println("Found one " + d + ":" + x);
-              moves.add(x);
+    for (int file = 0; file < getNumFiles(); file++) {
+      for (int rank = 0; rank < getNumRanks(); rank++) {
+        Square sq = getBoard().getSquareAt(file, rank);
+        if (hasSameColorPiece(sq)) {
+          for (Direction dir : Direction.values()) {
+            ReversiMove newMove = findMoveInDirection(sq, dir);
+            if (newMove != null) {
+              moves.add(newMove);
             }
           }
         }
-
       }
     }
-    
+
     List<ReversiMove> ret = new ArrayList<>();
     ret.addAll(moves);
-    
+
     return ret;
   }
 
   /**
-   * Look in a direction from a square to see if it can make a move.
+   * Look in a direction from a square to see if it can make a move and create
+   * the ReversiMove object if it can.
    * 
    * @param s
    *          Square to start from
    * @param dir
    *          Direction to look
-   * @return The Square that can receive a piece to make the move.
+   * @return A ReversiMove or null if no move.
    */
-  private ReversiMove look(final Square s, final Direction dir) {
-    PieceColor otherColor = this.getColorToMove().getOpposite();
-
+  private ReversiMove findMoveInDirection(final Square s, final Direction dir) {
     Square lookSquare = s.getSquareInDirection(dir);
 
-    if (lookSquare == null || lookSquare.isEmpty() || lookSquare.getPiece().getColor() != otherColor) {
+    // Exit early if the first neighbor isn't an opposite color piece.
+    if (!hasOppositeColorPiece(lookSquare)) {
       return null;
     }
 
-    while (lookSquare != null && !lookSquare.isEmpty() && lookSquare.getPiece().getColor() == otherColor) {
+    lookSquare = lookSquare.getSquareInDirection(dir);
+    while (hasOppositeColorPiece(lookSquare)) {
       lookSquare = lookSquare.getSquareInDirection(dir);
     }
 
@@ -162,4 +158,27 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
     return null;
   }
 
+  /**
+   * Return true if the Square is on the board, has a piece, and that piece is
+   * of the opposite color of the side to move.
+   * 
+   * @param sq
+   *          Square to look at
+   * @return true if it has an opposite color piece.
+   */
+  private boolean hasOppositeColorPiece(final Square sq) {
+    return sq != null && !sq.isEmpty() && sq.getPiece().getColor() != this.getColorToMove();
+  }
+
+  /**
+   * Return true if the Square is on the board, has a piece, and that piece is
+   * of the same color of the side to move.
+   * 
+   * @param sq
+   *          Square to look at
+   * @return true if square has a same color piece.
+   */
+  private boolean hasSameColorPiece(final Square sq) {
+    return sq != null && !sq.isEmpty() && sq.getPiece().getColor() == this.getColorToMove();
+  }
 }

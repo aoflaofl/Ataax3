@@ -1,7 +1,6 @@
 package com.spamalot.ataxx3;
 
 import com.spamalot.boardgame.GameException;
-import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.NegaMax;
 import com.spamalot.boardgame.PieceColor;
 
@@ -56,8 +55,8 @@ class AtaxxController {
             this.ataxxGame.undoLastMove();
             break;
           case "think":
-            NegaMax<AtaxxGame> ai = new NegaMax<>(this.ataxxGame);
-            Move move = ai.think(depth);
+            NegaMax<AtaxxGame, AtaxxMove> ai = new NegaMax<>(this.ataxxGame);
+            AtaxxMove move = ai.think(depth);
 
             System.out.println("Move:\n" + move);
 
@@ -73,8 +72,8 @@ class AtaxxController {
               } else {
                 depth = 5;
               }
-              NegaMax<AtaxxGame> aip = new NegaMax<>(this.ataxxGame);
-              Move movep = aip.think(depth);
+              NegaMax<AtaxxGame, AtaxxMove> aip = new NegaMax<>(this.ataxxGame);
+              AtaxxMove movep = aip.think(depth);
               this.ataxxGame.makeMove(movep);
               System.out.println(this.ataxxGame.boardToString());
               System.out.println("Color to move: " + this.ataxxGame.getColorToMove());
@@ -90,7 +89,7 @@ class AtaxxController {
           default:
             // If it is not a recognized command then it might be a move.
             try {
-              Move move2 = this.ataxxGame.parseMove(text);
+              AtaxxMove move2 = this.ataxxGame.parseMove(text);
               System.out.println(move2);
               this.ataxxGame.makeMove(move2);
             } catch (GameException e) {
