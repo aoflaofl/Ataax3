@@ -1,6 +1,7 @@
 package com.spamalot.ataxx3;
 
 import com.spamalot.boardgame.GameException;
+import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.NegaMax;
 import com.spamalot.boardgame.PieceColor;
 
@@ -42,7 +43,7 @@ class AtaxxController {
         switch (text) {
           case "moves":
             List<AtaxxMove> moves = this.ataxxGame.getAvailableMoves();
-            for (AtaxxMove move : moves) {
+            for (Move move : moves) {
               System.out.println(move);
             }
             break;

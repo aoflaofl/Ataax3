@@ -5,6 +5,7 @@ import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameControllable;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
+import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
@@ -74,30 +75,26 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    */
   @Override
   public void makeMove(final AtaxxMove move) {
-    AtaxxMove theMove = move;
-    // A null move would indicate a pass.
-    if (theMove == null) {
-      switchColorToMove();
-      this.undoMoveStack.push(null);
-      return;
-    }
-
     Piece piece = null;
-    switch (theMove.getType()) {
-      case EXPAND:
-        piece = new Piece(theMove.getColor());
+    switch (move.getType()) {
+      case DROP:
+        piece = new Piece(move.getColor());
         break;
       case JUMP:
-        piece = theMove.getFromSquare().pickupPiece();
+        piece = move.getFromSquare().pickupPiece();
+        break;
+      case PASS:
         break;
       default:
         break;
     }
-    theMove.getToSquare().setPiece(piece);
+    List<Square> flipped = null;
+    if (piece != null) {
+      move.getToSquare().setPiece(piece);
+      flipped = AtaxxBoard.flipPiecesAroundSquare(move.getToSquare(), move.getColor());
+    }
 
-    List<Square> flipped = AtaxxBoard.flipPiecesAroundSquare(theMove.getToSquare(), theMove.getColor());
-
-    this.undoMoveStack.push(new AtaxxUndoMove(theMove, flipped));
+    this.undoMoveStack.push(new AtaxxUndoMove(move, flipped));
 
     switchColorToMove();
   }
@@ -108,7 +105,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
   @Override
   public void undoLastMove() {
     AtaxxUndoMove move = this.undoMoveStack.pop();
-    if (move != null) {
+    if (move.getMove().getType() != Move.Type.PASS) {
       AtaxxGame.undoPieceMove(move.getMove());
       flipPiecesInSquares(move.getFlipped());
     }
@@ -135,7 +132,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    */
   private static void undoPieceMove(final AtaxxMove move) {
     Piece p = move.getToSquare().pickupPiece();
-    if (move.getType() == AtaxxMove.Type.JUMP) {
+    if (move.getType() == Move.Type.JUMP) {
       move.getFromSquare().setPiece(p);
     }
   }
@@ -218,9 +215,9 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
 
     AtaxxMove.Type moveType = null;
     if (maxDiff == 2) {
-      moveType = AtaxxMove.Type.JUMP;
+      moveType = Move.Type.JUMP;
     } else {
-      moveType = AtaxxMove.Type.EXPAND;
+      moveType = Move.Type.DROP;
     }
 
     Square f = getSquareAt(from.getX(), from.getY());

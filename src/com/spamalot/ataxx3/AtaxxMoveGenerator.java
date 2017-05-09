@@ -1,6 +1,7 @@
 package com.spamalot.ataxx3;
 
 import com.spamalot.boardgame.Game;
+import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
 
@@ -52,6 +53,10 @@ class AtaxxMoveGenerator {
       }
     }
 
+    if (result.size() == 0) {
+      result.add(new AtaxxMove(Move.Type.PASS));
+    }
+
     return result;
   }
 
@@ -68,13 +73,13 @@ class AtaxxMoveGenerator {
 
     for (Square sq : fromSquare.getOneAwaySquares()) {
       if (sq.isEmpty()) {
-        result.add(new AtaxxMove(AtaxxMove.Type.EXPAND, fromSquare.getPiece().getColor(), fromSquare, sq));
+        result.add(new AtaxxMove(Move.Type.DROP, fromSquare.getPiece().getColor(), fromSquare, sq));
       }
     }
 
     for (Square sq : fromSquare.getTwoAwaySquares()) {
       if (sq.isEmpty()) {
-        result.add(new AtaxxMove(AtaxxMove.Type.JUMP, fromSquare.getPiece().getColor(), fromSquare, sq));
+        result.add(new AtaxxMove(Move.Type.JUMP, fromSquare.getPiece().getColor(), fromSquare, sq));
       }
     }
 

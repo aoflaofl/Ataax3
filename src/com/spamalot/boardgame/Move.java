@@ -8,6 +8,21 @@ package com.spamalot.boardgame;
  */
 public class Move implements Comparable<Move> {
 
+  /**
+   * The two types of an Ataxx move.
+   * 
+   * @author gej
+   *
+   */
+  public enum Type {
+    /** Drop a new piece on the board. */
+    DROP,
+    /** Jump a piece from one Square to another. */
+    JUMP,
+    /** Don't make a move at all. */
+    PASS
+  }
+
   /** The color making this move. */
   private PieceColor color;
 
@@ -19,6 +34,32 @@ public class Move implements Comparable<Move> {
 
   /** AI evaluation of move. Initialized to min value until evaluated. */
   private int evaluation = Integer.MIN_VALUE;
+
+  /** What Type of Move this is. */
+  private Type moveType;
+
+  public Move(final Type type) {
+    setType(type);
+  }
+
+  /**
+   * Set the Move's Type.
+   * 
+   * @param t
+   *          the Move's Type
+   */
+  public void setType(final Type t) {
+    this.moveType = t;
+  }
+
+  /**
+   * Get the Move's Type.
+   * 
+   * @return the Move's Type.
+   */
+  public Type getType() {
+    return this.moveType;
+  }
 
   /**
    * Set the to Square of the Move.
@@ -108,6 +149,11 @@ public class Move implements Comparable<Move> {
     this.evaluation = eval;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -119,6 +165,11 @@ public class Move implements Comparable<Move> {
     return result;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public boolean equals(final Object obj) {
     if (this == obj) {

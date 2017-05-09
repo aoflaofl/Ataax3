@@ -202,9 +202,9 @@ public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
 
     List<S> childMoves = game2.getAvailableMoves();
     Collections.sort(childMoves);
-    if (childMoves.size() == 0) {
-      childMoves.add(null);
-    }
+//    if (childMoves.size() == 0) {
+//      childMoves.add((S) new Move(Move.Type.PASS));
+//    }
 
     int bestValue = -MAX_VAL;
     int newAlpha = alpha;

@@ -12,22 +12,6 @@ import com.spamalot.boardgame.Square;
  */
 class AtaxxMove extends Move {
   /**
-   * The two types of an Ataxx move.
-   * 
-   * @author gej
-   *
-   */
-  public enum Type {
-    /** Grow to an adjacent (orthogonal or diagonal). */
-    EXPAND,
-    /** Jump to a square two squares away (Knight moves count). */
-    JUMP
-  }
-
-  /** What Type of Ataxx move this is. */
-  private Type type;
-
-  /**
    * Construct an Ataxx Move.
    * 
    * @param moveType
@@ -40,36 +24,21 @@ class AtaxxMove extends Move {
    *          the to square
    */
   AtaxxMove(final Type moveType, final PieceColor pieceColor, final Square fromCoord, final Square toCoord) {
-    this.type = moveType;
+    super(moveType);
     setColor(pieceColor);
     setFromSquare(fromCoord);
     setToSquare(toCoord);
   }
 
-  /**
-   * Get the type of this move.
-   * 
-   * @return the Type.
-   */
-  public final Type getType() {
-    return this.type;
-  }
-
-  /**
-   * Set the type of this move.
-   * 
-   * @param t
-   *          the Type.
-   */
-  public final void setType(final Type t) {
-    this.type = t;
+  AtaxxMove(final Type moveType) {
+    super(moveType);
   }
 
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("[type=");
-    builder.append(this.type);
+    builder.append(getType());
     builder.append(", color=");
     builder.append(getColor());
     builder.append(", from=");

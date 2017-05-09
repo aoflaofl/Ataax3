@@ -11,21 +11,6 @@ import com.spamalot.boardgame.Square;
  *
  */
 class ReversiMove extends Move {
-  /**
-   * The two types of an Ataxx move.
-   * 
-   * @author gej
-   *
-   */
-  public enum Type {
-    /** Drop a piece on the board. */
-    DROP,
-    /** If there are no other moves, then this is the move type. */
-    PASS
-  }
-
-  /** What Type of Reversi move this is. */
-  private Type type;
 
   /**
    * Construct a Reversi Move.
@@ -36,35 +21,16 @@ class ReversiMove extends Move {
    *          the to square
    */
   ReversiMove(final PieceColor pieceColor, final Square toCoord) {
-    this.type = Type.DROP;
+    super(Type.DROP);
     setColor(pieceColor);
     setToSquare(toCoord);
-  }
-
-  /**
-   * Get the type of this move.
-   * 
-   * @return the Type.
-   */
-  public final Type getType() {
-    return this.type;
-  }
-
-  /**
-   * Set the type of this move.
-   * 
-   * @param t
-   *          the Type.
-   */
-  public final void setType(final Type t) {
-    this.type = t;
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
+    result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
     return result;
   }
 
@@ -80,7 +46,7 @@ class ReversiMove extends Move {
       return false;
     }
     ReversiMove other = (ReversiMove) obj;
-    if (this.type != other.type) {
+    if (getType() != other.getType()) {
       return false;
     }
     return true;
