@@ -16,7 +16,7 @@ public interface GameControllable<T extends Move> {
 
   String boardToString();
 
-  Score getScore();
+  PieceCount getPieceCount();
 
   void undoLastMove();
 

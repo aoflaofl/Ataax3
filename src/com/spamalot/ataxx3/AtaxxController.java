@@ -50,7 +50,7 @@ class AtaxxController {
           case "board":
             System.out.println(this.ataxxGame.boardToString());
             System.out.println("Color to move: " + this.ataxxGame.getColorToMove());
-            System.out.println(this.ataxxGame.getScore());
+            System.out.println(this.ataxxGame.getPieceCount());
             break;
           case "undo":
             this.ataxxGame.undoLastMove();
@@ -64,7 +64,7 @@ class AtaxxController {
             this.ataxxGame.makeMove(move);
             System.out.println(this.ataxxGame.boardToString());
             System.out.println("Color to move: " + this.ataxxGame.getColorToMove());
-            System.out.println(this.ataxxGame.getScore());
+            System.out.println(this.ataxxGame.getPieceCount());
             break;
           case "play":
             while (!this.ataxxGame.isOver()) {
@@ -78,7 +78,7 @@ class AtaxxController {
               this.ataxxGame.makeMove(movep);
               System.out.println(this.ataxxGame.boardToString());
               System.out.println("Color to move: " + this.ataxxGame.getColorToMove());
-              System.out.println(this.ataxxGame.getScore());
+              System.out.println(this.ataxxGame.getPieceCount());
             }
             System.out.println("Done.");
             break;

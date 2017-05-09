@@ -195,7 +195,7 @@ public abstract class Board {
    *          the rank
    * @return true if the square at file and rank is on the Board.
    */
-  private boolean isOnBoard(final int file, final int rank) {
+  boolean isOnBoard(final int file, final int rank) {
     return (file >= 0 && file < this.numFiles && rank >= 0 && rank < this.numRanks);
   }
 

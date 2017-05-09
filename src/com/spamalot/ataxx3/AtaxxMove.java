@@ -30,6 +30,12 @@ class AtaxxMove extends Move {
     setToSquare(toCoord);
   }
 
+  /**
+   * Make a move only with a type.
+   * 
+   * @param moveType
+   *          the Move Type
+   */
   AtaxxMove(final Type moveType) {
     super(moveType);
   }

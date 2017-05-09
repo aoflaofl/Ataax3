@@ -8,22 +8,6 @@ package com.spamalot.boardgame;
  */
 public abstract class Game {
 
-  // /**
-  // * Drop a piece on the board. For performance reasons assume legality has
-  // been
-  // * checked before method is called.
-  // *
-  // * @param piece
-  // * the Piece
-  // * @param square
-  // * the Coordinate
-  // * @throws GameException
-  // * if square is not empty
-  // */
-  // protected static void dropPiece(final Piece piece, final Square square) {
-  // square.setPiece(piece);
-  // }
-
   /** Which color is currently to move. White moves first. */
   private PieceColor colorToMove = PieceColor.WHITE;
 
@@ -76,15 +60,15 @@ public abstract class Game {
    * 
    * @return the score object.
    */
-  public final Score getScore() {
+  public final PieceCount getPieceCount() {
     int numBlack = 0;
     int numWhite = 0;
 
-    Square[][] x = this.board.getSquares();
+    Square[][] squares = this.board.getSquares();
 
     for (int rank = 0; rank < getNumRanks(); rank++) {
       for (int file = 0; file < getNumFiles(); file++) {
-        Piece piece = x[file][rank].getPiece();
+        Piece piece = squares[file][rank].getPiece();
         if (piece != null) {
           if (piece.getColor() == PieceColor.BLACK) {
             numBlack++;
@@ -95,7 +79,7 @@ public abstract class Game {
 
       }
     }
-    return new Score(numBlack, numWhite);
+    return new PieceCount(numBlack, numWhite);
   }
 
   /**
@@ -145,8 +129,10 @@ public abstract class Game {
    * @return the square.
    */
   public Square getSquareAt(final int file, final int rank) {
-    if ((file >= 0 && file < this.getNumFiles()) && (rank >= 0 && rank < this.getNumRanks())) {
-      return getBoard().getSquareAt(file, rank);
+    Board board2 = getBoard();
+
+    if (board2.isOnBoard(file, rank)) {
+      return board2.getSquareAt(file, rank);
     }
     return null;
   }
