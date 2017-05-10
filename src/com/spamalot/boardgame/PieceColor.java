@@ -1,7 +1,9 @@
 package com.spamalot.boardgame;
 
 /**
- * Colors of pieces in a board game.
+ * The {@code PieceColor} enum defines the possible colors of a
+ * {@link com.spamalot.boardgame.Piece Piece} in a board game. You can have any
+ * color you want so long as it is Black or White.
  * 
  * @author gej
  *

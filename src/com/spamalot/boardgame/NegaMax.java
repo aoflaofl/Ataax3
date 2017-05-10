@@ -114,6 +114,59 @@ public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
     return move;
   }
 
+  // int Search(int alpha, int beta, int depth)
+  // {
+  // ~~int bestScore;
+  // ~~MOVE bestMove = INVALID;
+  // at branch end, use evaluation heuristic on position
+  // ~~if(depth == 0) return Evaluate();
+
+  // ~~for(iterDepth from 1 to depth) {
+  // *** loop over all depths
+  // ~~~~int iterAlpha = alpha;
+  // *** as we touch alpha, we need to reset it to the original value for each
+  // new depth
+  // ~~~~bestScore = -INF;
+  // for every depth we start with a clean slate
+  // ~~~~PutInFront(bestMove);
+  // *** put best move in front of list, so this depth iteration tries it first
+  // ~~~~for(EVERY move) {
+  // loop over moves
+  // ~~~~~~MakeMove(move);
+  // updates game state (board, side to move)
+  // ~~~~~~score = -Search(-beta, -alpha, depth-1);
+  // recursion (flip sign because we change POV)
+  // ~~~~~~UnMake();
+  // ~~~~~~if(score > bestScore) {
+  // score accounting: remember best (from side-to-move POV)
+  // ~~~~~~~~bestScore = score;
+  // ~~~~~~~~if(score > iterAlpha) {
+  // ~~~~~~~~~~iterAlpha = score;
+  // ~~~~~~~~~~bestMove = move;
+  // ~~~~~~~~~~if(score >= beta) break;
+  // beta cutoff: previous ply is refuted by this move
+  // ~~~~~~~~}
+  // ~~~~~~}
+  // ~~~~}
+  // next move
+  // ~~}
+  // next depth
+  // ~~return { bestScore, bestMove };
+  // bestMove only used in root, to actually play it
+  // }
+  //
+  //
+  // int Search(int alpha, int beta, int depth, int color) {
+  // int bestScore;
+  // S bestMove = null;
+  //
+  // if (depth == 0) {
+  // return color * thisGame.evaluate(false);
+  // }
+  //
+  // return depth;
+  // }
+
   /**
    * Root call to the NegaMaxAlphaBeta routine.
    * 
@@ -202,9 +255,9 @@ public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
 
     List<S> childMoves = game2.getAvailableMoves();
     Collections.sort(childMoves);
-//    if (childMoves.size() == 0) {
-//      childMoves.add((S) new Move(Move.Type.PASS));
-//    }
+    // if (childMoves.size() == 0) {
+    // childMoves.add((S) new Move(Move.Type.PASS));
+    // }
 
     int bestValue = -MAX_VAL;
     int newAlpha = alpha;
@@ -221,94 +274,6 @@ public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
       }
     }
 
-    return bestValue;
-  }
-
-  /**
-   * Implement the negaMax algorithm with AlphaBeta Pruning and fail hard
-   * evaluation.
-   * 
-   * @param game
-   *          Game to evaluate
-   * @param depth
-   *          depth to evaluate
-   * @param alpha
-   *          alph value
-   * @param beta
-   *          beta value
-   * @param color
-   *          color
-   * @return an evaluation.
-   */
-  private int negaMaxAlphaBetaFailHard(final T game, final int depth, final int alpha, final int beta, final int color) {
-    boolean gameOver = game.isOver();
-    if (depth == 0 || gameOver) {
-      return color * game.evaluate(gameOver);
-    }
-
-    List<S> childMoves = game.getAvailableMoves();
-    Collections.sort(childMoves);
-    if (childMoves.size() == 0) {
-      childMoves.add(null);
-    }
-
-    int newAlpha = alpha;
-    for (S move : childMoves) {
-      game.makeMove(move);
-      this.nodeCount++;
-      int evaluation = -negaMaxAlphaBetaFailHard(game, depth - 1, -beta, -newAlpha, -color);
-      game.undoLastMove();
-
-      if (evaluation > beta) {
-        return beta;
-      }
-      newAlpha = Math.max(newAlpha, evaluation);
-    }
-
-    return newAlpha;
-  }
-
-  // 01 function negamax(node, depth, color)
-  // 02 ____if depth = 0 or node is a terminal node
-  // 03 ________return color * the heuristic value of node
-  //
-  // 04 ____bestValue := -INFINITY
-  // 05 ____foreach child of node
-  // 06 ________v := -negamax(child, depth - 1, -color)
-  // 07 ________bestValue := max( bestValue, v )
-  // 08 ____return bestValue
-  //
-  /**
-   * Nega max algorithm.
-   * 
-   * @param game
-   *          Game to search
-   * @param depth
-   *          depth to search
-   * @param color
-   *          color moving
-   * @return evaluation of position.
-   */
-  private int negamax(final T game, final int depth, final int color) {
-    boolean gameOver = game.isOver();
-    if (depth == 0 || gameOver) {
-      return color * game.evaluate(gameOver);
-    }
-
-    int bestValue = -MAX_VAL;
-
-    List<S> childMoves = game.getAvailableMoves();
-    // Order Moves Here
-    for (S move : childMoves) {
-
-      // System.out.println(move);
-      game.makeMove(move);
-      this.nodeCount++;
-      int evaluation = -negamax(game, depth - 1, -color);
-      bestValue = Math.max(evaluation, bestValue);
-      game.undoLastMove();
-
-    }
     return bestValue;
   }
 }

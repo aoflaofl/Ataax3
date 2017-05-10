@@ -38,6 +38,19 @@ public class Move implements Comparable<Move> {
   /** What Type of Move this is. */
   private Type moveType;
 
+  /**
+   * Construct a PASS Move.
+   */
+  public Move() {
+    setType(Type.PASS);
+  }
+
+  /**
+   * Create a Move with a certain type.
+   * 
+   * @param type
+   *          Type of Move to create
+   */
   public Move(final Type type) {
     setType(type);
   }

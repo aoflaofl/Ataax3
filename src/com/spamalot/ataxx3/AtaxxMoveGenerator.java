@@ -54,7 +54,7 @@ class AtaxxMoveGenerator {
     }
 
     if (result.size() == 0) {
-      result.add(new AtaxxMove(Move.Type.PASS));
+      result.add(new AtaxxMove());
     }
 
     return result;
