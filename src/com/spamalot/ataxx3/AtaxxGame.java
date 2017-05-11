@@ -245,40 +245,6 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
   /*
    * (non-Javadoc)
    * 
-   * @see com.spamalot.ataxx3.MinMaxSearchable#isOver()
-   */
-  @Override
-  public boolean isOver() {
-    Square[][] b = getBoard().getSquares();
-
-    int numRanks = this.getNumRanks();
-    int numFiles = this.getNumFiles();
-
-    int white = 0;
-    int black = 0;
-    for (int f = 0; f < numFiles; f++) {
-      for (int r = 0; r < numRanks; r++) {
-        Piece p = b[f][r].getPiece();
-        if (p != null) {
-          if (p.getColor() == PieceColor.WHITE) {
-            white++;
-          } else {
-            black++;
-          }
-        }
-      }
-    }
-
-    // AtaxxScore s = getScore();
-
-    int boardSize = (numRanks * numFiles) - getBoard().getNumBlockedSquares();
-
-    return ((black + white == boardSize) || black == 0 || white == 0);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
    * @see com.spamalot.ataxx3.MinMaxSearchable#evaluate(boolean)
    */
   @Override

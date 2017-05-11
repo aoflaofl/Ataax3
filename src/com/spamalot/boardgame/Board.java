@@ -386,6 +386,15 @@ public abstract class Board {
   }
 
   /**
+   * Get the Number of playable Squares.
+   * 
+   * @return the Number of Playable Squares.
+   */
+  public int getNumPlayableSquares() {
+    return (getNumRanks() * getNumFiles()) - getNumBlockedSquares();
+  }
+
+  /**
    * Initialize the Direction Map in the Square.
    * 
    * @param rank

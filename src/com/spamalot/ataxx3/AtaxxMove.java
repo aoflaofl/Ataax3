@@ -10,7 +10,7 @@ import com.spamalot.boardgame.Square;
  * @author gej
  *
  */
-class AtaxxMove extends Move {
+public class AtaxxMove extends Move {
   /**
    * Construct an Ataxx Move.
    * 
@@ -35,6 +35,9 @@ class AtaxxMove extends Move {
     super();
   }
 
+  /* (non-Javadoc)
+   * @see com.spamalot.boardgame.Move#toString()
+   */
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();

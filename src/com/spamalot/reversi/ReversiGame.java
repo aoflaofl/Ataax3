@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * Handle the Reversi Game.
@@ -22,6 +23,9 @@ import java.util.Set;
 class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
   /** Default Board Size Constant. */
   private static final int DEFAULT_REVERSI_BOARD_SIZE = 8;
+
+  /** Stack for undo move list. */
+  private Stack<ReversiUndoMove> undoMoveStack = new Stack<>();
 
   /**
    * Create a Reversi board of the default size.
@@ -65,12 +69,6 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
   }
 
   @Override
-  public boolean isOver() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
   public int evaluate(final boolean gameOver) {
     // TODO Auto-generated method stub
     return 0;
@@ -84,8 +82,36 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove> {
 
   @Override
   public void makeMove(final ReversiMove move) {
-    // TODO Auto-generated method stub
+    System.out.println("Making move: " + move);
 
+    Piece piece = new Piece(move.getColor());
+    Square toSquare = move.getToSquare();
+
+    PieceColor oppositeColor = move.getColor().getOpposite();
+
+    toSquare.setPiece(piece);
+
+    // Collect Pieces to flip
+    List<Piece> piecesToFlip = new ArrayList<>();
+    for (Direction dir : Direction.values()) {
+      System.out.println("Looking " + dir);
+      List<Piece> candidatePiecesToFlip = new ArrayList<>();
+      Square square = toSquare.getSquareInDirection(dir);
+      while (square != null && !square.isEmpty() && square.getPiece().getColor() == oppositeColor) {
+        System.out.println("Looking at Square: " + square);
+        candidatePiecesToFlip.add(square.getPiece());
+        square = square.getSquareInDirection(dir);
+      }
+      if (square != null && !square.isEmpty() && square.getPiece().getColor() != oppositeColor) {
+        piecesToFlip.addAll(candidatePiecesToFlip);
+      }
+    }
+    flipPieces(piecesToFlip);
+
+    ReversiUndoMove r = new ReversiUndoMove(move, piecesToFlip);
+
+    this.undoMoveStack.add(r);
+    switchColorToMove();
   }
 
   @Override

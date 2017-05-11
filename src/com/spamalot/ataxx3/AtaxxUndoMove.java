@@ -1,6 +1,7 @@
 package com.spamalot.ataxx3;
 
 import com.spamalot.boardgame.Square;
+import com.spamalot.boardgame.UndoMove;
 
 import java.util.List;
 
@@ -10,35 +11,23 @@ import java.util.List;
  * @author gej
  *
  */
-class AtaxxUndoMove {
+public class AtaxxUndoMove extends UndoMove<AtaxxMove> {
 
   /**
    * Construct an UndoMove object.
    * 
-   * @param move2
+   * @param move
    *          Move that might be undone
    * @param flipped2
    *          List of coordinates of pieces to flip
    */
-  AtaxxUndoMove(final AtaxxMove move2, final List<Square> flipped2) {
-    this.move = move2;
+  AtaxxUndoMove(final AtaxxMove move, final List<Square> flipped2) {
+    setMove(move);
     this.flipped = flipped2;
   }
 
-  /** Ataxx move that has been made. */
-  private AtaxxMove move;
-
   /** List of coordinates of pieces that have been flipped. */
   private List<Square> flipped;
-
-  /**
-   * Get the Move.
-   * 
-   * @return the move
-   */
-  public AtaxxMove getMove() {
-    return this.move;
-  }
 
   /**
    * Get the flipped piece list.

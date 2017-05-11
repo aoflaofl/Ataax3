@@ -1,5 +1,7 @@
 package com.spamalot.boardgame;
 
+import java.util.List;
+
 /**
  * Game class to be extended.
  * 
@@ -135,5 +137,32 @@ public abstract class Game {
       return board2.getSquareAt(file, rank);
     }
     return null;
+  }
+
+  /**
+   * A generic check to see if the Game is over. If no pieces of one color exist
+   * or if the Board is full then the Game is considered to be over. This method
+   * should be overridden if there is other criteria.
+   * 
+   * @return true if the Game is over.
+   */
+  public boolean isOver() {
+    PieceCount p = getPieceCount();
+
+    int playableSquares = getBoard().getNumPlayableSquares();
+
+    return ((p.getBlackCount() + p.getWhiteCount() == playableSquares) || p.getBlackCount() == 0 || p.getWhiteCount() == 0);
+  }
+
+  /**
+   * Flip some Pieces to their opposite color.
+   * 
+   * @param piecesToFlip
+   *          the Pieces to Flip
+   */
+  protected static void flipPieces(final List<Piece> piecesToFlip) {
+    for (Piece piece : piecesToFlip) {
+      piece.flip();
+    }
   }
 }

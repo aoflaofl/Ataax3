@@ -6,7 +6,7 @@ package com.spamalot.boardgame;
  * @author gej
  *
  */
-class PieceCount {
+public class PieceCount {
   /** Black Piece count. */
   private int blackCount;
 
@@ -22,9 +22,9 @@ class PieceCount {
    *          Count of white pieces
    *
    */
-  PieceCount(final int numBlack, final int numWhite) {
-    this.blackCount = numBlack;
-    this.whiteCount = numWhite;
+  public PieceCount(final int numBlack, final int numWhite) {
+    setBlackCount(numBlack);
+    setWhiteCount(numWhite);
   }
 
   /**
@@ -51,7 +51,7 @@ class PieceCount {
    * @param numBlack
    *          the black count to set
    */
-  public void setBlackCount(final int numBlack) {
+  private void setBlackCount(final int numBlack) {
     this.blackCount = numBlack;
   }
 
