@@ -155,6 +155,15 @@ public abstract class Game {
   }
 
   /**
+   * Get the board as a String.
+   * 
+   * @return the board as a String.
+   */
+  public final String boardToString() {
+    return getBoard().toString();
+  }
+
+  /**
    * Flip some Pieces to their opposite color.
    * 
    * @param piecesToFlip
@@ -164,5 +173,21 @@ public abstract class Game {
     for (Piece piece : piecesToFlip) {
       piece.flip();
     }
+  }
+
+  /**
+   * Turn text position into a Coordinate.
+   * 
+   * @param text
+   *          Text to turn into coordinate
+   * @return the Coordinate.
+   */
+  protected static Coordinate textPositionToCoordinate(final String text) {
+    char file = text.charAt(0);
+    char rank = text.charAt(1);
+    int x = file - 'a';
+    int y = rank - '0' - 1;
+    Coordinate coord = new Coordinate(x, y);
+    return coord;
   }
 }

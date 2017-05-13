@@ -1,5 +1,6 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.boardgame.GameController;
 import com.spamalot.boardgame.GameException;
 
 /**
@@ -53,7 +54,7 @@ public final class Ataxx {
     AtaxxGame ataxxGame = new AtaxxGame();
     System.out.println(ataxxGame.toString());
 
-    AtaxxController game = new AtaxxController(ataxxGame);
+    GameController<AtaxxGame, AtaxxMove> game = new GameController<>(ataxxGame);
     game.control();
   }
 

@@ -11,7 +11,7 @@ import java.util.List;
  * @author gej
  *
  */
-public class AtaxxUndoMove extends UndoMove<AtaxxMove> {
+class AtaxxUndoMove extends UndoMove<AtaxxMove> {
 
   /**
    * Construct an UndoMove object.

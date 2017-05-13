@@ -179,16 +179,6 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
   }
 
   /**
-   * Get the board as a String.
-   * 
-   * @return the board as a String.
-   */
-  @Override
-  public final String boardToString() {
-    return getBoard().toString();
-  }
-
-  /**
    * Parses a String and returns an AtaxxMove object if it can be converted.
    * 
    * @param text
@@ -224,22 +214,6 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
     Square t = getSquareAt(to.getX(), to.getY());
 
     return new AtaxxMove(moveType, getColorToMove(), f, t);
-  }
-
-  /**
-   * Turn text position into a Coordinate.
-   * 
-   * @param text
-   *          Text to turn into coordinate
-   * @return the Coordinate.
-   */
-  private static Coordinate textPositionToCoordinate(final String text) {
-    char file = text.charAt(0);
-    char rank = text.charAt(1);
-    int x = file - 'a';
-    int y = rank - '0' - 1;
-    Coordinate coord = new Coordinate(x, y);
-    return coord;
   }
 
   /*

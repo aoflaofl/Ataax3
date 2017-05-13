@@ -1,8 +1,7 @@
 package com.spamalot.reversi;
 
+import com.spamalot.boardgame.GameController;
 import com.spamalot.boardgame.GameException;
-
-import java.util.List;
 
 /**
  * Game of Reversi.
@@ -28,13 +27,9 @@ public final class Reversi {
   public static void main(final String[] args) throws GameException {
     System.out.println("Reversi Game\nGene Johannsen");
     ReversiGame reversiGame = new ReversiGame();
-    System.out.println(reversiGame.toString());
 
-    List<ReversiMove> moves = reversiGame.getAvailableMoves();
-
-    reversiGame.makeMove(moves.get(0));
-    
-    System.out.println(reversiGame.toString());
+    GameController<ReversiGame, ReversiMove> game = new GameController<>(reversiGame);
+    game.control();
   }
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * @param <S>
  *          Type of Move to use in Search
  */
-public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
+class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
   /** What to multiply the diff by every time there is a fail high or low. */
   private static final int DIFF_MODIFIER = 2;
 
@@ -35,7 +35,7 @@ public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
    * @param game
    *          Game to think about
    */
-  public NegaMax(final T game) {
+  NegaMax(final T game) {
     this.thisGame = game;
   }
 
@@ -194,6 +194,7 @@ public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
     S bestMove = null;
 
     for (S move : candidateMoves) {
+      // System.out.println(move);
       this.thisGame.makeMove(move);
       this.nodeCount++;
       int evaluation = -negaMaxAlphaBeta(this.thisGame, depth - 1, -beta, -newAlpha, -color);

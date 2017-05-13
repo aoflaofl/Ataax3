@@ -26,6 +26,13 @@ class ReversiMove extends Move {
     setToSquare(toCoord);
   }
 
+  /**
+   * Create default Move.
+   */
+  ReversiMove() {
+    super();
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;

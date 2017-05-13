@@ -11,7 +11,7 @@ import java.util.List;
  * @author gej
  *
  */
-public class ReversiUndoMove extends UndoMove<ReversiMove> {
+class ReversiUndoMove extends UndoMove<ReversiMove> {
 
   /**
    * Class to hold undo information.
@@ -21,8 +21,9 @@ public class ReversiUndoMove extends UndoMove<ReversiMove> {
    * @param piecesToFlip
    *          Pieces Flipped
    */
-  public ReversiUndoMove(final ReversiMove move, final List<Piece> piecesToFlip) {
+  ReversiUndoMove(final ReversiMove move, final List<Piece> piecesToFlip) {
     setMove(move);
+    setFlipped(piecesToFlip);
   }
 
   /** List of pieces that have been flipped. */

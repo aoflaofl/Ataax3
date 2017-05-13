@@ -10,7 +10,7 @@ import com.spamalot.boardgame.Square;
  * @author gej
  *
  */
-public class AtaxxMove extends Move {
+class AtaxxMove extends Move {
   /**
    * Construct an Ataxx Move.
    * 
