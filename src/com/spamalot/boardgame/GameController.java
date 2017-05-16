@@ -68,9 +68,9 @@ public class GameController<T extends MinMaxSearchable<S> & GameControllable<S>,
           case "play":
             while (!this.game.isOver()) {
               if (this.game.getColorToMove() == PieceColor.BLACK) {
-                depth = 7;
-              } else {
                 depth = 6;
+              } else {
+                depth = 5;
               }
               NegaMax<T, S> aip = new NegaMax<>(this.game);
               S movep = aip.think(depth);

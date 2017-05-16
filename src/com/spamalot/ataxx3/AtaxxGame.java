@@ -81,7 +81,9 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
         piece = new Piece(move.getColor());
         break;
       case JUMP:
-        piece = move.getFromSquare().pickupPiece();
+        Coordinate c = move.getFromSquare();
+        Square sq = this.getBoard().getSquareAt(c);
+        piece = sq.pickupPiece();
         break;
       case PASS:
         break;
@@ -90,8 +92,10 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
     }
     List<Square> flipped = null;
     if (piece != null) {
-      move.getToSquare().setPiece(piece);
-      flipped = AtaxxBoard.flipPiecesAroundSquare(move.getToSquare(), move.getColor());
+      Coordinate c = move.getToSquare();
+      Square sq = this.getBoard().getSquareAt(c);
+      sq.setPiece(piece);
+      flipped = AtaxxBoard.flipPiecesAroundSquare(sq, move.getColor());
     }
 
     this.undoMoveStack.push(new AtaxxUndoMove(move, flipped));
@@ -106,7 +110,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
   public void undoLastMove() {
     AtaxxUndoMove move = this.undoMoveStack.pop();
     if (move.getMove().getType() != Move.Type.PASS) {
-      AtaxxGame.undoPieceMove(move.getMove());
+      this.undoPieceMove(move.getMove());
       flipPiecesInSquares(move.getFlipped());
     }
     switchColorToMove();
@@ -130,10 +134,14 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    * @param move
    *          the move
    */
-  private static void undoPieceMove(final AtaxxMove move) {
-    Piece p = move.getToSquare().pickupPiece();
+  private void undoPieceMove(final AtaxxMove move) {
+    Coordinate c = move.getToSquare();
+    Square sq = this.getBoard().getSquareAt(c);
+    Piece p = sq.pickupPiece();
     if (move.getType() == Move.Type.JUMP) {
-      move.getFromSquare().setPiece(p);
+      Coordinate cFrom = move.getFromSquare();
+      Square sqFrom = this.getBoard().getSquareAt(cFrom);
+      sqFrom.setPiece(p);
     }
   }
 

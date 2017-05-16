@@ -26,8 +26,8 @@ class AtaxxMove extends Move {
   AtaxxMove(final Type moveType, final PieceColor pieceColor, final Square fromCoord, final Square toCoord) {
     super(moveType);
     setColor(pieceColor);
-    setFromSquare(fromCoord);
-    setToSquare(toCoord);
+    setFromSquare(fromCoord.getCoordinate());
+    setToSquare(toCoord.getCoordinate());
   }
 
   /** Make a move only with a type. */
@@ -35,7 +35,9 @@ class AtaxxMove extends Move {
     super();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.spamalot.boardgame.Move#toString()
    */
   @Override

@@ -86,7 +86,11 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
   public void undoLastMove() {
     ReversiUndoMove undoMove = this.undoMoveStack.pop();
     if (undoMove.getMove().getType() != Move.Type.PASS) {
-      undoMove.getMove().getToSquare().pickupPiece();
+
+      Coordinate c = undoMove.getMove().getToSquare();
+      Square sq = this.getBoard().getSquareAt(c);
+      sq.pickupPiece();
+
       flipPieces(undoMove.getFlipped());
     }
     switchColorToMove();
@@ -98,7 +102,9 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
     List<Piece> piecesToFlip = null;
     if (move.getType() != Move.Type.PASS) {
       Piece piece = new Piece(move.getColor());
-      Square toSquare = move.getToSquare();
+      Coordinate c = move.getToSquare();
+
+      Square toSquare = this.getBoard().getSquareAt(c);
 
       PieceColor oppositeColor = move.getColor().getOpposite();
 

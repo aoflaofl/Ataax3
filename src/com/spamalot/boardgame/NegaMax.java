@@ -1,5 +1,6 @@
 package com.spamalot.boardgame;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +30,9 @@ class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
   /** How many nodes were looked at in the search. */
   private long nodeCount = 0;
 
+  private ArrayList<S> currentLine = new ArrayList<>(100);
+  private int currentLineDepth = 0;
+
   /**
    * Construct a thinker.
    * 
@@ -50,7 +54,7 @@ class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
     if (maxIteration < 1) {
       return null;
     }
-
+    this.currentLine.ensureCapacity(maxIteration + 1);
     List<S> candidateMoves = this.thisGame.getAvailableMoves();
 
     int alphaDiff = -INITIAL_DIFF;
@@ -196,6 +200,7 @@ class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
     for (S move : candidateMoves) {
       // System.out.println(move);
       this.thisGame.makeMove(move);
+      // currentLine.set(this.currentLineDepth, move);
       this.nodeCount++;
       int evaluation = -negaMaxAlphaBeta(this.thisGame, depth - 1, -beta, -newAlpha, -color);
       move.setEvaluation(evaluation);
@@ -205,7 +210,7 @@ class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
       if (evaluation > bestValue) {
         bestValue = evaluation;
         bestMove = move;
-
+        // System.out.println(this.currentLineDepth);
         System.out.println("New Best Move: " + move);
         System.out.println("Node Count to this point: " + this.nodeCount);
       }
@@ -253,6 +258,7 @@ class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
     if (depth == 0 || gameOver) {
       return color * game2.evaluate(gameOver);
     }
+    this.currentLineDepth++;
 
     List<S> childMoves = game2.getAvailableMoves();
     Collections.sort(childMoves);
@@ -268,13 +274,18 @@ class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
       int evaluation = -negaMaxAlphaBeta(game2, depth - 1, -beta, -newAlpha, -color);
       game2.undoLastMove();
 
-      bestValue = Math.max(bestValue, evaluation);
+      // bestValue = Math.max(bestValue, evaluation);
+      if (evaluation > bestValue) {
+        bestValue = evaluation;
+        // System.out.println(currentLineDepth);
+        // currentLine.set(currentLineDepth, move);
+      }
       newAlpha = Math.max(newAlpha, evaluation);
       if (newAlpha >= beta) {
         break;
       }
     }
-
+    this.currentLineDepth--;
     return bestValue;
   }
 }

@@ -27,10 +27,10 @@ public class Move implements Comparable<Move> {
   private PieceColor color;
 
   /** The from square. */
-  private Square from;
+  private Coordinate from;
 
   /** The to square. */
-  private Square to;
+  private Coordinate to;
 
   /** AI evaluation of move. Initialized to min value until evaluated. */
   private int evaluation = Integer.MIN_VALUE;
@@ -80,7 +80,7 @@ public class Move implements Comparable<Move> {
    * @param toSquare
    *          the Square being moved to
    */
-  protected void setToSquare(final Square toSquare) {
+  protected void setToSquare(final Coordinate toSquare) {
     this.to = toSquare;
   }
 
@@ -90,7 +90,7 @@ public class Move implements Comparable<Move> {
    * @param fromSquare
    *          the Square being moved from
    */
-  protected void setFromSquare(final Square fromSquare) {
+  protected void setFromSquare(final Coordinate fromSquare) {
     this.from = fromSquare;
   }
 
@@ -99,7 +99,7 @@ public class Move implements Comparable<Move> {
    * 
    * @return the from Square.
    */
-  public Square getFromSquare() {
+  public Coordinate getFromSquare() {
     return this.from;
   }
 
@@ -108,7 +108,7 @@ public class Move implements Comparable<Move> {
    * 
    * @return the to Square.
    */
-  public Square getToSquare() {
+  public Coordinate getToSquare() {
     return this.to;
   }
 

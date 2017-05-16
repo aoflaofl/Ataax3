@@ -83,6 +83,17 @@ public abstract class Board {
   }
 
   /**
+   * Get a Square from the Board.
+   * 
+   * @param c
+   *          the Coordinate
+   * @return the Square.
+   */
+  public final Square getSquareAt(final Coordinate c) {
+    return this.squares[c.getX()][c.getY()];
+  }
+
+  /**
    * Get the number of ranks on this board.
    * 
    * @return the number of ranks.

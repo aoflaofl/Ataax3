@@ -23,7 +23,7 @@ class ReversiMove extends Move {
   ReversiMove(final PieceColor pieceColor, final Square toCoord) {
     super(Type.DROP);
     setColor(pieceColor);
-    setToSquare(toCoord);
+    setToSquare(toCoord.getCoordinate());
   }
 
   /**
