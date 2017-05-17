@@ -1,8 +1,8 @@
 package com.spamalot.ataxx3;
 
+import com.spamalot.boardgame.Coordinate;
 import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.PieceColor;
-import com.spamalot.boardgame.Square;
 
 /**
  * Hold details of a move in a game of Ataxx.
@@ -23,11 +23,11 @@ class AtaxxMove extends Move {
    * @param toCoord
    *          the to square
    */
-  AtaxxMove(final Type moveType, final PieceColor pieceColor, final Square fromCoord, final Square toCoord) {
+  AtaxxMove(final Type moveType, final PieceColor pieceColor, final Coordinate fromCoord, final Coordinate toCoord) {
     super(moveType);
     setColor(pieceColor);
-    setFromSquare(fromCoord.getCoordinate());
-    setToSquare(toCoord.getCoordinate());
+    setFromSquare(fromCoord);
+    setToSquare(toCoord);
   }
 
   /** Make a move only with a type. */

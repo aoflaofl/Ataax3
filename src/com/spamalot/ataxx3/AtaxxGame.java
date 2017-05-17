@@ -221,7 +221,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
     Square f = getSquareAt(from.getX(), from.getY());
     Square t = getSquareAt(to.getX(), to.getY());
 
-    return new AtaxxMove(moveType, getColorToMove(), f, t);
+    return new AtaxxMove(moveType, getColorToMove(), from, to);
   }
 
   /*

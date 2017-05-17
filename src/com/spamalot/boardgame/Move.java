@@ -232,7 +232,7 @@ public class Move implements Comparable<Move> {
    */
   @Override
   public int compareTo(final Move move) {
-    return move.evaluation - this.evaluation;
+    return this.evaluation - move.evaluation;
   }
 
 }

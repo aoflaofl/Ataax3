@@ -1,8 +1,8 @@
 package com.spamalot.reversi;
 
+import com.spamalot.boardgame.Coordinate;
 import com.spamalot.boardgame.Move;
 import com.spamalot.boardgame.PieceColor;
-import com.spamalot.boardgame.Square;
 
 /**
  * A Move in a Reversi game.
@@ -20,10 +20,10 @@ class ReversiMove extends Move {
    * @param toCoord
    *          the to square
    */
-  ReversiMove(final PieceColor pieceColor, final Square toCoord) {
+  ReversiMove(final PieceColor pieceColor, final Coordinate toCoord) {
     super(Type.DROP);
     setColor(pieceColor);
-    setToSquare(toCoord.getCoordinate());
+    setToSquare(toCoord);
   }
 
   /**

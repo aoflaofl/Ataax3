@@ -83,7 +83,7 @@ public abstract class Board {
   }
 
   /**
-   * Get a Square from the Board.
+   * Get a Square from the Board using Coordinate.
    * 
    * @param c
    *          the Coordinate
@@ -383,8 +383,10 @@ public abstract class Board {
    */
   public void setBlocked(final int file, final int rank) {
     Square sq = getSquareAt(file, rank);
-    sq.setBlocked();
-    this.numBlockedSquares++;
+    if (!sq.isBlocked()) {
+      sq.setBlocked();
+      this.numBlockedSquares++;
+    }
   }
 
   /**

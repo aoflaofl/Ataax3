@@ -73,13 +73,13 @@ class AtaxxMoveGenerator {
 
     for (Square sq : fromSquare.getOneAwaySquares()) {
       if (sq.isEmpty()) {
-        result.add(new AtaxxMove(Move.Type.DROP, fromSquare.getPiece().getColor(), fromSquare, sq));
+        result.add(new AtaxxMove(Move.Type.DROP, fromSquare.getPiece().getColor(), fromSquare.getCoordinate(), sq.getCoordinate()));
       }
     }
 
     for (Square sq : fromSquare.getTwoAwaySquares()) {
       if (sq.isEmpty()) {
-        result.add(new AtaxxMove(Move.Type.JUMP, fromSquare.getPiece().getColor(), fromSquare, sq));
+        result.add(new AtaxxMove(Move.Type.JUMP, fromSquare.getPiece().getColor(), fromSquare.getCoordinate(), sq.getCoordinate()));
       }
     }
 

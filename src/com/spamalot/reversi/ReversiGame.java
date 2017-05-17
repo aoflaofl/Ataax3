@@ -201,7 +201,7 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
     }
 
     if (lookSquare != null && lookSquare.isEmpty()) {
-      return new ReversiMove(this.getColorToMove(), lookSquare);
+      return new ReversiMove(this.getColorToMove(), lookSquare.getCoordinate());
     }
 
     return null;
@@ -237,7 +237,7 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
 
     Square toSquare = getSquareAt(toCoordinate.getX(), toCoordinate.getY());
 
-    return new ReversiMove(getColorToMove(), toSquare);
+    return new ReversiMove(getColorToMove(), toSquare.getCoordinate());
 
   }
 }
