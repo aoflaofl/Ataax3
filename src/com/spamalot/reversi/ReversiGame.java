@@ -7,6 +7,7 @@ import com.spamalot.boardgame.GameControllable;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
 import com.spamalot.boardgame.Move;
+import com.spamalot.boardgame.NegaMax;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.PieceCount;
@@ -239,5 +240,16 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
 
     return new ReversiMove(getColorToMove(), toSquare.getCoordinate());
 
+  }
+
+  @Override
+  public NegaMax<ReversiGame, ReversiMove> getThinker() {
+
+    NegaMax<ReversiGame, ReversiMove> ret = new NegaMax<>(this);
+
+    ret.setDiffModifier(3);
+    ret.setInitialDiff(1);
+
+    return ret;
   }
 }

@@ -14,15 +14,53 @@ import java.util.List;
  * @param <S>
  *          Type of Move to use in Search
  */
-class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
+public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
   /** What to multiply the diff by every time there is a fail high or low. */
-  private static final int DIFF_MODIFIER = 2;
+  private int diffModifier = 2;
+
+  /**
+   * Get the Diff Modifier.
+   * 
+   * @return the Diff Modifier
+   */
+  public int getDiffModifier() {
+    return this.diffModifier;
+  }
+
+  /**
+   * Set Difference Modifier.
+   * 
+   * @param diffMod
+   *          Diff Mod
+   */
+  public void setDiffModifier(final int diffMod) {
+    this.diffModifier = diffMod;
+  }
+
+  /**
+   * Get the Initial Diff.
+   * 
+   * @return the Initial Diff
+   */
+  public int getInitialDiff() {
+    return this.initialDiff;
+  }
+
+  /**
+   * Set Initial Diff.
+   * 
+   * @param initDiff
+   *          the Initial DIff
+   */
+  public void setInitialDiff(final int initDiff) {
+    this.initialDiff = initDiff;
+  }
 
   /** Initial diff value. */
-  private static final int INITIAL_DIFF = 50;
+  private int initialDiff = 50;
 
   /** Used for setting the maximum values for alpha, beta and bestValue. */
-  private static final int MAX_VAL = Integer.MAX_VALUE;
+  private static final int MAX_VAL = 1000000; // Integer.MAX_VALUE;
 
   /** Game to think about. */
   private T thisGame;
@@ -39,7 +77,7 @@ class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
    * @param game
    *          Game to think about
    */
-  NegaMax(final T game) {
+  public NegaMax(final T game) {
     this.thisGame = game;
   }
 
@@ -54,20 +92,18 @@ class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
     if (maxIteration < 1) {
       return null;
     }
-    this.currentLine.ensureCapacity(maxIteration + 1);
+    // this.currentLine.ensureCapacity(maxIteration + 1);
     List<S> candidateMoves = this.thisGame.getAvailableMoves();
 
-    int alphaDiff = -INITIAL_DIFF;
-    int betaDiff = INITIAL_DIFF;
+    int alphaDiff = -this.initialDiff;
+    int betaDiff = this.initialDiff;
 
-    int alpha = 0;
-    int beta = 0;
+    int alpha = -1000;
+    int beta = 1000;
 
     S move = null;
 
     for (int i = 0; i < maxIteration; i++) {
-      // Sorting for an Moveable sorts first by evaluation, and then for equal
-      // evaluations sorts expand moves before jump moves.
       Collections.sort(candidateMoves);
 
       int pass = 0;
@@ -92,20 +128,20 @@ class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
           if (move.getEvaluation() >= beta) {
             System.out.println("    Failed High: " + move);
             beta = move.getEvaluation() + betaDiff;
-            betaDiff = betaDiff * DIFF_MODIFIER;
+            betaDiff = betaDiff * this.diffModifier;
             failed = true;
             pass++;
           } else if (move.getEvaluation() <= alpha) {
             System.out.println("    Failed Low: " + move);
             alpha = move.getEvaluation() + alphaDiff;
-            alphaDiff = alphaDiff * DIFF_MODIFIER;
+            alphaDiff = alphaDiff * this.diffModifier;
             failed = true;
             pass++;
           } else {
-            alpha = move.getEvaluation() - INITIAL_DIFF;
-            beta = move.getEvaluation() + INITIAL_DIFF;
-            alphaDiff = -INITIAL_DIFF;
-            betaDiff = INITIAL_DIFF;
+            alpha = move.getEvaluation() - this.initialDiff;
+            beta = move.getEvaluation() + this.initialDiff;
+            alphaDiff = -this.initialDiff;
+            betaDiff = this.initialDiff;
             failed = false;
           }
         }

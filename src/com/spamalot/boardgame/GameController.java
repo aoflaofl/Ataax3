@@ -55,7 +55,9 @@ public class GameController<T extends MinMaxSearchable<S> & GameControllable<S>,
             this.game.undoLastMove();
             break;
           case "think":
-            NegaMax<T, S> ai = new NegaMax<>(this.game);
+            // NegaMax<T, S> ai = new NegaMax<>(this.game);
+
+            NegaMax<T, S> ai = this.game.getThinker();
             S move = ai.think(depth);
 
             System.out.println("Move:\n" + move);
@@ -68,16 +70,18 @@ public class GameController<T extends MinMaxSearchable<S> & GameControllable<S>,
           case "play":
             while (!this.game.isOver()) {
               if (this.game.getColorToMove() == PieceColor.BLACK) {
-                depth = 10;
+                depth = 6;
               } else {
-                depth = 5;
+                depth = 3;
               }
-              NegaMax<T, S> aip = new NegaMax<>(this.game);
+              // NegaMax<T, S> aip = new NegaMax<>(this.game);
+              NegaMax<T, S> aip = this.game.getThinker();
               S movep = aip.think(depth);
               this.game.makeMove(movep);
               System.out.println(this.game.boardToString());
               System.out.println("Color to move: " + this.game.getColorToMove());
               System.out.println(this.game.getPieceCount());
+              aip = null;
             }
             System.out.println("Done.");
             break;

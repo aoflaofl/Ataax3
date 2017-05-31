@@ -6,6 +6,7 @@ import com.spamalot.boardgame.GameControllable;
 import com.spamalot.boardgame.GameException;
 import com.spamalot.boardgame.MinMaxSearchable;
 import com.spamalot.boardgame.Move;
+import com.spamalot.boardgame.NegaMax;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
@@ -246,37 +247,38 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
         if (p != null) {
           if (p.getColor() == PieceColor.WHITE) {
             white++;
-            Square[] sq = b[f][r].getOneAwaySquares();
-            for (Square s : sq) {
-              if (s.isEmpty()) {
-                whiteMobility++;
-              }
-            }
-            sq = b[f][r].getTwoAwaySquares();
-            for (Square s : sq) {
-              if (s.isEmpty()) {
-                whiteMobility++;
-              }
-            }
+            // Square[] sq = b[f][r].getOneAwaySquares();
+            // for (Square s : sq) {
+            // if (s.isEmpty()) {
+            // whiteMobility++;
+            // }
+            // }
+            // sq = b[f][r].getTwoAwaySquares();
+            // for (Square s : sq) {
+            // if (s.isEmpty()) {
+            // whiteMobility++;
+            // }
+            // }
           } else {
             black++;
-            Square[] sq = b[f][r].getOneAwaySquares();
-            for (Square s : sq) {
-              if (s.isEmpty()) {
-                blackMobility++;
-              }
-            }
-            sq = b[f][r].getTwoAwaySquares();
-            for (Square s : sq) {
-              if (s.isEmpty()) {
-                blackMobility++;
-              }
-            }
+            // Square[] sq = b[f][r].getOneAwaySquares();
+            // for (Square s : sq) {
+            // if (s.isEmpty()) {
+            // blackMobility++;
+            // }
+            // }
+            // sq = b[f][r].getTwoAwaySquares();
+            // for (Square s : sq) {
+            // if (s.isEmpty()) {
+            // blackMobility++;
+            // }
+            // }
           }
         }
       }
     }
     // AtaxxScore s = getScore();
+    int position = whiteMobility - blackMobility;
 
     if (gameOver) {
       return (white - black) * 10000;
@@ -291,7 +293,16 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
       material = white - black;
     }
 
-    int position = whiteMobility - blackMobility;
     return material * 100 + position;
+  }
+
+  @Override
+  public NegaMax<AtaxxGame, AtaxxMove> getThinker() {
+    NegaMax<AtaxxGame, AtaxxMove> ret = new NegaMax<>(this);
+
+    ret.setDiffModifier(3);
+    ret.setInitialDiff(1);
+
+    return ret;
   }
 }
