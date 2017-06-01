@@ -78,7 +78,7 @@ public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
    *          Game to think about
    */
   public NegaMax(final T game) {
-    this.thisGame = game;
+    this.thisGame = game.copy();
   }
 
   /**

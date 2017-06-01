@@ -58,6 +58,15 @@ public abstract class Game {
   protected abstract void initBoard() throws GameException;
 
   /**
+   * Make a defensive copy of this object.
+   * 
+   * @return A copy of this game Object.
+   * @throws GameException
+   *           if something goes wrong.
+   */
+  protected abstract Game copy() throws GameException;
+
+  /**
    * Get the current score of the game.
    * 
    * @return the score object.
@@ -189,5 +198,17 @@ public abstract class Game {
     int y = rank - '0' - 1;
     Coordinate coord = new Coordinate(x, y);
     return coord;
+  }
+
+  /**
+   * Flip the pieces in the AtaxxSquares in the list.
+   * 
+   * @param listOfSquares
+   *          List of Coordinates of pieces to flip
+   */
+  protected static void flipPiecesInSquares(final List<Square> listOfSquares) {
+    for (Square square : listOfSquares) {
+      square.getPiece().flip();
+    }
   }
 }

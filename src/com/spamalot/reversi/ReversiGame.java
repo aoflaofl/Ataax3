@@ -252,4 +252,14 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
 
     return ret;
   }
+
+  @Override
+  protected ReversiGame copy() throws GameException {
+    // TODO Auto-generated method stub
+    ReversiGame ret = new ReversiGame();
+
+    ret.setBoard(this.getBoard().copy());
+
+    return ret;
+  }
 }

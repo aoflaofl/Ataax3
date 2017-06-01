@@ -70,9 +70,11 @@ public interface GameControllable<T extends Move> {
    *           If something goes wrong.
    */
   T parseMove(String text) throws GameException;
-  
+
   /**
-   * @return
+   * Get the AI Object.
+   * 
+   * @return A Thinker.
    */
   NegaMax getThinker();
 }

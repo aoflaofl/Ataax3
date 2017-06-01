@@ -118,18 +118,6 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
   }
 
   /**
-   * Flip the pieces in the AtaxxSquares in the list.
-   * 
-   * @param listOfSquares
-   *          List of Coordinates of pieces to flip
-   */
-  private static void flipPiecesInSquares(final List<Square> listOfSquares) {
-    for (Square square : listOfSquares) {
-      square.getPiece().flip();
-    }
-  }
-
-  /**
    * Undo the piece move effects of a move.
    * 
    * @param move
