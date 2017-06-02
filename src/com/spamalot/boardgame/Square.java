@@ -1,5 +1,6 @@
 package com.spamalot.boardgame;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -43,6 +44,18 @@ public class Square {
   private EnumMap<Direction, Square> directionMap = new EnumMap<>(Direction.class);
 
   /**
+   * Construct an OPEN Square object.
+   * 
+   * @param file
+   *          file the Square is on
+   * @param rank
+   *          rank the Square is on
+   */
+  Square(final int file, final int rank) {
+    this(Square.Type.OPEN, file, rank);
+  }
+
+  /**
    * Construct an Square object.
    * 
    * @param typ
@@ -57,35 +70,31 @@ public class Square {
     this.coordinate = new Coordinate(file, rank);
   }
 
-  /**
-   * Construct an OPEN Square object.
+  /*
+   * (non-Javadoc)
    * 
-   * @param file
-   *          file the Square is on
-   * @param rank
-   *          rank the Square is on
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  Square(final int file, final int rank) {
-    this(Square.Type.OPEN, file, rank);
-  }
-
-  /**
-   * Get the Piece in this Square. Does not remove the Piece from the Square.
-   * 
-   * @return the Piece in this Square.
-   */
-  public Piece getPiece() {
-    return this.piece;
-  }
-
-  /**
-   * Set the Piece in this Square.
-   * 
-   * @param pc
-   *          Piece to set in this Square
-   */
-  public void setPiece(final Piece pc) {
-    this.piece = pc;
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    Square other = (Square) obj;
+    if (this.coordinate == null) {
+      if (other.coordinate != null) {
+        return false;
+      }
+    } else if (!this.coordinate.equals(other.coordinate)) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -116,6 +125,22 @@ public class Square {
   }
 
   /**
+   * @return array of Squares that are in the first ring around this Square.
+   */
+  public Square[] getOneAwaySquares() {
+    return this.oneAwaySquares;
+  }
+
+  /**
+   * Get the Piece in this Square. Does not remove the Piece from the Square.
+   * 
+   * @return the Piece in this Square.
+   */
+  public Piece getPiece() {
+    return this.piece;
+  }
+
+  /**
    * Get the numeric rank this Square is at.
    * 
    * @return the numeric board rank this Square is at.
@@ -125,23 +150,21 @@ public class Square {
   }
 
   /**
-   * Remove and return a piece from the Square.
+   * Return the Square in the given direction.
    * 
-   * @return the Piece in this Square.
+   * @param dir
+   *          Direction to get Square
+   * @return the Square.
    */
-  public Piece pickupPiece() {
-    Piece ret = this.piece;
-    this.piece = null;
-    return ret;
+  public final Square getSquareInDirection(final Direction dir) {
+    return this.directionMap.get(dir);
   }
 
   /**
-   * Check if square is empty.
-   * 
-   * @return true if square is empty.
+   * @return array of Squares that are in the second ring around this Square.
    */
-  public boolean isEmpty() {
-    return this.type == Type.OPEN && this.piece == null;
+  public Square[] getTwoAwaySquares() {
+    return this.twoAwaySquares;
   }
 
   /*
@@ -157,44 +180,31 @@ public class Square {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#equals(java.lang.Object)
+  /**
+   * @return true if this is a blocked square.
    */
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    Square other = (Square) obj;
-    if (this.coordinate == null) {
-      if (other.coordinate != null) {
-        return false;
-      }
-    } else if (!this.coordinate.equals(other.coordinate)) {
-      return false;
-    }
-    return true;
+  public boolean isBlocked() {
+    return this.type == Type.BLOCKED;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Check if square is empty.
    * 
-   * @see java.lang.Object#toString()
+   * @return true if square is empty.
    */
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append(getFileAsChar());
-    builder.append(getRank() + 1);
-    return builder.toString();
+  public boolean isEmpty() {
+    return this.type == Type.OPEN && this.piece == null;
+  }
+
+  /**
+   * Remove and return a piece from the Square.
+   * 
+   * @return the Piece in this Square.
+   */
+  public Piece pickupPiece() {
+    Piece ret = this.piece;
+    this.piece = null;
+    return ret;
   }
 
   /**
@@ -202,13 +212,6 @@ public class Square {
    */
   final void setBlocked() {
     this.type = Type.BLOCKED;
-  }
-
-  /**
-   * @return true if this is a blocked square.
-   */
-  public boolean isBlocked() {
-    return this.type == Type.BLOCKED;
   }
 
   /**
@@ -223,28 +226,13 @@ public class Square {
   }
 
   /**
-   * Set List of Squares that are two squares away from this one.
+   * Set the Piece in this Square.
    * 
-   * @param twoAwaySqs
-   *          List of Squares that are two away from this one
+   * @param pc
+   *          Piece to set in this Square
    */
-  public void setTwoAwaySquares(final List<Square> twoAwaySqs) {
-    this.twoAwaySquares = new Square[twoAwaySqs.size()];
-    twoAwaySqs.toArray(this.twoAwaySquares);
-  }
-
-  /**
-   * @return array of Squares that are in the first ring around this Square.
-   */
-  public Square[] getOneAwaySquares() {
-    return this.oneAwaySquares;
-  }
-
-  /**
-   * @return array of Squares that are in the second ring around this Square.
-   */
-  public Square[] getTwoAwaySquares() {
-    return this.twoAwaySquares;
+  public void setPiece(final Piece pc) {
+    this.piece = pc;
   }
 
   /**
@@ -260,13 +248,48 @@ public class Square {
   }
 
   /**
-   * Return the Square in the given direction.
+   * Set List of Squares that are two squares away from this one.
    * 
-   * @param dir
-   *          Direction to get Square
-   * @return the Square.
+   * @param twoAwaySqs
+   *          List of Squares that are two away from this one
    */
-  public final Square getSquareInDirection(final Direction dir) {
-    return this.directionMap.get(dir);
+  public void setTwoAwaySquares(final List<Square> twoAwaySqs) {
+    this.twoAwaySquares = new Square[twoAwaySqs.size()];
+    twoAwaySqs.toArray(this.twoAwaySquares);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(getFileAsChar());
+    builder.append(getRank() + 1);
+    return builder.toString();
+  }
+
+//  public Square copy() {
+//    Square ret = new Square(getFile(), getRank());
+//    ret.setType(this.getType());
+//    ret.setPiece(this.getPiece());
+//    ret.setOneAwaySquares(
+//        Arrays.copyOf(this.getOneAwaySquares(), this.getOneAwaySquares().length)
+//        
+//        
+//        
+//        );
+//    return ret;
+//  }
+
+  private void setType(Type type2) {
+    this.type = type2;
+
+  }
+
+  private Type getType() {
+    return this.type;
   }
 }

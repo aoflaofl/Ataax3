@@ -75,6 +75,7 @@ public interface GameControllable<T extends Move> {
    * Get the AI Object.
    * 
    * @return A Thinker.
+   * @throws GameException
    */
-  NegaMax getThinker();
+  NegaMax getThinker() throws GameException;
 }

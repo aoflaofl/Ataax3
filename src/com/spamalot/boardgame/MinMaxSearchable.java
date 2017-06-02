@@ -56,5 +56,4 @@ public interface MinMaxSearchable<T extends Move> {
    * @return a list of moves.
    */
   List<T> getAvailableMoves();
-
 }

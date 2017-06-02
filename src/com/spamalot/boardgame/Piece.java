@@ -49,4 +49,13 @@ public class Piece {
   public final String toString() {
     return this.color.toString();
   }
+
+  /**
+   * Copy this Piece.
+   * 
+   * @return a copy of this Piece.
+   */
+  public final Piece copy() {
+    return new Piece(this.color);
+  }
 }

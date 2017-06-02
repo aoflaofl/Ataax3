@@ -243,7 +243,7 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
   }
 
   @Override
-  public NegaMax<ReversiGame, ReversiMove> getThinker() {
+  public NegaMax<ReversiGame, ReversiMove> getThinker() throws GameException {
 
     NegaMax<ReversiGame, ReversiMove> ret = new NegaMax<>(this);
 
@@ -258,8 +258,22 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
     // TODO Auto-generated method stub
     ReversiGame ret = new ReversiGame();
 
-    ret.setBoard(this.getBoard().copy());
+    ret.setPiecesOnBoard(this.getBoard().getSquares());
 
     return ret;
+  }
+
+  private void setPiecesOnBoard(final Square[][] squares) {
+    Square[][] s = this.getBoard().getSquares();
+
+    for (int file = 0; file < getNumFiles(); file++) {
+      for (int rank = 0; rank < getNumRanks(); rank++) {
+        Piece p = squares[file][rank].getPiece();
+        if (p != null) {
+          s[file][rank].setPiece(p.copy());
+        }
+      }
+    }
+
   }
 }

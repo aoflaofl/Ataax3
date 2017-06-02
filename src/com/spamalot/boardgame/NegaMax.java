@@ -14,7 +14,7 @@ import java.util.List;
  * @param <S>
  *          Type of Move to use in Search
  */
-public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
+public class NegaMax<T extends Game & MinMaxSearchable<S>, S extends Move> {
   /** What to multiply the diff by every time there is a fail high or low. */
   private int diffModifier = 2;
 
@@ -76,9 +76,10 @@ public class NegaMax<T extends MinMaxSearchable<S>, S extends Move> {
    * 
    * @param game
    *          Game to think about
+   * @throws GameException
    */
-  public NegaMax(final T game) {
-    this.thisGame = game.copy();
+  public NegaMax(final T game) throws GameException {
+    this.thisGame = (T) game.copy();
   }
 
   /**

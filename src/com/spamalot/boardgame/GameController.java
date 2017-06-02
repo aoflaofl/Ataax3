@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @param <S>
  *          Move Object in Game
  */
-public class GameController<T extends MinMaxSearchable<S> & GameControllable<S>, S extends Move> {
+public class GameController<T extends Game & MinMaxSearchable<S> & GameControllable<S>, S extends Move> {
   /** The Game to control. */
   private T game;
 
@@ -103,6 +103,9 @@ public class GameController<T extends MinMaxSearchable<S> & GameControllable<S>,
             break;
         }
       } while (!text.equals("end"));
+    } catch (GameException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
     }
   }
 
