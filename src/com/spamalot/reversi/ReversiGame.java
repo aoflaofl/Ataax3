@@ -254,26 +254,12 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
   }
 
   @Override
-  protected ReversiGame copy() throws GameException {
-    // TODO Auto-generated method stub
+  protected ReversiGame copyGame() throws GameException {
     ReversiGame ret = new ReversiGame();
 
-    ret.setPiecesOnBoard(this.getBoard().getSquares());
+    ret.getBoard().makeCopyOfPiecesInSquaresFromBoard(this.getBoard());
+    ret.setColorToMove(this.getColorToMove());
 
     return ret;
-  }
-
-  private void setPiecesOnBoard(final Square[][] squares) {
-    Square[][] s = this.getBoard().getSquares();
-
-    for (int file = 0; file < getNumFiles(); file++) {
-      for (int rank = 0; rank < getNumRanks(); rank++) {
-        Piece p = squares[file][rank].getPiece();
-        if (p != null) {
-          s[file][rank].setPiece(p.copy());
-        }
-      }
-    }
-
   }
 }

@@ -64,7 +64,7 @@ public abstract class Game {
    * @throws GameException
    *           if something goes wrong.
    */
-  protected abstract Game copy() throws GameException;
+  protected abstract Game copyGame() throws GameException;
 
   /**
    * Get the current score of the game.

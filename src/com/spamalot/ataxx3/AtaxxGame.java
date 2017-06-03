@@ -207,8 +207,8 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
       moveType = Move.Type.DROP;
     }
 
-    Square f = getSquareAt(from.getX(), from.getY());
-    Square t = getSquareAt(to.getX(), to.getY());
+    // Square f = getSquareAt(from.getX(), from.getY());
+    // Square t = getSquareAt(to.getX(), to.getY());
 
     return new AtaxxMove(moveType, getColorToMove(), from, to);
   }
@@ -235,32 +235,32 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
         if (p != null) {
           if (p.getColor() == PieceColor.WHITE) {
             white++;
-            // Square[] sq = b[f][r].getOneAwaySquares();
-            // for (Square s : sq) {
-            // if (s.isEmpty()) {
-            // whiteMobility++;
-            // }
-            // }
-            // sq = b[f][r].getTwoAwaySquares();
-            // for (Square s : sq) {
-            // if (s.isEmpty()) {
-            // whiteMobility++;
-            // }
-            // }
+            Square[] sq = b[f][r].getOneAwaySquares();
+            for (Square s : sq) {
+              if (s.isEmpty()) {
+                whiteMobility++;
+              }
+            }
+            sq = b[f][r].getTwoAwaySquares();
+            for (Square s : sq) {
+              if (s.isEmpty()) {
+                whiteMobility++;
+              }
+            }
           } else {
             black++;
-            // Square[] sq = b[f][r].getOneAwaySquares();
-            // for (Square s : sq) {
-            // if (s.isEmpty()) {
-            // blackMobility++;
-            // }
-            // }
-            // sq = b[f][r].getTwoAwaySquares();
-            // for (Square s : sq) {
-            // if (s.isEmpty()) {
-            // blackMobility++;
-            // }
-            // }
+            Square[] sq = b[f][r].getOneAwaySquares();
+            for (Square s : sq) {
+              if (s.isEmpty()) {
+                blackMobility++;
+              }
+            }
+            sq = b[f][r].getTwoAwaySquares();
+            for (Square s : sq) {
+              if (s.isEmpty()) {
+                blackMobility++;
+              }
+            }
           }
         }
       }
@@ -285,11 +285,20 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
   }
 
   @Override
-  public NegaMax<AtaxxGame, AtaxxMove> getThinker() {
+  public NegaMax<AtaxxGame, AtaxxMove> getThinker() throws GameException {
     NegaMax<AtaxxGame, AtaxxMove> ret = new NegaMax<>(this);
 
-    ret.setDiffModifier(3);
+    ret.setDiffModifier(2);
     ret.setInitialDiff(1);
+
+    return ret;
+  }
+
+  @Override
+  protected Game copyGame() throws GameException {
+    AtaxxGame ret = new AtaxxGame();
+    ret.getBoard().makeCopyOfPiecesInSquaresFromBoard(this.getBoard());
+    ret.setColorToMove(this.getColorToMove());
 
     return ret;
   }

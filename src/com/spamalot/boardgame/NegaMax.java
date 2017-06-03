@@ -1,6 +1,5 @@
 package com.spamalot.boardgame;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,8 +67,8 @@ public class NegaMax<T extends Game & MinMaxSearchable<S>, S extends Move> {
   /** How many nodes were looked at in the search. */
   private long nodeCount = 0;
 
-  private ArrayList<S> currentLine = new ArrayList<>(100);
-  private int currentLineDepth = 0;
+  // private ArrayList<S> currentLine = new ArrayList<>(100);
+  // private int currentLineDepth = 0;
 
   /**
    * Construct a thinker.
@@ -77,9 +76,10 @@ public class NegaMax<T extends Game & MinMaxSearchable<S>, S extends Move> {
    * @param game
    *          Game to think about
    * @throws GameException
+   *           if something goes wrong
    */
   public NegaMax(final T game) throws GameException {
-    this.thisGame = (T) game.copy();
+    this.thisGame = (T) game.copyGame();
   }
 
   /**
@@ -295,7 +295,7 @@ public class NegaMax<T extends Game & MinMaxSearchable<S>, S extends Move> {
     if (depth == 0 || gameOver) {
       return color * game2.evaluate(gameOver);
     }
-    this.currentLineDepth++;
+    // this.currentLineDepth++;
 
     List<S> childMoves = game2.getAvailableMoves();
     Collections.sort(childMoves);
@@ -322,7 +322,7 @@ public class NegaMax<T extends Game & MinMaxSearchable<S>, S extends Move> {
         break;
       }
     }
-    this.currentLineDepth--;
+    // this.currentLineDepth--;
     return bestValue;
   }
 }

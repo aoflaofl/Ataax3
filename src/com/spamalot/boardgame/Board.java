@@ -425,12 +425,19 @@ public abstract class Board {
     }
   }
 
-  public abstract Board copy();
-
-  public final void copySquaresArray(final Square[][] sqs) {
+  /**
+   * Make a copy in this Board Object of the Squares in another Board Object.
+   * 
+   * @param b
+   *          the Board to Copy.
+   */
+  public final void makeCopyOfPiecesInSquaresFromBoard(final Board b) {
     for (int file = 0; file < getNumFiles(); file++) {
       for (int rank = 0; rank < getNumRanks(); rank++) {
-        this.squares[file][rank] = sqs[file][rank];
+        Piece p = b.getSquares()[file][rank].getPiece();
+        if (p != null) {
+          this.squares[file][rank].setPiece(p.copy());
+        }
       }
     }
   }

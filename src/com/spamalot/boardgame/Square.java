@@ -1,6 +1,5 @@
 package com.spamalot.boardgame;
 
-import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -269,27 +268,5 @@ public class Square {
     builder.append(getFileAsChar());
     builder.append(getRank() + 1);
     return builder.toString();
-  }
-
-//  public Square copy() {
-//    Square ret = new Square(getFile(), getRank());
-//    ret.setType(this.getType());
-//    ret.setPiece(this.getPiece());
-//    ret.setOneAwaySquares(
-//        Arrays.copyOf(this.getOneAwaySquares(), this.getOneAwaySquares().length)
-//        
-//        
-//        
-//        );
-//    return ret;
-//  }
-
-  private void setType(Type type2) {
-    this.type = type2;
-
-  }
-
-  private Type getType() {
-    return this.type;
   }
 }

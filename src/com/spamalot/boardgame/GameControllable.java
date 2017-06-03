@@ -76,6 +76,7 @@ public interface GameControllable<T extends Move> {
    * 
    * @return A Thinker.
    * @throws GameException
+   *           if something goes wrong
    */
   NegaMax getThinker() throws GameException;
 }
