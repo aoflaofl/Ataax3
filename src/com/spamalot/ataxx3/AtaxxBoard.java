@@ -69,11 +69,17 @@ class AtaxxBoard extends Board {
    * @param color
    *          Color to flip to
    * @return a List of AtaxxSquares that had flipped pieces.
+   * 
+   *         TODO: Separate out flipping from getting Squares.
+   * 
+   * 
+   *         TODO: Probably move to AtaxxGame class.
    */
-  static final List<Square> flipPiecesAroundSquare(final Square ataxxSquare, final PieceColor color) {
+  static final List<Piece> flipPiecesAroundSquare(final Square ataxxSquare, final PieceColor color) {
     PieceColor oppositeColor = color.getOpposite();
 
     List<Square> ret = new ArrayList<>();
+    List<Piece> retPieces = new ArrayList<>();
 
     Square[] squares = ataxxSquare.getOneAwaySquares();
     for (Square sq : squares) {
@@ -81,9 +87,10 @@ class AtaxxBoard extends Board {
       if (piece != null && piece.getColor() == oppositeColor) {
         piece.flip();
         ret.add(sq);
+        retPieces.add(piece);
       }
     }
 
-    return ret;
+    return retPieces;
   }
 }

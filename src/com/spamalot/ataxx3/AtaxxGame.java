@@ -47,7 +47,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    */
   private AtaxxGame(final int size) throws GameException {
     setBoard(new AtaxxBoard(size));
-    initBoard();
+    initGame();
   }
 
   /**
@@ -57,7 +57,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    *           when there is some Ataxx related problem.
    */
   @Override
-  protected void initBoard() throws GameException {
+  protected void initGame() throws GameException {
     getBoard().getSquareAt(0, 0).setPiece(new Piece(PieceColor.WHITE));
     getBoard().getSquareAt(getBoard().getNumRanks() - 1, getBoard().getNumFiles() - 1).setPiece(new Piece(PieceColor.WHITE));
 
@@ -91,7 +91,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
       default:
         break;
     }
-    List<Square> flipped = null;
+    List<Piece> flipped = null;
     if (piece != null) {
       Coordinate c = move.getToCoordinate();
       Square sq = this.getBoard().getSquareAt(c);
@@ -112,7 +112,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
     AtaxxUndoMove move = this.undoMoveStack.pop();
     if (move.getMove().getType() != Move.Type.PASS) {
       this.undoPieceMove(move.getMove());
-      flipPiecesInSquares(move.getFlipped());
+      flipPieces(move.getFlipped());
     }
     switchColorToMove();
   }
@@ -124,12 +124,12 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    *          the move
    */
   private void undoPieceMove(final AtaxxMove move) {
-    Coordinate c = move.getToCoordinate();
-    Square sq = this.getBoard().getSquareAt(c);
+    Coordinate toCoord = move.getToCoordinate();
+    Square sq = this.getBoard().getSquareAt(toCoord);
     Piece p = sq.pickupPiece();
     if (move.getType() == Move.Type.JUMP) {
-      Coordinate cFrom = move.getFromCoordinate();
-      Square sqFrom = this.getBoard().getSquareAt(cFrom);
+      Coordinate fromCoord = move.getFromCoordinate();
+      Square sqFrom = this.getBoard().getSquareAt(fromCoord);
       sqFrom.setPiece(p);
     }
   }

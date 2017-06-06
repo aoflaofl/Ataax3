@@ -50,12 +50,12 @@ public abstract class Game {
   }
 
   /**
-   * Set up board.
+   * Set up a new Game.
    * 
    * @throws GameException
    *           if something goes wrong.
    */
-  protected abstract void initBoard() throws GameException;
+  protected abstract void initGame() throws GameException;
 
   /**
    * Make a defensive copy of this object.
@@ -222,17 +222,5 @@ public abstract class Game {
     int y = rank - '0' - 1;
     Coordinate coord = new Coordinate(x, y);
     return coord;
-  }
-
-  /**
-   * Flip the pieces in the AtaxxSquares in the list.
-   * 
-   * @param listOfSquares
-   *          List of Coordinates of pieces to flip
-   */
-  protected static void flipPiecesInSquares(final List<Square> listOfSquares) {
-    for (Square square : listOfSquares) {
-      square.getPiece().flip();
-    }
   }
 }

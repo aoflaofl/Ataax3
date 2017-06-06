@@ -32,13 +32,4 @@ class ReversiBoard extends Board {
       }
     }
   }
-
-//  @Override
-//  public Board copy() {
-//    ReversiBoard ret = new ReversiBoard(this.getNumFiles());
-//    ret.copySquaresArray(this.getSquares());
-//
-//    return ret;
-//  }
-
 }

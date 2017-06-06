@@ -70,7 +70,7 @@ public class GameController<T extends Game & MinMaxSearchable<S> & GameControlla
           case "play":
             while (!this.game.isOver()) {
               if (this.game.getColorToMove() == PieceColor.BLACK) {
-                depth = 4;
+                depth = 5;
               } else {
                 depth = 3;
               }

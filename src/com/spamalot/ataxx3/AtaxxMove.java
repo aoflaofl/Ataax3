@@ -26,8 +26,8 @@ class AtaxxMove extends Move {
   AtaxxMove(final Type moveType, final PieceColor pieceColor, final Coordinate fromCoord, final Coordinate toCoord) {
     super(moveType);
     setColor(pieceColor);
-    setFromSquare(fromCoord);
-    setToSquare(toCoord);
+    setFromCoordinate(fromCoord);
+    setToCoordinate(toCoord);
   }
 
   /** Make a move only with a type. */

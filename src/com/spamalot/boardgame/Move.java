@@ -9,7 +9,7 @@ package com.spamalot.boardgame;
 public class Move implements Comparable<Move> {
 
   /**
-   * The two types of an Ataxx move.
+   * The three types of an Ataxx move.
    * 
    * @author gej
    *
@@ -26,10 +26,10 @@ public class Move implements Comparable<Move> {
   /** The color making this move. */
   private PieceColor color;
 
-  /** The from square. */
+  /** The from Coordinate. */
   private Coordinate from;
 
-  /** The to square. */
+  /** The to Coordinate. */
   private Coordinate to;
 
   /** AI evaluation of move. Initialized to min value until evaluated. */
@@ -80,7 +80,7 @@ public class Move implements Comparable<Move> {
    * @param toSquare
    *          the Square being moved to
    */
-  protected void setToSquare(final Coordinate toSquare) {
+  protected void setToCoordinate(final Coordinate toSquare) {
     this.to = toSquare;
   }
 
@@ -90,7 +90,7 @@ public class Move implements Comparable<Move> {
    * @param fromSquare
    *          the Square being moved from
    */
-  protected void setFromSquare(final Coordinate fromSquare) {
+  protected void setFromCoordinate(final Coordinate fromSquare) {
     this.from = fromSquare;
   }
 

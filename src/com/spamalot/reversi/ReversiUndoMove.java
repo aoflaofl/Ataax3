@@ -6,7 +6,7 @@ import com.spamalot.boardgame.UndoMove;
 import java.util.List;
 
 /**
- * Class to handle Undo Information.
+ * Class to hold Undo Move Information.
  * 
  * @author gej
  *
@@ -47,5 +47,4 @@ class ReversiUndoMove extends UndoMove<ReversiMove> {
   public List<Piece> getFlippedPieceList() {
     return this.flippedPieces;
   }
-
 }

@@ -53,14 +53,14 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
    */
   private ReversiGame(final int size) throws GameException {
     setBoard(new ReversiBoard(size));
-    initBoard();
+    initGame();
   }
 
   /**
    * Set up board.
    */
   @Override
-  protected void initBoard() {
+  protected void initGame() {
     getBoard().getSquareAt((getNumFiles() / 2) - 1, (getNumRanks() / 2) - 1).setPiece(new Piece(PieceColor.WHITE));
     getBoard().getSquareAt(getNumFiles() / 2, getNumRanks() / 2).setPiece(new Piece(PieceColor.WHITE));
     getBoard().getSquareAt((getNumFiles() / 2) - 1, getNumRanks() / 2).setPiece(new Piece(PieceColor.BLACK));
@@ -220,12 +220,10 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
     Square toSquare = getSquareAt(toCoordinate.getX(), toCoordinate.getY());
 
     return new ReversiMove(getColorToMove(), toSquare.getCoordinate());
-
   }
 
   @Override
   public NegaMax<ReversiGame, ReversiMove> getThinker() throws GameException {
-
     NegaMax<ReversiGame, ReversiMove> ret = new NegaMax<>(this);
 
     ret.setDiffModifier(3);
