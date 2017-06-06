@@ -22,7 +22,7 @@ public class PieceCount {
    *          Count of white pieces
    *
    */
-  public PieceCount(final int numBlack, final int numWhite) {
+  PieceCount(final int numBlack, final int numWhite) {
     setBlackCount(numBlack);
     setWhiteCount(numWhite);
   }

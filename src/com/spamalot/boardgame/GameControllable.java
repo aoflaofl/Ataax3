@@ -9,8 +9,11 @@ import java.util.List;
  *
  * @param <T>
  *          Move Type
+ * @param <S>
+ *          Game Type
+ * 
  */
-public interface GameControllable<T extends Move> {
+public interface GameControllable<S extends Game & MinMaxSearchable<T>, T extends Move> {
 
   /**
    * Get the List of available Moves in the Game.
@@ -78,5 +81,5 @@ public interface GameControllable<T extends Move> {
    * @throws GameException
    *           if something goes wrong
    */
-  NegaMax getThinker() throws GameException;
+  NegaMax<S, T> getThinker() throws GameException;
 }

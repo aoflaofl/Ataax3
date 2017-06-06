@@ -65,7 +65,7 @@ class ReversiMove extends Move {
     builder.append("ReversiMove [getType()=");
     builder.append(getType());
     builder.append(", getToSquare()=");
-    builder.append(getToSquare());
+    builder.append(getToCoordinate());
     builder.append(", getColor()=");
     builder.append(getColor());
     builder.append(", getEvaluation()=");

@@ -36,7 +36,9 @@ public interface MinMaxSearchable<T extends Move> {
   void undoLastMove();
 
   /**
-   * Make a move on the board.
+   * Make a move on the board. For performance reasons no error checking is
+   * expected to be done so no Exception is declared to be thrown from this
+   * method.
    * 
    * @param move
    *          Move to make

@@ -20,7 +20,7 @@ public final class Coordinate {
    * @param yOrd
    *          the Y ordinate
    */
-  public Coordinate(final int xOrd, final int yOrd) {
+  Coordinate(final int xOrd, final int yOrd) {
     this.x = xOrd;
     this.y = yOrd;
   }

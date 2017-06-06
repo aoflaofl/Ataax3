@@ -20,7 +20,7 @@ import java.util.Stack;
  * @author gej
  *
  */
-class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControllable<AtaxxMove> {
+class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControllable<AtaxxGame, AtaxxMove> {
   /** Default Board Size for an Ataxx game. */
   private static final int DEFAULT_ATAXX_BOARD_SIZE = 7;
 
@@ -82,7 +82,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
         piece = new Piece(move.getColor());
         break;
       case JUMP:
-        Coordinate c = move.getFromSquare();
+        Coordinate c = move.getFromCoordinate();
         Square sq = this.getBoard().getSquareAt(c);
         piece = sq.pickupPiece();
         break;
@@ -93,7 +93,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
     }
     List<Square> flipped = null;
     if (piece != null) {
-      Coordinate c = move.getToSquare();
+      Coordinate c = move.getToCoordinate();
       Square sq = this.getBoard().getSquareAt(c);
       sq.setPiece(piece);
       flipped = AtaxxBoard.flipPiecesAroundSquare(sq, move.getColor());
@@ -124,11 +124,11 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    *          the move
    */
   private void undoPieceMove(final AtaxxMove move) {
-    Coordinate c = move.getToSquare();
+    Coordinate c = move.getToCoordinate();
     Square sq = this.getBoard().getSquareAt(c);
     Piece p = sq.pickupPiece();
     if (move.getType() == Move.Type.JUMP) {
-      Coordinate cFrom = move.getFromSquare();
+      Coordinate cFrom = move.getFromCoordinate();
       Square sqFrom = this.getBoard().getSquareAt(cFrom);
       sqFrom.setPiece(p);
     }

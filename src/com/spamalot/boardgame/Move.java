@@ -95,20 +95,20 @@ public class Move implements Comparable<Move> {
   }
 
   /**
-   * Get the From Square.
+   * Get the From Square Coordinate.
    * 
    * @return the from Square.
    */
-  public Coordinate getFromSquare() {
+  public Coordinate getFromCoordinate() {
     return this.from;
   }
 
   /**
-   * Get the To Square.
+   * Get the To Square Coordinate.
    * 
    * @return the to Square.
    */
-  public Coordinate getToSquare() {
+  public Coordinate getToCoordinate() {
     return this.to;
   }
 

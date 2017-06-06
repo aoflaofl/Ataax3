@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @param <S>
  *          Move Object in Game
  */
-public class GameController<T extends Game & MinMaxSearchable<S> & GameControllable<S>, S extends Move> {
+public class GameController<T extends Game & MinMaxSearchable<S> & GameControllable<T, S>, S extends Move> {
   /** The Game to control. */
   private T game;
 
@@ -70,7 +70,7 @@ public class GameController<T extends Game & MinMaxSearchable<S> & GameControlla
           case "play":
             while (!this.game.isOver()) {
               if (this.game.getColorToMove() == PieceColor.BLACK) {
-                depth = 6;
+                depth = 4;
               } else {
                 depth = 3;
               }

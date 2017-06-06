@@ -89,7 +89,7 @@ public class NegaMax<T extends Game & MinMaxSearchable<S>, S extends Move> {
    *          How deep to evaluate
    * @return the best move.
    */
-  public S think(final int maxIteration) {
+  final S think(final int maxIteration) {
     if (maxIteration < 1) {
       return null;
     }

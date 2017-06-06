@@ -126,7 +126,7 @@ public abstract class Game {
    * 
    * @return the board.
    */
-  protected Board getBoard() {
+  public Board getBoard() {
     return this.board;
   }
 
@@ -170,6 +170,30 @@ public abstract class Game {
    */
   public final String boardToString() {
     return getBoard().toString();
+  }
+
+  /**
+   * Return true if the Square is on the board, has a piece, and that piece is
+   * of the opposite color of the side to move.
+   * 
+   * @param sq
+   *          Square to look at
+   * @return true if it has an opposite color piece.
+   */
+  protected boolean hasOppositeColorPiece(final Square sq) {
+    return sq != null && !sq.isEmpty() && sq.getPiece().getColor() != this.getColorToMove();
+  }
+
+  /**
+   * Return true if the Square is on the board, has a piece, and that piece is
+   * of the same color of the side to move.
+   * 
+   * @param sq
+   *          Square to look at
+   * @return true if square has a same color piece.
+   */
+  protected boolean hasSameColorPiece(final Square sq) {
+    return sq != null && !sq.isEmpty() && sq.getPiece().getColor() == this.getColorToMove();
   }
 
   /**

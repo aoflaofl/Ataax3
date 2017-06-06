@@ -55,7 +55,7 @@ public class Piece {
    * 
    * @return a copy of this Piece.
    */
-  public final Piece copy() {
+  final Piece copy() {
     return new Piece(this.color);
   }
 }

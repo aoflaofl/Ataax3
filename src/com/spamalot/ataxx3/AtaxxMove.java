@@ -48,9 +48,9 @@ class AtaxxMove extends Move {
     builder.append(", color=");
     builder.append(getColor());
     builder.append(", from=");
-    builder.append(getFromSquare());
+    builder.append(getFromCoordinate());
     builder.append(", to=");
-    builder.append(getToSquare());
+    builder.append(getToCoordinate());
     builder.append(", evaluation=");
     builder.append(getEvaluation());
     builder.append("]");

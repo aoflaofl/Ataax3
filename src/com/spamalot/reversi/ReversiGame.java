@@ -25,7 +25,8 @@ import java.util.Stack;
  * @author gej
  *
  */
-class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameControllable<ReversiMove> {
+class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameControllable<ReversiGame, ReversiMove> {
+
   /** Default Board Size Constant. */
   private static final int DEFAULT_REVERSI_BOARD_SIZE = 8;
 
@@ -53,13 +54,6 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
   private ReversiGame(final int size) throws GameException {
     setBoard(new ReversiBoard(size));
     initBoard();
-
-    // Square sq = getBoard().getSquareAt(0, 0);
-    // Direction d = Direction.SE;
-    // while (sq != null) {
-    // System.out.println(sq);
-    // sq = sq.getSquareInDirection(d);
-    // }
   }
 
   /**
@@ -86,52 +80,64 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
   @Override
   public void undoLastMove() {
     ReversiUndoMove undoMove = this.undoMoveStack.pop();
-    if (undoMove.getMove().getType() != Move.Type.PASS) {
 
-      Coordinate c = undoMove.getMove().getToSquare();
+    if (undoMove.getMove().getType() != Move.Type.PASS) {
+      Coordinate c = undoMove.getMove().getToCoordinate();
       Square sq = this.getBoard().getSquareAt(c);
       sq.pickupPiece();
 
-      flipPieces(undoMove.getFlipped());
+      flipPieces(undoMove.getFlippedPieceList());
     }
     switchColorToMove();
   }
 
   @Override
   public void makeMove(final ReversiMove move) {
-    // System.out.println("Making move: " + move);
+
     List<Piece> piecesToFlip = null;
+
     if (move.getType() != Move.Type.PASS) {
       Piece piece = new Piece(move.getColor());
-      Coordinate c = move.getToSquare();
 
+      Coordinate c = move.getToCoordinate();
       Square toSquare = this.getBoard().getSquareAt(c);
-
-      PieceColor oppositeColor = move.getColor().getOpposite();
 
       toSquare.setPiece(piece);
 
-      // Collect Pieces to flip
-      piecesToFlip = new ArrayList<>();
-      for (Direction dir : Direction.values()) {
-        // System.out.println("Looking " + dir);
-        List<Piece> candidatePiecesToFlip = new ArrayList<>();
-        Square square = toSquare.getSquareInDirection(dir);
-        while (square != null && !square.isEmpty() && square.getPiece().getColor() == oppositeColor) {
-          // System.out.println("Looking at Square: " + square);
-          candidatePiecesToFlip.add(square.getPiece());
-          square = square.getSquareInDirection(dir);
-        }
-        if (square != null && !square.isEmpty() && square.getPiece().getColor() != oppositeColor) {
-          piecesToFlip.addAll(candidatePiecesToFlip);
-        }
-      }
+      piecesToFlip = getListOfPiecesToFlip(toSquare);
       flipPieces(piecesToFlip);
     }
-    ReversiUndoMove r = new ReversiUndoMove(move, piecesToFlip);
 
-    this.undoMoveStack.add(r);
+    ReversiUndoMove undoMove = new ReversiUndoMove(move, piecesToFlip);
+    this.undoMoveStack.add(undoMove);
+
     switchColorToMove();
+  }
+
+  /**
+   * Generate the List of Pieces that will need to be flipped. This method does
+   * not do any flipping. No flipping! No flipping!
+   * 
+   * @param toSquare
+   *          Square where move is made
+   * 
+   * @return the List of Pieces.
+   */
+  private List<Piece> getListOfPiecesToFlip(final Square toSquare) {
+    List<Piece> piecesToFlip = new ArrayList<>();
+
+    for (Direction dir : Direction.values()) {
+      List<Piece> candidatePiecesToFlip = new ArrayList<>();
+      Square square = toSquare.getSquareInDirection(dir);
+      while (hasOppositeColorPiece(square)) {
+        candidatePiecesToFlip.add(square.getPiece());
+        square = square.getSquareInDirection(dir);
+      }
+      if (hasSameColorPiece(square)) {
+        piecesToFlip.addAll(candidatePiecesToFlip);
+      }
+    }
+    return piecesToFlip;
   }
 
   @Override
@@ -143,7 +149,6 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
     builder.append(getColorToMove());
     builder.append("\ngetAvailableMoves()=");
     builder.append(getAvailableMoves());
-    // builder.append("\nUndo move list=" + this.undoMoveStack);
     builder.append("\n]");
     return builder.toString();
   }
@@ -208,30 +213,6 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
     return null;
   }
 
-  /**
-   * Return true if the Square is on the board, has a piece, and that piece is
-   * of the opposite color of the side to move.
-   * 
-   * @param sq
-   *          Square to look at
-   * @return true if it has an opposite color piece.
-   */
-  private boolean hasOppositeColorPiece(final Square sq) {
-    return sq != null && !sq.isEmpty() && sq.getPiece().getColor() != this.getColorToMove();
-  }
-
-  /**
-   * Return true if the Square is on the board, has a piece, and that piece is
-   * of the same color of the side to move.
-   * 
-   * @param sq
-   *          Square to look at
-   * @return true if square has a same color piece.
-   */
-  private boolean hasSameColorPiece(final Square sq) {
-    return sq != null && !sq.isEmpty() && sq.getPiece().getColor() == this.getColorToMove();
-  }
-
   @Override
   public ReversiMove parseMove(final String text) throws GameException {
     Coordinate toCoordinate = textPositionToCoordinate(text);
@@ -254,8 +235,8 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
   }
 
   @Override
-  protected ReversiGame copyGame() throws GameException {
-    ReversiGame ret = new ReversiGame();
+  protected Game copyGame() throws GameException {
+    Game ret = new ReversiGame();
 
     ret.getBoard().makeCopyOfPiecesInSquaresFromBoard(this.getBoard());
     ret.setColorToMove(this.getColorToMove());

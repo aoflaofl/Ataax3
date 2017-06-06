@@ -23,7 +23,7 @@ class ReversiUndoMove extends UndoMove<ReversiMove> {
    */
   ReversiUndoMove(final ReversiMove move, final List<Piece> piecesToFlip) {
     setMove(move);
-    setFlipped(piecesToFlip);
+    setFlippedPieceList(piecesToFlip);
   }
 
   /** List of pieces that have been flipped. */
@@ -35,7 +35,7 @@ class ReversiUndoMove extends UndoMove<ReversiMove> {
    * @param flipped
    *          the flipped pieces
    */
-  public void setFlipped(final List<Piece> flipped) {
+  public void setFlippedPieceList(final List<Piece> flipped) {
     this.flippedPieces = flipped;
   }
 
@@ -44,7 +44,7 @@ class ReversiUndoMove extends UndoMove<ReversiMove> {
    * 
    * @return the flipped
    */
-  public List<Piece> getFlipped() {
+  public List<Piece> getFlippedPieceList() {
     return this.flippedPieces;
   }
 
