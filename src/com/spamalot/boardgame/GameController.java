@@ -39,7 +39,15 @@ public class GameController<T extends Game & MinMaxSearchable<S> & GameControlla
         text = scan.nextLine();
         System.out.println(text);
 
-        switch (text) {
+        String[] cmd = text.split("\\s", 2);
+        
+        String command = cmd[0];
+        String arguments = cmd[1];
+
+        System.out.println("command: " + cmd[0]);
+        System.out.println("the rest: " + cmd[1]);
+
+        switch (command) {
           case "moves":
             List<S> moves = this.game.getAvailableMoves();
             for (Move move : moves) {
@@ -78,7 +86,7 @@ public class GameController<T extends Game & MinMaxSearchable<S> & GameControlla
               NegaMax<T, S> aip = this.game.getThinker();
               S movep = aip.think(depth);
               this.game.makeMove(movep);
-              System.out.println(this.game.boardToString());
+              System.out.println(this.game);
               System.out.println("Color to move: " + this.game.getColorToMove());
               System.out.println(this.game.getPieceCount());
               aip = null;
@@ -86,7 +94,10 @@ public class GameController<T extends Game & MinMaxSearchable<S> & GameControlla
             System.out.println("Done.");
             break;
           case "help":
-            System.out.println("moves board undo help");
+            System.out.println("moves board undo help end");
+            break;
+          case "save":
+            this.game.save(arguments);
             break;
           case "end":
             break;

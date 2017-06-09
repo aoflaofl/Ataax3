@@ -2,12 +2,7 @@ package com.spamalot.ataxx3;
 
 import com.spamalot.boardgame.Board;
 import com.spamalot.boardgame.GameException;
-import com.spamalot.boardgame.Piece;
-import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represent a board for an Ataxx game.
@@ -58,39 +53,5 @@ class AtaxxBoard extends Board {
         sq.setTwoAwaySquares(getTwoAwaySquares(sq));
       }
     }
-  }
-
-  /**
-   * Flip the pieces around the square that don't match the passed in color and
-   * make them match passed in color.
-   * 
-   * @param ataxxSquare
-   *          AtaxxSquare around which to flip
-   * @param color
-   *          Color to flip to
-   * @return a List of AtaxxSquares that had flipped pieces.
-   * 
-   *         TODO: Separate out flipping from getting Squares.
-   * 
-   * 
-   *         TODO: Probably move to AtaxxGame class.
-   */
-  static final List<Piece> flipPiecesAroundSquare(final Square ataxxSquare, final PieceColor color) {
-    PieceColor oppositeColor = color.getOpposite();
-
-    List<Square> ret = new ArrayList<>();
-    List<Piece> retPieces = new ArrayList<>();
-
-    Square[] squares = ataxxSquare.getOneAwaySquares();
-    for (Square sq : squares) {
-      Piece piece = sq.getPiece();
-      if (piece != null && piece.getColor() == oppositeColor) {
-        piece.flip();
-        ret.add(sq);
-        retPieces.add(piece);
-      }
-    }
-
-    return retPieces;
   }
 }

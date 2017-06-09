@@ -13,6 +13,9 @@ import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.PieceCount;
 import com.spamalot.boardgame.Square;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -240,5 +243,24 @@ class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameCon
     ret.setColorToMove(this.getColorToMove());
 
     return ret;
+  }
+
+  @Override
+  public void save(String fileName) {
+
+    try (FileWriter fw = new FileWriter(fileName); BufferedWriter bw = new BufferedWriter(fw)) {
+
+      String content = "This is the content to write into file\n";
+
+      bw.write(this.toString());
+
+      System.out.println("Done");
+
+    } catch (IOException e) {
+
+      e.printStackTrace();
+
+    }
+
   }
 }

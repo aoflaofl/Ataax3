@@ -11,7 +11,10 @@ import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -79,7 +82,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
     Piece piece = null;
     switch (move.getType()) {
       case DROP:
-        piece = new Piece(move.getColor());
+        piece = new Piece(this.getColorToMove());
         break;
       case JUMP:
         Coordinate c = move.getFromCoordinate();
@@ -96,7 +99,8 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
       Coordinate c = move.getToCoordinate();
       Square sq = this.getBoard().getSquareAt(c);
       sq.setPiece(piece);
-      flipped = AtaxxBoard.flipPiecesAroundSquare(sq, move.getColor());
+      flipped = AtaxxGame.getPiecesToFlip(sq, this.getColorToMove());
+      flipPieces(flipped);
     }
 
     this.undoMoveStack.push(new AtaxxUndoMove(move, flipped));
@@ -152,8 +156,54 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
    * @return a list of moves.
    */
   private List<AtaxxMove> getAvailableMoves(final PieceColor toMove) {
-    AtaxxMoveGenerator gen = new AtaxxMoveGenerator(this);
-    return gen.getAvailableMoves(toMove);
+    List<AtaxxMove> result = new ArrayList<>();
+    AtaxxGame.seen.clear();
+    for (int rank = 0; rank < this.getNumRanks(); rank++) {
+      for (int file = 0; file < this.getNumFiles(); file++) {
+        Square sq = this.getSquareAt(file, rank);
+        if (sq.getPiece() != null && sq.getPiece().getColor().equals(toMove)) {
+          result.addAll(generateMovesForSquare(sq));
+        }
+      }
+    }
+
+    if (result.size() == 0) {
+      result.add(new AtaxxMove());
+    }
+
+    return result;
+  }
+
+  /** Avoid coordinates of expand moves that have already been seen. */
+  private static Set<Square> seen = new HashSet<>();
+
+  /**
+   * Generate a list of moves for a square.
+   * 
+   * @param fromSquare
+   *          Square to generate moves for
+   * @return A list of moves.
+   */
+  private static Set<AtaxxMove> generateMovesForSquare(final Square fromSquare) {
+
+    Set<AtaxxMove> result = new HashSet<>();
+
+    for (Square sq : fromSquare.getOneAwaySquares()) {
+      if (sq.isEmpty()) {
+        if (!seen.contains(sq)) {
+          result.add(new AtaxxMove(Move.Type.DROP, fromSquare.getPiece().getColor(), fromSquare.getCoordinate(), sq.getCoordinate()));
+          seen.add(sq);
+        }
+      }
+    }
+
+    for (Square sq : fromSquare.getTwoAwaySquares()) {
+      if (sq.isEmpty()) {
+        result.add(new AtaxxMove(Move.Type.JUMP, fromSquare.getPiece().getColor(), fromSquare.getCoordinate(), sq.getCoordinate()));
+      }
+    }
+
+    return result;
   }
 
   /*
@@ -168,8 +218,8 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
     builder.append(getBoard());
     builder.append("toMove=");
     builder.append(getColorToMove());
-    // builder.append("\ngetAvailableMoves()=");
-    // builder.append(getAvailableMoves());
+    builder.append("\ngetAvailableMoves()=");
+    builder.append(getAvailableMoves());
     // builder.append("\nUndo move list=" + this.undoMoveStack);
     builder.append("\n]");
     return builder.toString();
@@ -268,9 +318,9 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
     // AtaxxScore s = getScore();
     int position = whiteMobility - blackMobility;
 
-    if (gameOver) {
-      return (white - black) * 10000;
-    }
+    // if (gameOver) {
+    // return (white - black) * 100;
+    // }
 
     int material = 0;
     if (white == 0) {
@@ -301,5 +351,46 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
     ret.setColorToMove(this.getColorToMove());
 
     return ret;
+  }
+
+  /**
+   * Get list of pieces around the square that don't match the passed in color.
+   * 
+   * @param ataxxSquare
+   *          AtaxxSquare around which to flip
+   * @param color
+   *          Color to flip to
+   * @return a List of AtaxxSquares that had flipped pieces.
+   * 
+   */
+  private static List<Piece> getPiecesToFlip(final Square ataxxSquare, final PieceColor color) {
+    PieceColor oppositeColor = color.getOpposite();
+
+    List<Piece> retPieces = new ArrayList<>();
+
+    Square[] squares = ataxxSquare.getOneAwaySquares();
+    for (Square sq : squares) {
+      Piece piece = sq.getPiece();
+      if (piece != null && piece.getColor() == oppositeColor) {
+        retPieces.add(piece);
+      }
+    }
+
+    return retPieces;
+  }
+
+  @Override
+  public boolean isOver() {
+    int len = this.undoMoveStack.size();
+    if (len >= 2) {
+      AtaxxUndoMove move1 = this.undoMoveStack.elementAt(len - 1);
+      AtaxxUndoMove move2 = this.undoMoveStack.elementAt(len - 2);
+
+      if (move1.getMove().getType() == Move.Type.PASS && move2.getMove().getType() == Move.Type.PASS) {
+        return true;
+      }
+    }
+
+    return super.isOver();
   }
 }

@@ -223,4 +223,9 @@ public abstract class Game {
     Coordinate coord = new Coordinate(x, y);
     return coord;
   }
+
+  /**
+   * Write game state to a file.
+   */
+  public abstract void save(String fileName);
 }
