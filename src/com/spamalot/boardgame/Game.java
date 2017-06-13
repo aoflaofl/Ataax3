@@ -1,5 +1,8 @@
 package com.spamalot.boardgame;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -72,25 +75,7 @@ public abstract class Game {
    * @return the score object.
    */
   public final PieceCount getPieceCount() {
-    int numBlack = 0;
-    int numWhite = 0;
-
-    Square[][] squares = this.board.getSquares();
-
-    for (int rank = 0; rank < getNumRanks(); rank++) {
-      for (int file = 0; file < getNumFiles(); file++) {
-        Piece piece = squares[file][rank].getPiece();
-        if (piece != null) {
-          if (piece.getColor() == PieceColor.BLACK) {
-            numBlack++;
-          } else {
-            numWhite++;
-          }
-        }
-
-      }
-    }
-    return new PieceCount(numBlack, numWhite);
+    return this.board.getPieceCount();
   }
 
   /**
@@ -225,7 +210,81 @@ public abstract class Game {
   }
 
   /**
-   * Write game state to a file.
+   * Render an array of Squares in a rank into an ascii String for FEN like
+   * output.
+   * 
+   * @param rankArray
+   *          Array of Squares
+   * @return String in FEN form.
    */
-  public abstract void save(String fileName);
+  private static String toRankString(final Square[] rankArray) {
+    StringBuilder rankString = new StringBuilder();
+
+    int emptyCount = 0;
+    for (Square sq : rankArray) {
+      if (!sq.isEmpty()) {
+        if (emptyCount > 0) {
+          rankString.append(emptyCount);
+          emptyCount = 0;
+        }
+        PieceColor c = sq.getPiece().getColor();
+        rankString.append(c.toChar());
+      } else {
+        emptyCount++;
+      }
+    }
+    if (emptyCount > 0) {
+      rankString.append(emptyCount);
+      emptyCount = 0;
+    }
+    return rankString.toString();
+  }
+
+  /**
+   * Save state of game into a file in a FEN like notation.
+   * 
+   * @param fileName
+   *          name of file to save to.
+   */
+  public void save(final String fileName) {
+
+    try (FileWriter fw = new FileWriter(fileName); BufferedWriter bw = new BufferedWriter(fw)) {
+
+      String content = this.toSaveString();
+
+      bw.write(content);
+
+      System.out.println("Done");
+
+    } catch (IOException e) {
+
+      e.printStackTrace();
+
+    }
+
+  }
+
+  /**
+   * Generate a String with the save state of this game that can be parsed by
+   * the parseGameString method.
+   * 
+   * This method generates a representation of the current state of the game in
+   * a FEN like form.
+   * 
+   * @return a String containing the save state of this game.
+   */
+  private String toSaveString() {
+    StringBuilder ret = new StringBuilder();
+
+    for (int rank = 0; rank < getNumRanks(); rank++) {
+      ret.append(toRankString(this.getBoard().getRank(rank)));
+      if (rank < getNumRanks() - 1) {
+        ret.append("/");
+      }
+    }
+    ret.append(" " + this.getColorToMove().toChar());
+
+    System.out.println(ret);
+    return ret.toString();
+  }
 }

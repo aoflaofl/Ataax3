@@ -40,12 +40,10 @@ public class GameController<T extends Game & MinMaxSearchable<S> & GameControlla
         System.out.println(text);
 
         String[] cmd = text.split("\\s", 2);
-        
+
         String command = cmd[0];
-        String arguments = cmd[1];
 
         System.out.println("command: " + cmd[0]);
-        System.out.println("the rest: " + cmd[1]);
 
         switch (command) {
           case "moves":
@@ -97,6 +95,7 @@ public class GameController<T extends Game & MinMaxSearchable<S> & GameControlla
             System.out.println("moves board undo help end");
             break;
           case "save":
+            String arguments = cmd[1];
             this.game.save(arguments);
             break;
           case "end":

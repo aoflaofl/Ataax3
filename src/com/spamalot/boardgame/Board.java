@@ -45,7 +45,7 @@ public abstract class Board {
     this.setNumFiles(files);
     this.setNumRanks(ranks);
 
-    this.setSquares(new Square[files][ranks]);
+    this.setSquares(new Square[ranks][files]);
 
     initBoard();
   }
@@ -64,7 +64,7 @@ public abstract class Board {
   private void initBoard() {
     for (int file = 0; file < getNumFiles(); file++) {
       for (int rank = 0; rank < getNumRanks(); rank++) {
-        this.squares[file][rank] = new Square(file, rank);
+        this.squares[rank][file] = new Square(file, rank);
       }
     }
   }
@@ -79,7 +79,7 @@ public abstract class Board {
    * @return the Square.
    */
   public final Square getSquareAt(final int file, final int rank) {
-    return this.squares[file][rank];
+    return this.squares[rank][file];
   }
 
   /**
@@ -90,7 +90,7 @@ public abstract class Board {
    * @return the Square.
    */
   public final Square getSquareAt(final Coordinate c) {
-    return this.squares[c.getX()][c.getY()];
+    return this.squares[c.getY()][c.getX()];
   }
 
   /**
@@ -194,7 +194,7 @@ public abstract class Board {
    * @return true if the Square is on the board and is not blocked.
    */
   protected boolean isPlayableSquare(final int file, final int rank) {
-    return isOnBoard(file, rank) && (!this.squares[file][rank].isBlocked());
+    return isOnBoard(file, rank) && (!this.squares[rank][file].isBlocked());
   }
 
   /**
@@ -245,7 +245,7 @@ public abstract class Board {
    */
   private void checkAndAddSquare(final List<Square> squareList, final int file, final int rank) {
     if (isPlayableSquare(file, rank)) {
-      squareList.add(this.squares[file][rank]);
+      squareList.add(this.squares[rank][file]);
     }
   }
 
@@ -416,11 +416,11 @@ public abstract class Board {
    *          the File
    */
   protected void initSquareDirectionMap(final int rank, final int file) {
-    Square sq = this.squares[file][rank];
+    Square sq = this.squares[rank][file];
     for (Direction direction : Direction.values()) {
 
       if (isPlayableSquare(file + direction.getRun(), rank + direction.getRise())) {
-        sq.setSquareInDirection(direction, this.squares[file + direction.getRun()][rank + direction.getRise()]);
+        sq.setSquareInDirection(direction, this.squares[rank + direction.getRise()][file + direction.getRun()]);
       }
     }
   }
@@ -434,11 +434,47 @@ public abstract class Board {
   public final void makeCopyOfPiecesInSquaresFromBoard(final Board b) {
     for (int file = 0; file < getNumFiles(); file++) {
       for (int rank = 0; rank < getNumRanks(); rank++) {
-        Piece p = b.getSquares()[file][rank].getPiece();
+        Piece p = b.getSquares()[rank][file].getPiece();
         if (p != null) {
-          this.squares[file][rank].setPiece(p.copy());
+          this.squares[rank][file].setPiece(p.copy());
         }
       }
     }
+  }
+
+  /**
+   * Doesn't work. Need to reverse the indices.
+   * 
+   * @param rank
+   *          Rank to return
+   * @return rank Squares.
+   */
+  public Square[] getRank(final int rank) {
+    return this.squares[rank];
+  }
+
+  /**
+   * Get the PieceCount object for this board.
+   * 
+   * @return PieceCount object with count values.
+   */
+  final PieceCount getPieceCount() {
+    int numBlack = 0;
+    int numWhite = 0;
+
+    for (int rank = 0; rank < getNumRanks(); rank++) {
+      for (int file = 0; file < getNumFiles(); file++) {
+        Piece piece = this.squares[rank][file].getPiece();
+        if (piece != null) {
+          if (piece.getColor() == PieceColor.BLACK) {
+            numBlack++;
+          } else {
+            numWhite++;
+          }
+        }
+
+      }
+    }
+    return new PieceCount(numBlack, numWhite);
   }
 }

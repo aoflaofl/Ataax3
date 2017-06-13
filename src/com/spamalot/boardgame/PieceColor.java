@@ -21,11 +21,17 @@ public enum PieceColor {
   /** What the color looks like when printed. */
   private String representation;
 
+  /** What the color looks like when put into an ascii string. */
+  private char asciiRepresentation;
+
   static {
     WHITE.opposite = BLACK;
     WHITE.representation = "O";
+    WHITE.asciiRepresentation = 'w';
+
     BLACK.opposite = WHITE;
     BLACK.representation = "#";
+    BLACK.asciiRepresentation = 'b';
   }
 
   /**
@@ -47,4 +53,12 @@ public enum PieceColor {
     return this.representation;
   }
 
+  /**
+   * What color looks like when put into an ascii String.
+   * 
+   * @return ascii Representation.
+   */
+  public char toChar() {
+    return this.asciiRepresentation;
+  }
 }
