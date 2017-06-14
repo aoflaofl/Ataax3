@@ -25,7 +25,7 @@ import java.util.Stack;
  * @author gej
  *
  */
-public class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameControllable<ReversiGame, ReversiMove> {
+public final class ReversiGame extends Game implements MinMaxSearchable<ReversiMove>, GameControllable<ReversiGame, ReversiMove> {
 
   /** Default Board Size Constant. */
   private static final int DEFAULT_REVERSI_BOARD_SIZE = 8;

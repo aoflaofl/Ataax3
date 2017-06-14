@@ -98,6 +98,9 @@ public class GameController<T extends Game & MinMaxSearchable<S> & GameControlla
             String arguments = cmd[1];
             this.game.save(arguments);
             break;
+          case "load":
+            this.game.load(cmd[1]);
+            break;
           case "end":
             break;
           default:

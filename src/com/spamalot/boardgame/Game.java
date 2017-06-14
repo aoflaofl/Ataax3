@@ -1,8 +1,14 @@
 package com.spamalot.boardgame;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -227,8 +233,12 @@ public abstract class Game {
           rankString.append(emptyCount);
           emptyCount = 0;
         }
-        PieceColor c = sq.getPiece().getColor();
-        rankString.append(c.toChar());
+        if (sq.isBlocked()) {
+          rankString.append('X');
+        } else {
+          PieceColor c = sq.getPiece().getColor();
+          rankString.append(c.toChar());
+        }
       } else {
         emptyCount++;
       }
@@ -286,5 +296,24 @@ public abstract class Game {
 
     System.out.println(ret);
     return ret.toString();
+  }
+
+  /**
+   * Load state of game from a FEN like file.
+   * 
+   * @param fileName
+   *          File Name to load from
+   */
+  public void load(final String fileName) {
+    Path file = FileSystems.getDefault().getPath(".", fileName);
+
+    try (InputStream in = Files.newInputStream(file); BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+      String line = null;
+      while ((line = reader.readLine()) != null) {
+        System.out.println(line);
+      }
+    } catch (IOException x) {
+      System.err.println(x);
+    }
   }
 }
