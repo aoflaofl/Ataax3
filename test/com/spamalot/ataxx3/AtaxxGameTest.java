@@ -3,15 +3,13 @@ package com.spamalot.ataxx3;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import com.spamalot.boardgame.MinMaxSearchable;
-
-import java.util.List;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * @author gej
@@ -21,7 +19,7 @@ public class AtaxxGameTest {
   /**
    * Test variable.
    */
-  private MinMaxSearchable<AtaxxMove> ataxxGame;
+  private com.spamalot.boardgame.ai.MinMaxSearchable<AtaxxMove> ataxxGame;
 
   /**
    * @throws java.lang.Exception

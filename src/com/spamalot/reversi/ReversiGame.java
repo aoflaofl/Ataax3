@@ -5,13 +5,13 @@ import com.spamalot.boardgame.Direction;
 import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameControllable;
 import com.spamalot.boardgame.GameException;
-import com.spamalot.boardgame.MinMaxSearchable;
 import com.spamalot.boardgame.Move;
-import com.spamalot.boardgame.NegaMax;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.PieceCount;
 import com.spamalot.boardgame.Square;
+import com.spamalot.boardgame.ai.MinMaxSearchable;
+import com.spamalot.boardgame.ai.NegaMax;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -233,8 +233,8 @@ public final class ReversiGame extends Game implements MinMaxSearchable<ReversiM
   }
 
   @Override
-  protected Game copyGame() throws GameException {
-    Game ret = new ReversiGame();
+  public ReversiGame copyGame() throws GameException {
+    ReversiGame ret = new ReversiGame();
 
     ret.getBoard().makeCopyOfPiecesInSquaresFromBoard(this.getBoard());
     ret.setColorToMove(this.getColorToMove());

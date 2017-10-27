@@ -4,12 +4,12 @@ import com.spamalot.boardgame.Coordinate;
 import com.spamalot.boardgame.Game;
 import com.spamalot.boardgame.GameControllable;
 import com.spamalot.boardgame.GameException;
-import com.spamalot.boardgame.MinMaxSearchable;
 import com.spamalot.boardgame.Move;
-import com.spamalot.boardgame.NegaMax;
 import com.spamalot.boardgame.Piece;
 import com.spamalot.boardgame.PieceColor;
 import com.spamalot.boardgame.Square;
+import com.spamalot.boardgame.ai.MinMaxSearchable;
+import com.spamalot.boardgame.ai.NegaMax;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -345,7 +345,7 @@ class AtaxxGame extends Game implements MinMaxSearchable<AtaxxMove>, GameControl
   }
 
   @Override
-  protected Game copyGame() throws GameException {
+  public Game copyGame() throws GameException {
     AtaxxGame ret = new AtaxxGame();
     ret.getBoard().makeCopyOfPiecesInSquaresFromBoard(this.getBoard());
     ret.setColorToMove(this.getColorToMove());
